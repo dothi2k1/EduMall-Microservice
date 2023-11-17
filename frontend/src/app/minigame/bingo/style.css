@@ -1,0 +1,278 @@
+.active {
+
+    box-shadow:
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 15px #fff,
+        0 0 20px #49fff7,
+        0 0 35px #49fff7
+}
+
+
+.game-list {
+    width: 580px;
+    margin: 0 auto;
+}
+
+
+.bingo_main {
+    background: transparent;
+    border-radius: 5px;
+    margin-top: 50px;
+    padding-top: 324px;
+    padding-bottom: 20px;
+    padding-left: 185px;
+    width: 100%;
+}
+
+section#Slots {
+    border-radius: 15px;
+    background-color: #FAFAFA;
+}
+
+section#Gira {
+    margin-top: 25px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    border-radius: 5px;
+    text-align: center;
+    color: #ef5350;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+section#Gira:hover {}
+
+section#info {
+    background-color: #616161;
+    padding-left: 12px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    overflow: hidden;
+    animation-duration: 1s;
+    color: #BDBDBD;
+    margin-top: 50px;
+    margin-left: 30%;
+    margin-right: 30%;
+    display: none;
+}
+
+#slot1,
+#slot2,
+#slot3 {
+    display: inline-block;
+    margin-top: -37px;
+    margin-left: 15px;
+    margin-right: 21px;
+    background-size: 150px 150px;
+    width: 150px;
+    height: 150px;
+}
+
+.a2 {
+    background-image: url("/images/996160A2CC48E5-F809-4DB5-945D-0B379A7F9CDD.png");
+}
+
+
+.a4 {
+    background-image: url("/images/4081312CAAB842-3B71-4167-A06C-1518978FFC00.png");
+}
+
+
+.a6 {
+    background-image: url("/images/a6.png");
+}
+
+
+.a1 {
+    background-image: url("/images/53688900CC2012-99F2-496F-AE01-0F4F79FDCB0A.png");
+}
+
+
+.a7 {
+    background-image: url("/images/607239603CD5A1-F64F-4344-BDB6-7898EE61E22F.png");
+}
+
+
+.a3 {
+    background-image: url("/images/125561CB7ECDBF-81F9-4556-A406-431584D2A335.png");
+}
+
+
+.a5 {
+    background-image: url("/images/607239603CD5A1-F64F-4344-BDB6-7898EE61E22F.png");
+}
+
+
+.a8 {
+    background-image: url("/images/99603366A4C784-7DC6-4AE6-BD6F-F88ACC910D7E.png");
+}
+
+
+
+
+
+@media screen and (max-width: 580px) {
+    .game-list {
+        width: 320px;
+    }
+
+    .bingo_main {
+        border-radius: 5px !important;
+        margin-top: 0px !important;
+        padding-top: 157px !important;
+        padding-bottom: 0px !important;
+        padding-left: 28px !important;
+        width: 100% !important;
+    }
+
+    .game-list {
+        width: 340px !important;
+        height: 340px !important;
+        background: url(/images/134871BingoNamMoi.png) no-repeat top center !important;
+        position: relative !important;
+        background-size: contain !important;
+    }
+
+    #Slots {
+        background: transparent !important;
+    }
+
+    #Gira {
+        position: absolute;
+        width: 120px;
+        height: 0px;
+        background: url(/images/play.png) no-repeat;
+        background-color: rgba(0, 0, 0, 0);
+        background-size: auto;
+        background-size: 70px 35px;
+        left: 105px;
+        bottom: 25px;
+        padding: 0 !important;
+    }
+
+    #slot1,
+    #slot2,
+    #slot3,
+    #slot4,
+    #slot5 {
+        display: inline-block;
+        margin-top: -8px;
+        margin-left: 3px;
+        margin-right: 0px;
+        background-size: 50px 48px;
+        width: 50px;
+        height: 48px;
+        border-radius: 4px;
+    }
+
+    #slot2 {
+        margin-right: 0px;
+    }
+
+    #slot3 {
+        margin-right: 0px;
+    }
+
+    #slot4 {
+        margin-right: -1px;
+    }
+
+    #slot5 {
+        margin-right: -2px;
+    }
+
+    .dropdownlist {
+        position: absolute;
+        left: 0;
+        bottom: 27px;
+        width: 100%;
+        padding: 0 0px;
+        text-align: center;
+    }
+
+    #numrolllop {
+        width: 60% !important;
+        margin: auto !important;
+        padding: 1px 5px !important;
+        border: 1px solid #144ed7 !important;
+    }
+}
+
+@media screen and (min-width: 580px) {
+
+    .game-list {
+        width: 720px;
+        height: 630px;
+        background: url(/images/134871BingoNamMoi.png) no-repeat top center;
+        background-size: 720px 579px;
+        position: relative;
+    }
+
+    .bingo_main {
+        background: transparent;
+        border-radius: 5px;
+        margin-top: 31px;
+        padding-top: 357px;
+        padding-bottom: 20px;
+        padding-left: 62px;
+        width: 100%;
+    }
+
+    #Slots {
+        background: transparent !important;
+    }
+
+    #Gira {
+        position: absolute;
+        width: 170px;
+        height: 25px;
+        background: url(/images/play.png) no-repeat;
+        background-size: 170px 70px;
+        left: 265px;
+        bottom: 3px;
+    }
+
+    /*    #Gira img{width: 400px;}
+*/
+    #slot1,
+    #slot2,
+    #slot3,
+    #slot4,
+    #slot5 {
+        display: inline-block;
+        margin-top: -37px;
+        margin-left: 2px;
+        margin-right: 9px;
+        background-size: 110px 100px;
+        width: 110px;
+        height: 102px;
+        border-radius: 6px;
+    }
+
+
+    #slot2 {
+        margin-right: 9px;
+    }
+
+    #slot3 {
+        margin-right: 9px;
+    }
+
+    #slot4 {
+        margin-right: 9px;
+    }
+
+    #slot5 {
+        margin-right: 10px;
+    }
+
+    .dropdownlist {
+        position: absolute;
+        left: 0;
+        bottom: 25px;
+        width: 100%;
+        padding: 0 70px;
+        text-align: center;
+    }
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "image": "https://edumall.vn/_next/image?url=%2Fapi%2Fimageproxy%3Furl%3Dhttps%253A%252F%252Fcdn.nativex.edu.vn%252F5a7a63749f7bfc459700033e%252Fproduct%252F6001720a44d203002598c113&w=1920&q=50",
+    "name": "Tiếng Anh Phỏng Vấn Xin Việc",
+    "src": "/products",
+    "join": 266,
+    "view": 3236
+  },
+  {
+    "image": "https://edumall.vn/_next/image?url=%2Fapi%2Fimageproxy%3Furl%3Dhttps%253A%252F%252Fcdn2.topica.vn%252F5a7a63749f7bfc459700033e%252Fproduct%252F5ffeaafe44d203002598ba40&w=1920&q=50",
+    "name": "Lập Trình IOS",
+    "src": "/minigame/wheel1",
+    "join": 166,
+    "view": 8236
+  },
+  {
+    "image": "https://edumall.vn/_next/image?url=%2Fapi%2Fimageproxy%3Furl%3Dhttps%253A%252F%252Fcdn2.topica.vn%252F191ab4fd-9c62-4494-b209-51f86a3924d3%252Fproduct%252F60a39190d12b64002515b428&w=1920&q=50",
+    "name": "Nhập Môn Ai",
+    "src": "/minigame/wheel2",
+    "join": 164,
+    "view": 1236
+  },
+  {
+    "image": "https://edumall.vn/_next/image?url=%2Fapi%2Fimageproxy%3Furl%3Dhttps%253A%252F%252Fcdn.nativex.edu.vn%252F191ab4fd-9c62-4494-b209-51f86a3924d3%252Fproduct%252F613723e8e818b400255e25d6&w=1920&q=50",
+    "name": "Marketing Course",
+    "src": "/minigame/bingo",
+    "join": 566,
+    "view": 2236
+  },
+  {
+    "image": "https://edumall.vn/_next/image?url=%2Fapi%2Fimageproxy%3Furl%3Dhttps%253A%252F%252Fcdn.nativex.edu.vn%252F191ab4fd-9c62-4494-b209-51f86a3924d3%252Fproduct%252F613723e8e818b400255e25d6&w=1920&q=50",
+    "name": "Marketing Course",
+    "src": "/minigame/dice",
+    "join": 646,
+    "view": 3236
+  },
+  {
+    "image": "https://edumall.vn/_next/image?url=%2Fapi%2Fimageproxy%3Furl%3Dhttps%253A%252F%252Fcdn.nativex.edu.vn%252F191ab4fd-9c62-4494-b209-51f86a3924d3%252Fproduct%252F613723e8e818b400255e25d6&w=1920&q=50",
+    "name": "Marketing Course",
+    "src": "/gallery",
+    "join": 866,
+    "view": 6536
+  }
+]
