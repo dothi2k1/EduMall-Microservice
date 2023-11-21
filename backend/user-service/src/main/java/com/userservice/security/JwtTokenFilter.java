@@ -39,10 +39,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             } catch (IllegalArgumentException e) {
                 logger.error("No se puede encontrar el token JWT");
             } catch (ExpiredJwtException e) {
-                logger.error("Token JWT ha expirado");
+                logger.error("Token JWT had expired");
             }
         } else {
-            logger.warn("JWT Token no inicia con la palabra Bearer");
+            logger.warn("JWT Token not be type Bearer");
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);

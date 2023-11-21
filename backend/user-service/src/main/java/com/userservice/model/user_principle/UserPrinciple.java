@@ -26,7 +26,7 @@ public class UserPrinciple implements UserDetails {
 
     //Generate user for security
     public static UserPrinciple build(UserDTO userDTO) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
+        List<GrantedAuthority> authorities;
         // set role list
         authorities = Arrays.
                 stream(userDTO.getRoles().toArray()).

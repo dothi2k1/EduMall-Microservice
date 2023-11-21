@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -47,17 +49,24 @@ public class WebSecurityConfig {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
-
+    @Bean
+    public AuthenticationProvider provider(){
+        DaoAuthenticationProvider provider=new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable).
                 addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(new AntPathRequestMatcher("/user/login")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/user/save")).hasAnyAuthority("ADMIN"))
-                .exceptionHandling(ex->ex.authenticationEntryPoint(jwtEntryPoint))
+                        .requestMatchers(new AntPathRequestMatcher("/user/**")).permitAll()
+//                        .requestMatchers(new AntPathRequestMatcher("/user/save")).permitAll()
+                        .anyRequest().authenticated())
                 .formLogin(form->form.disable())
-                .sessionManagement(sesson->sesson.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .exceptionHandling(ex->ex.authenticationEntryPoint(jwtEntryPoint))
+                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 }

@@ -1,11 +1,13 @@
 package com.userservice.service;
 
-import com.userservice.model.DTO.UserDTO;
+import com.userservice.model.DTO.FormReg;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {
     ResponseEntity<?> findByUsername(String username);
-    ResponseEntity<?> save(UserDTO userDTO);
+    ResponseEntity<?> save(FormReg formReg);
     ResponseEntity<?> findById(int id);
-    ResponseEntity<?> getAll();
+    ResponseEntity<?> getAll(int page,String sort);
+    Boolean existsByUsername(String username);
+    Boolean existsByEmail(String email);
 }
