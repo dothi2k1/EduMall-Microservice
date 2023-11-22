@@ -62,4 +62,6 @@ public class AuthController {
     ResponseEntity<?> getAll(@RequestParam int page,@RequestParam String sort){
         return serviceImp.getAll(page,sort);
     }
+
+
 }
