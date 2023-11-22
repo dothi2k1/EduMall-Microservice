@@ -18,5 +18,6 @@ public interface UserRepository extends JpaRepository<User,Integer> {
             "where us.uid=u.id and r.id=us.rid and u.username=:username",nativeQuery = true)
     List<String> findRoles(@Param("username") String username);
     User findByUsername(String username);
+    User findByEmail(String email);
 
 }
