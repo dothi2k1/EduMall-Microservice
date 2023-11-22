@@ -75,4 +75,26 @@ public class UserServiceImp implements UserService {
     public Boolean existsByEmail(String email) {
         return repository.existsByEmail(email);
     }
+
+    @Override
+    public User findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
+
+    @Override
+    public ResponseEntity<?> activeToLecture(int id) {
+        if (!repository.existsById(id)) return ResponseEntity.status(404).body("User not found");
+        UserRole userRole=new UserRole();
+        userRole.setRid(2);
+        userRole.setUid(id);
+        UserRole ur= repo.save(userRole);
+        if (ur.getId()!=0)
+            return ResponseEntity.ok("You are a lecture now");
+        return ResponseEntity.status(300).body("You are not allow to be a lecture");
+    }
+
+    public void resetPassword(User user, String password) {
+        user.setPassword(encoder.encode(password));
+        repository.save(user);
+    }
 }
