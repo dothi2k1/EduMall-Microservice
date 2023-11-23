@@ -18,5 +18,6 @@ public class Route {
     private Long id;
     private int course_id;
     private int order;
-
+    private int title;
+    private String content;
 }
