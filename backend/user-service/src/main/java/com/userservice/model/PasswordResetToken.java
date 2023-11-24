@@ -15,13 +15,13 @@ import java.util.Date;
 @NoArgsConstructor
 public class PasswordResetToken {
     @Id
-    private int id;
+    private Integer id;
     private String token;
     public static final int EXPIRATION_TIME=5;
     private Date expiration;
-    private int uid;
+    private Long uid;
 
-    public PasswordResetToken(String token,int uid) {
+    public PasswordResetToken(String token,Long uid) {
         super();
         this.token = token;
         this.uid=uid;

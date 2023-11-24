@@ -12,7 +12,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-    private Integer id;
+    private Long id;
     private String username;
     private String email;
     private String password;
