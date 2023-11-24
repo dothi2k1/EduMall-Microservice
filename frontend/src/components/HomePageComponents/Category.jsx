@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import api from "@/utils/axios";
 
-export default function course() {
+export default function Course() {
   const [course, setCourse] = useState([]);
 
   useEffect(() => {
