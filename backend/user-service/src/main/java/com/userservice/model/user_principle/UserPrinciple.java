@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserPrinciple implements UserDetails {
-    private Integer id;
+    private Long id;
     private String username;
     @JsonIgnore
     private String password;
@@ -41,11 +41,11 @@ public class UserPrinciple implements UserDetails {
         );
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
