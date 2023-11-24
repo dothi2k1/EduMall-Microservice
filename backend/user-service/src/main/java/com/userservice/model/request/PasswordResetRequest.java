@@ -1,20 +1,16 @@
-package com.userservice.model.DTO;
+package com.userservice.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Collection;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
-    private Long id;
-    private String username;
+public class PasswordResetRequest {
     private String email;
     private String password;
-    private Collection<?> roles;
+    private String confirmpassword;
 }

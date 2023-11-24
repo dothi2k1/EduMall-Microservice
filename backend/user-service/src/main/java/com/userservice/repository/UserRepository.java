@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<User,Integer> {
+public interface UserRepository extends JpaRepository<User,Long> {
     Boolean existsByEmail(String email);
     Boolean existsByUsername(String username);
     @Query(value = "select r.rolename from user_role us," +
@@ -18,5 +18,6 @@ public interface UserRepository extends JpaRepository<User,Integer> {
             "where us.uid=u.id and r.id=us.rid and u.username=:username",nativeQuery = true)
     List<String> findRoles(@Param("username") String username);
     User findByUsername(String username);
+    User findByEmail(String email);
 
 }
