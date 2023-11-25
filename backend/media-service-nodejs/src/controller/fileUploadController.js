@@ -19,11 +19,11 @@ const handleFileUpload = async (req, res, fileType, urlPrefix) => {
 };
 
 const handleImageUpload = async (req, res) => {
-    await handleFileUpload(req, res, 'imageUrl', 'view');
+    await handleFileUpload(req, res, 'image', 'view');
 };
 
 const handleVideoUpload = async (req, res) => {
-    await handleFileUpload(req, res, 'videoUrl', 'view-video');
+    await handleFileUpload(req, res, 'video', 'view-video');
 };
 
 module.exports = {
