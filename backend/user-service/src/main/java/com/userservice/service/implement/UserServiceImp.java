@@ -55,12 +55,12 @@ public class UserServiceImp implements UserService {
             }
         if (c == formReg.getRole().length)
             return ResponseEntity.status(200).body("success");
-        return ResponseEntity.status(201).body("fail");
+        return ResponseEntity.status(500).body("fail");
     }
 
     @Override
     public ResponseEntity<?> findById(long id) {
-        if (!repository.existsById(id)) return ResponseEntity.status(205).body("Not found");
+        if (!repository.existsById(id)) return ResponseEntity.status(404).body("Not found");
         return ResponseEntity.ok(repository.findById(id).get());
     }
 
@@ -95,6 +95,11 @@ public class UserServiceImp implements UserService {
         if (ur.getId()!=0)
             return ResponseEntity.ok("You are a lecture now");
         return ResponseEntity.status(300).body("You are not allow to be a lecture");
+    }
+
+    @Override
+    public ResponseEntity<?> summary() {
+        return repository.c;
     }
 
     public void resetPassword(User user, String password) {

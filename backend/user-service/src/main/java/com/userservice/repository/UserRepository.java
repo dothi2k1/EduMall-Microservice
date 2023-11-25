@@ -19,5 +19,11 @@ public interface UserRepository extends JpaRepository<User,Long> {
     List<String> findRoles(@Param("username") String username);
     User findByUsername(String username);
     User findByEmail(String email);
+    @Query(value = "select count(*) from users where id not in (1)",nativeQuery = true)
+    Long countUserById();
 
+    @Query(value = "select count(*) from users where active = true",nativeQuery = true)
+    Long countActive();
+    @Query(value = "select count(*) from users where active = false",nativeQuery = true)
+    long countOff();
 }

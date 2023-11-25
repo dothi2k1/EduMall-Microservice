@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Random;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("auth")
 @CrossOrigin("*")
 public class AuthController {
     @Autowired
@@ -72,10 +72,7 @@ public class AuthController {
                 new JwtResponse(userPrincipal.getUsername(), token, userPrincipal.getAuthorities()));
     }
 
-    @GetMapping("/getall")
-    ResponseEntity<?> getAll(@RequestParam int page,@RequestParam String sort){
-        return serviceImp.getAll(page,sort);
-    }
+
     @PostMapping(value = "/forget-password")
     public ResponseEntity<String> forgotPass(@RequestBody PasswordResetRequest resetRequest, HttpServletRequest request) {
         String token = "";
