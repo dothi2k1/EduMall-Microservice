@@ -22,8 +22,8 @@ public class IPasswordResetService implements PasswordResetService{
     @Override
     public String validateToken(String token) {
         PasswordResetToken resetToken=passwordResetRepo.findByToken(token);
-        if (resetToken==null) return "Invalid token";
-        int uid= resetToken.getUid();
+        if (resetToken==null) return "Invalid code";
+        Long uid= resetToken.getUid();
         Calendar calendar= Calendar.getInstance();
         if (resetToken.getExpiration().getTime()-calendar.getTime().getTime()<=0)
             return "Expired verification link! Please click below link to receive a new one ";
