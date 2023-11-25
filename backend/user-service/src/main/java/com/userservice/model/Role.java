@@ -14,6 +14,6 @@ import lombok.*;
 @Table(name = "roles")
 public class Role {
     @Id
-    private Integer id;
+    private Long id;
     private String rolename;
 }
