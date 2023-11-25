@@ -13,4 +13,5 @@ public class PasswordResetRequest {
     private String email;
     private String password;
     private String confirmpassword;
+    private String token;
 }

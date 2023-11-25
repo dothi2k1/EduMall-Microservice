@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Random;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("/api/sv1/auth")
 @CrossOrigin("*")
 public class AuthController {
     @Autowired
@@ -82,16 +82,16 @@ public class AuthController {
         resetPassword.generatePassReset(user, token);
         SimpleMailMessage message=new SimpleMailMessage();
         message.setTo("aloalo1981998@gmail.com");
-        message.setSubject("Click to reset your password");
-        message.setText(token);
+        message.setSubject("Password reset code");
+        message.setText("Copy this code and paste into "+token);
         javaMailSender.send(message);
         return ResponseEntity.ok("A verified code was been sent to your email. Please check your email!");
     }
     @PostMapping(value = "/reset-password")
-    public ResponseEntity<?> resetPass(@RequestBody PasswordResetRequest request, @RequestParam("token") String token){
-        if (!resetPassword.validateToken(token).equalsIgnoreCase("valid"))
+    public ResponseEntity<?> resetPass(@RequestBody PasswordResetRequest request){
+        if (!resetPassword.validateToken(request.getToken()).equalsIgnoreCase("valid"))
             return ResponseEntity.ok("Invalid code");
-        User user= resetPassword.findByToken(token);
+        User user= resetPassword.findByToken(request.getToken());
         if (user!= null)
             serviceImp.resetPassword(user,request.getPassword());
         return ResponseEntity.ok("password reset successfully");

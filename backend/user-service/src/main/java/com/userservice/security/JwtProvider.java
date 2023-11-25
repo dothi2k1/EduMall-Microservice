@@ -36,13 +36,13 @@ public class JwtProvider {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(JWT_SECRET));
     }
     //get user from jwt
-    public Claims getUserFromJwt(String token){
+    public String getUserFromJwt(String token){
         Claims claims=Jwts.parserBuilder()
                 .setSigningKey(key())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        return claims;
+        return claims.getSubject();
     }
     public boolean validateToken(String authToken) throws Exception {
         try {

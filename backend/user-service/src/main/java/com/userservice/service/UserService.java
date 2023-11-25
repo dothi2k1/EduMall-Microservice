@@ -14,4 +14,5 @@ public interface UserService {
     User findByEmail(String email);
     ResponseEntity<?> activeToLecture(long id);
     ResponseEntity<?> summary();
+    ResponseEntity<?> disableAcc(long id);
 }
