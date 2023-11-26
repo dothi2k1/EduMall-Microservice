@@ -1,6 +1,8 @@
 package com.userservice.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +17,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class PasswordResetToken {
     @Id
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String token;
     public static final int EXPIRATION_TIME=5;
     private Date expiration;

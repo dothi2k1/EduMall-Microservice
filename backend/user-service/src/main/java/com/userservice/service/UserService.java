@@ -12,6 +12,7 @@ public interface UserService {
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
     User findByEmail(String email);
-
     ResponseEntity<?> activeToLecture(long id);
+    ResponseEntity<?> summary();
+    ResponseEntity<?> disableAcc(long id);
 }
