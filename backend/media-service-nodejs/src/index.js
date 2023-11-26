@@ -1,10 +1,14 @@
 const express = require('express');
 const fileUploadRoutes = require('./routes/fileUploadRoutes');
 const mediaRequestController = require('./controller/mediaRequestController');
+const galleryController = require('./controller/galleryController');
+const videoGalleryController = require('./controller/videoGalleryController');
+const checkApiKey = require('./middleware/checkApiKey');
 const multer = require('multer');
 require('dotenv').config();
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const fs = require('fs').promises;
 
 
 const app = express();
@@ -26,10 +30,12 @@ app.use(function (req, res, next) {
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+app.get('/gallery', galleryController);
+app.get('/video-gallery', videoGalleryController);
 
 app.get('/', (req, res) => {
     const pageTitle = 'Welcome to CDN';
-    res.render('index', { title: pageTitle, domain: process.env.BASE_URL });
+    res.render('index', { title: pageTitle, domain: process.env.BASE_URL, apikey: process.env.API_KEY });
 });
 
 app.use('/upload', fileUploadRoutes);

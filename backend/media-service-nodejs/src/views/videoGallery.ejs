@@ -1,0 +1,78 @@
+<!-- views/gallery.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+</head>
+
+<body>
+    <h1><a href="/">Home page</a></h1>
+
+    <form action="/video-gallery" method="get">
+        <label for="year">Year:</label>
+        <input type="text" id="year" name="year" placeholder="YYYY" value="2023" required>
+
+        <label for="month">Month:</label>
+        <input type="text" id="month" name="month" placeholder="MM" required>
+
+        <label for="day">Day:</label>
+        <input type="text" id="day" name="day" placeholder="DD" required>
+
+        <label for="day">ApiKey:</label>
+        <input type="text" id="apikey" name="apikey" value="EDUMALL" placeholder="DD" required>
+
+        <button type="submit">Show Images</button>
+    </form>
+
+    <script>
+        document.getElementById('year').value = new Date().getFullYear();
+        document.getElementById('month').value = new Date().getMonth() + 1;
+        document.getElementById('day').value = new Date().getDate();
+    </script>
+    <p>Selected Date: <%= selectedDate.replace(/-/g, '/' ) %>
+    </p>
+
+    <% if (videoFiles.length> 0) { %>
+        <div class="image-container">
+            <% videoFiles.forEach((imageFile)=> { %>
+                <video class="item" width="640" height="360" controls>
+                    <source class="item"
+                        src="<%= domain %>/view-video/<%= selectedDate.replace(/-/g, '/') %>/<%= imageFile %>"
+                        type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <% }); %>
+        </div>
+        <% } else { %>
+            <p>No images found for the selected date.</p>
+            <% } %>
+
+
+                <style>
+                    body {
+                        margin: 0 auto;
+                        padding: 0px 5px;
+                    }
+
+                    .image-container {
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: space-around;
+                    }
+
+                    .item {
+                        margin: 5px;
+                        border-radius: 2px;
+                        object-fit: contain;
+                        max-width: 500px;
+                        border: #a1a1a1 5px solid;
+                        border-radius: 10px;
+                    }
+                </style>
+</body>
+
+</html>

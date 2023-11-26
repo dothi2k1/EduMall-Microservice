@@ -18,7 +18,8 @@
             <%= title %>
         </h1>
         <p>Cdn ảnh và video.</p>
-
+        <a href="<%= domain %>/gallery?apikey=<%= apikey %>">Link toàn bộ ảnh</a>
+        <a href="<%= domain %>/video-gallery?apikey=<%= apikey %>">Link toàn bộ video</a>
         <div class="upload-section">
             <h3>API upload ảnh. </h3>
             <span>Method - POST:</span><a href="<%= domain %>/upload/images">
@@ -37,6 +38,11 @@
                 <button type="submit">Upload ảnh</button>
             </form>
             <p>Sau khi gửi dữ liệu, sẽ có link ảnh trả lại</p>
+        </div>
+        <div id="loadingGif" class="loading-gif" style="display: none;">
+            <img style="width: 93px;" src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca.gif"
+                alt="Loading GIF">
+            <p>Uploading...</p>
         </div>
         <div id="apiResponse" class="api-response"></div>
         <div class="upload-section">
@@ -63,8 +69,13 @@
     </div>
 
     <script>
+
+
         async function uploadImage(event) {
             event.preventDefault();
+
+            // Display loading GIF while uploading
+            document.getElementById('loadingGif').style.display = 'block';
 
             try {
                 // Get form data
@@ -76,6 +87,9 @@
                     method: 'POST',
                     body: formData,
                 });
+
+                // Hide loading GIF after upload completion
+                document.getElementById('loadingGif').style.display = 'none';
 
                 if (response.ok) {
                     // Success, display the API response
@@ -95,7 +109,8 @@
 
         async function uploadVideo(event) {
             event.preventDefault();
-
+            // Display loading GIF while uploading
+            document.getElementById('loadingGif').style.display = 'block';
             try {
                 // Get form data
                 const form = event.target;
@@ -106,6 +121,9 @@
                     method: 'POST',
                     body: formData,
                 });
+
+                // Hide loading GIF after upload completion
+                document.getElementById('loadingGif').style.display = 'none';
 
                 if (response.ok) {
                     // Success, display the API response
@@ -139,6 +157,7 @@
 
         .json {
             color: #10a33f;
+            overflow: scroll;
         }
 
         .container {
