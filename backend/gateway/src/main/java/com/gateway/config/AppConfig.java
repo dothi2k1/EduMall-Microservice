@@ -17,6 +17,11 @@ public class AppConfig {
     public RestTemplate template(){
         return new RestTemplate();
     }
+    @Bean
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity  http){
+        http.csrf().disable();
+        return http.build();
+    }
 
     @Bean
     public CorsWebFilter filter(){

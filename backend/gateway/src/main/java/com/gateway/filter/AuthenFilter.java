@@ -33,27 +33,28 @@ public class AuthenFilter extends AbstractGatewayFilterFactory<AuthenFilter.Conf
         return ((exchange, chain) ->
         {
             //Check author from header
-            if (rout.isPrivate.test(exchange.getRequest())){
+            if (rout.isPrivate.test(exchange.getRequest())) {
+                //Missing
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION))
-                throw new RuntimeException("Missing authorization header");
-            }
+                    throw new RuntimeException("Missing authorization header");
 
-            String authHeaders= exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
-            if (authHeaders!=null && authHeaders.startsWith("Bearer "))
-                authHeaders=authHeaders.substring(7);
-
-            try {
-                jwtProvider.validateToken(authHeaders);
-            }
-            catch (Exception e){
-                System.out.println("Invalid access ...!");
-                throw  new RuntimeException("Un Authorization");
+                //Had author
+                String authHeaders = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
+                if (authHeaders != null && authHeaders.startsWith("Bearer "))
+                    authHeaders = authHeaders.substring(7);
+                //validate token
+                try {
+                    jwtProvider.validateToken(authHeaders);
+                } catch (Exception e) {
+                    System.out.println("Invalid access ...!");
+                    throw new RuntimeException("Un Authorization");
+                }
             }
             return chain.filter(exchange);
         });
     }
 
-    public static class Config{
+    public static class Config {
 
     }
 
