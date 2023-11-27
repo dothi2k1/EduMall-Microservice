@@ -1,6 +1,6 @@
 package com.userservice.service;
 
-import com.userservice.model.DTO.FormReg;
+import com.userservice.DTO.FormReg;
 import com.userservice.model.User;
 import org.springframework.http.ResponseEntity;
 

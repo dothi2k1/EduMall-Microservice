@@ -1,5 +1,6 @@
-package com.userservice.security;
+package com.course.security;
 
+import com.course.user_principle.UserPrinciple;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,19 +14,29 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.management.relation.Role;
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
     public static final Logger log= LoggerFactory.getLogger(JwtProvider.class);
     @Autowired
     JwtProvider jwtProvider;
-    @Autowired
-    UserDetailsService userDetailsService;
+    private String getJwt(HttpServletRequest request){
+        String authHeader=request.getHeader("Authorization");
+        if (authHeader!=null && authHeader.startsWith("Bearer")){
+            return authHeader.replace("Bearer","");
+        }
+        return null;
+    }
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
@@ -45,7 +56,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             logger.warn("JWT Token is not type Bearer");
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+            Long id= jwtProvider.getIdFromToken(jwtToken);
+            List<String> roles=jwtProvider.getRoleFromToken(jwtToken);
+            UserDetails userDetails = new UserPrinciple(id,username,jwtToken,roles);
             try {
                 if (jwtProvider.validateToken(jwtToken)) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
@@ -60,12 +73,4 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
         chain.doFilter(request, response);
     }
-    private String getJwt(HttpServletRequest request){
-        String authHeader=request.getHeader("Authorization");
-        if (authHeader!=null && authHeader.startsWith("Bearer")){
-            return authHeader.replace("Bearer","");
-        }
-        return null;
-    }
-
 }

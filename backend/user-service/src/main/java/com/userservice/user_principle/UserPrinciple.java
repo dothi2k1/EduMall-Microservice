@@ -1,14 +1,12 @@
-package com.userservice.model.user_principle;
+package com.userservice.user_principle;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.userservice.model.DTO.UserDTO;
+import com.userservice.DTO.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.userservice.model.DTO;
+package com.userservice.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

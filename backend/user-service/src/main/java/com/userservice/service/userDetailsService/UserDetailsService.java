@@ -1,8 +1,8 @@
 package com.userservice.service.userDetailsService;
 
-import com.userservice.model.DTO.UserDTO;
+import com.userservice.DTO.UserDTO;
 import com.userservice.model.User;
-import com.userservice.model.user_principle.UserPrinciple;
+import com.userservice.user_principle.UserPrinciple;
 import com.userservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

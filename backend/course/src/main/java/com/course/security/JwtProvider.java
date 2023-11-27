@@ -1,6 +1,5 @@
-package com.userservice.security;
+package com.course.security;
 
-import com.userservice.user_principle.UserPrinciple;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -20,19 +19,6 @@ public class JwtProvider {
             "hhhhhhhhhhhhhhhhhhhhhaaaaaaaaaaaaaaatttttttttttttttttttttttttttttttttt";
     private final long JWT_EXPIRATION=86400000L;
 
-    //create token from user
-    public String generateToken(Authentication authentication){
-        Date now = new Date();
-        Date expiryDate=new Date(now.getTime()+JWT_EXPIRATION);
-        UserPrinciple userPrinciple=(UserPrinciple) authentication.getPrincipal();
-        //create jwt
-        return Jwts.builder()
-                .setSubject(userPrinciple.getUsername())
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .signWith( key(),SignatureAlgorithm.HS512)
-                .compact();
-    }
 
     private Key key() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(JWT_SECRET));
@@ -66,10 +52,15 @@ public class JwtProvider {
         }
         return false;
     }
-
     public List<String> getRoleFromToken(String token){
         Claims claims =Jwts.parserBuilder().setSigningKey(key()).build()
                 .parseClaimsJws(token).getBody();
         return claims.get("roles",List.class);
+    }
+
+    public Long getIdFromToken(String token){
+        Claims claims =Jwts.parserBuilder().setSigningKey(key()).build()
+                .parseClaimsJws(token).getBody();
+        return Long.parseLong(claims.get("id").toString());
     }
 }
