@@ -10,8 +10,15 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs').promises;
 
+const http = require('http');
+const socketIO = require('socket.io');
 
 const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
+
+
+
 const port = 2000;
 const path = require('path');
 app.use(bodyParser.json());
@@ -29,6 +36,22 @@ app.use(function (req, res, next) {
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+
+
+app.get('/meeting', (req, res) => {
+    res.send('Server is running.');
+});
+
+io.on('connection', (socket) => {
+    console.log('A user connected');
+
+    // Handle WebRTC signaling events here
+
+    socket.on('disconnect', () => {
+        console.log('User disconnected');
+    });
+});
 
 app.get('/gallery', galleryController);
 app.get('/video-gallery', videoGalleryController);
