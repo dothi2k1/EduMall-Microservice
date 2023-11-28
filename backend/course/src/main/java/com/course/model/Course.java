@@ -22,7 +22,6 @@ public class Course {
     private int uid;
     private int cate;
     private String description;
-    private Long createby;
     private Date createat;
     private Date updateat;
     private Date deleteat;

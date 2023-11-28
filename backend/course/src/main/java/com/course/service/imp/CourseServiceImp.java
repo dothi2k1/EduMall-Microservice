@@ -23,7 +23,11 @@ public class CourseServiceImp implements CourseService {
 
     @Override
     public ResponseEntity<?> save(Course course) {
-        return null;
+        long id=0;
+        id= dao.save(course);
+        if (id!=0)
+            return ResponseEntity.ok("Create success");
+        return ResponseEntity.status(400).body("Create fail");
     }
 
     @Override
