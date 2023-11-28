@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Course")
+@Table(name = "course")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +22,11 @@ public class Course {
     private int uid;
     private int cate;
     private String description;
+    private Long createby;
     private Date createat;
     private Date updateat;
     private Date deleteat;
     private boolean active;
     private double price;
-
+    private double estimate;
 }

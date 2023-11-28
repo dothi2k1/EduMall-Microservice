@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -18,4 +20,8 @@ public class Video {
     private Long id;
     private Long route_id;
     private String link;
+    private String title;
+    private Date create_at;
+    private Date update_at;
+    private boolean status;
 }

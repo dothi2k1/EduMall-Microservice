@@ -35,4 +35,5 @@ public class User {
     private Date update_at;
     private Date delete_at;
     private boolean active;
+    private String avatar;
 }

@@ -1,8 +1,7 @@
 package com.userservice.service.implement;
 
-import com.userservice.model.DTO.FormReg;
-import com.userservice.model.DTO.UserDTO;
-import com.userservice.model.Role;
+import com.userservice.DTO.FormReg;
+import com.userservice.DTO.UserDTO;
 import com.userservice.model.User;
 import com.userservice.model.UserRole;
 import com.userservice.model.response.Summary;
