@@ -1,4 +1,4 @@
-package com.course.model;
+package com.course.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,12 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class Category {
-
-    private Long id;
-    private String name;
+public class CourseDTo {
+    private long id;
+    private String username;
+    private String title;
     private String description;
+    private double price;
+    private double estimate;
+
 }

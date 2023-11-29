@@ -36,7 +36,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         return null;
     }
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
@@ -56,9 +55,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             logger.warn("JWT Token is not type Bearer");
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            Long id= jwtProvider.getIdFromToken(jwtToken);
+
             List<String> roles=jwtProvider.getRoleFromToken(jwtToken);
-            UserDetails userDetails = new UserPrinciple(id,username,jwtToken,roles);
+            UserDetails userDetails = new UserPrinciple(username,jwtToken,roles);
             try {
                 if (jwtProvider.validateToken(jwtToken)) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(

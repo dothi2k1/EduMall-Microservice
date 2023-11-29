@@ -58,9 +58,4 @@ public class JwtProvider {
         return claims.get("roles",List.class);
     }
 
-    public Long getIdFromToken(String token){
-        Claims claims =Jwts.parserBuilder().setSigningKey(key()).build()
-                .parseClaimsJws(token).getBody();
-        return Long.parseLong(claims.get("id").toString());
-    }
 }
