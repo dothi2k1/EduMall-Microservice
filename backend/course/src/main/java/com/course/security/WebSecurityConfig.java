@@ -28,10 +28,6 @@ public class WebSecurityConfig {
     JwtEntryPoint jwtEntryPoint;
     @Autowired
     JwtTokenFilter jwtTokenFilter;
-    @Autowired
-    @Qualifier("handlerExceptionResolver")
-    private HandlerExceptionResolver exceptionResolver;
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();

@@ -9,8 +9,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "document")
+
 public class Document {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
