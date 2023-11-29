@@ -4,7 +4,9 @@ import com.course.DTO.CourseDTo;
 import com.course.DTO.CourseResponse;
 import com.course.dao.CourseDao;
 import com.course.model.Course;
+import com.course.model.Document;
 import com.course.model.Route;
+import com.course.model.Video;
 import com.course.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -13,12 +15,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class CourseServiceImp implements CourseService {
     @Autowired
     CourseDao dao;
+
+    //course -- start
     @Override
     public ResponseEntity<?> getAll(int page, String sort) {
         Pageable pageable= PageRequest.of(page,20,
@@ -53,6 +58,15 @@ public class CourseServiceImp implements CourseService {
     }
 
     @Override
+    public ResponseEntity<?> activeCourse(long id, boolean status) {
+        return ResponseEntity.ok(dao.active(id,status));
+    }
+
+
+    //--end
+
+    //Route -- start
+    @Override
     public ResponseEntity<?> addRoutes(Route route) {
         return ResponseEntity.ok(dao.addRoute(route));
     }
@@ -61,14 +75,36 @@ public class CourseServiceImp implements CourseService {
     public ResponseEntity<?> getAllRoute(long id) {
         return ResponseEntity.ok(dao.getListRout(id));
     }
+    //--end
 
+    //Video and document --start
     @Override
     public ResponseEntity<?> getVideo(long routeId) {
         return ResponseEntity.ok(dao.listVideo(routeId));
     }
 
     @Override
+    public ResponseEntity<?> addVideo(Video video) {
+        video.setCreate_at(new Date());
+        video.setStatus(true);
+        long rs=0;
+        rs=dao.addVideo(video);
+        if (rs!=0) return ResponseEntity.ok(rs);
+        return ResponseEntity.ok("Can't add video. Try again!");
+    }
+
+    @Override
     public ResponseEntity<?> getDocument(long routeId) {
         return ResponseEntity.ok(dao.listDocument(routeId));
+    }
+
+    @Override
+    public ResponseEntity<?> addDoc(Document document) {
+        document.setCreate_at(new Date());
+        document.setStatus(true);
+        long rs=0;
+        rs=dao.addDocument(document);
+        if (rs!=0) return ResponseEntity.ok(rs);
+        return ResponseEntity.ok("Can't add video. Try again!");
     }
 }

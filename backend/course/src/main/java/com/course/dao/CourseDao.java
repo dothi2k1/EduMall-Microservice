@@ -126,7 +126,7 @@ public class CourseDao {
         if (c == 1) rs += "Update success";
         return rs;
     }
-    // teacher active
+    // teacher update status
     public String active(Long id, boolean status) {
         String rs = "";
         String query = "update course set " +
@@ -210,6 +210,39 @@ public class CourseDao {
             }
         });
         return list;
+    }
+    //list video available
+    public List<VideoDto> listVideoActive(Long routeId){
+        String query="select id,title,link from video where routeid="+routeId+
+                " and status=true ";
+
+        List<VideoDto> list1= jdbcTemplate.query(query, new RowMapper<VideoDto>() {
+            @Override
+            public VideoDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                VideoDto video = new VideoDto();
+                video.setId(rs.getLong(1));
+                video.setLink(rs.getString(3));
+                video.setTitle(rs.getString(2));
+                return video;
+            }
+        });
+        return list1;
+    }
+    //list video unavailable
+    public List<VideoDto> listVideoDisable(Long routeId){
+        String query="select id,title,link from video where routeid="+routeId+
+                "and status=false ";
+        List<VideoDto> list2= jdbcTemplate.query(query, new RowMapper<VideoDto>() {
+            @Override
+            public VideoDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                VideoDto video = new VideoDto();
+                video.setId(rs.getLong(1));
+                video.setLink(rs.getString(3));
+                video.setTitle(rs.getString(2));
+                return video;
+            }
+        });
+        return list2;
     }
     //add document
     public Long addDocument(Document document){
