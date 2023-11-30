@@ -37,39 +37,5 @@ public class CourseController {
 
     //--end
 
-    //route-start
-    @PostMapping("add-route")
-    ResponseEntity<?> add(@RequestBody Route route){
-        return service.addRoutes(route);
-    }
 
-    @GetMapping("get-list-route")
-    ResponseEntity<?> getListRoute(@RequestParam long id){
-        return service.getAllRoute(id);
-    }
-
-
-    //--end
-
-    //Video and doc -- start
-    @PostMapping("add-video")
-    ResponseEntity<?> addVideo(@RequestBody Video video){
-        return service.addVideo(video);
-    }
-
-    @GetMapping("get-list-video")
-    ResponseEntity<?> getListVideo(@RequestParam long id){
-        return service.getVideo(id);
-    }
-
-    @PostMapping("add-video")
-    ResponseEntity<?> addDocument(@RequestBody Document document){
-        return service.addDoc(document);
-    }
-
-    @GetMapping("get-list-document")
-    ResponseEntity<?> getListDocument(@RequestParam long id){
-        return service.getDocument(id);
-    }
-    //--end
 }
