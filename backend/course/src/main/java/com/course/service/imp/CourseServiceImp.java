@@ -3,12 +3,16 @@ package com.course.service.imp;
 import com.course.DTO.CourseDTo;
 import com.course.DTO.CourseResponse;
 import com.course.dao.CourseDao;
+import com.course.dao.RouteDao;
 import com.course.model.Course;
 import com.course.model.Document;
 import com.course.model.Route;
 import com.course.model.Video;
 import com.course.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -19,12 +23,15 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@EnableCaching
 public class CourseServiceImp implements CourseService {
     @Autowired
     CourseDao dao;
-
+    @Autowired
+    RouteDao routeDao;
     //course -- start
     @Override
+    @Cacheable
     public ResponseEntity<?> getAll(int page, String sort) {
         Pageable pageable= PageRequest.of(page,20,
                 Sort.by(Sort.Direction.ASC,sort));
@@ -39,6 +46,7 @@ public class CourseServiceImp implements CourseService {
     }
 
     @Override
+    @CacheEvict(value = "id",key = "#course.id")
     public ResponseEntity<?> save(Course course) {
         long id=0;
         id= dao.save(course);
@@ -50,7 +58,7 @@ public class CourseServiceImp implements CourseService {
     @Override
     public ResponseEntity<?> findCourseById(Long id) {
         CourseDTo courseDTo=dao.findCourseById(id);
-        List<Route> routes=dao.getListRout(id);
+        List<Route> routes=routeDao.getListRout(id);
         CourseResponse courseResponse=new CourseResponse();
         courseResponse.setCourseDTo(courseDTo);
         courseResponse.setRoutes(routes);
@@ -64,47 +72,12 @@ public class CourseServiceImp implements CourseService {
 
 
     //--end
-
-    //Route -- start
-    @Override
-    public ResponseEntity<?> addRoutes(Route route) {
-        return ResponseEntity.ok(dao.addRoute(route));
+    private void doLongRunningTask(){
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public ResponseEntity<?> getAllRoute(long id) {
-        return ResponseEntity.ok(dao.getListRout(id));
-    }
-    //--end
-
-    //Video and document --start
-    @Override
-    public ResponseEntity<?> getVideo(long routeId) {
-        return ResponseEntity.ok(dao.listVideo(routeId));
-    }
-
-    @Override
-    public ResponseEntity<?> addVideo(Video video) {
-        video.setCreate_at(new Date());
-        video.setStatus(true);
-        long rs=0;
-        rs=dao.addVideo(video);
-        if (rs!=0) return ResponseEntity.ok(rs);
-        return ResponseEntity.ok("Can't add video. Try again!");
-    }
-
-    @Override
-    public ResponseEntity<?> getDocument(long routeId) {
-        return ResponseEntity.ok(dao.listDocument(routeId));
-    }
-
-    @Override
-    public ResponseEntity<?> addDoc(Document document) {
-        document.setCreate_at(new Date());
-        document.setStatus(true);
-        long rs=0;
-        rs=dao.addDocument(document);
-        if (rs!=0) return ResponseEntity.ok(rs);
-        return ResponseEntity.ok("Can't add video. Try again!");
-    }
 }
