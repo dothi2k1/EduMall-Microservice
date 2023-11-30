@@ -9,6 +9,7 @@ import com.course.model.Document;
 import com.course.model.Route;
 import com.course.model.Video;
 import com.course.service.CourseService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -29,13 +30,17 @@ public class CourseServiceImp implements CourseService {
     CourseDao dao;
     @Autowired
     RouteDao routeDao;
+    @Autowired
+    RedisServiceImp redis;
     //course -- start
     @Override
     @Cacheable
-    public ResponseEntity<?> getAll(int page, String sort) {
+    public ResponseEntity<?> getAll(int page, String sort) throws JsonProcessingException {
         Pageable pageable= PageRequest.of(page,20,
                 Sort.by(Sort.Direction.ASC,sort));
-        return ResponseEntity.ok(dao.getList(pageable));
+        List<Course> list= dao.getList(pageable);
+        redis.addAllCourseToRedis(list,page);
+        return ResponseEntity.ok(list);
     }
 
     @Override
