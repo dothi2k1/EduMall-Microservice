@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 
 public interface CourseService {
-    ResponseEntity<?> getAll(int page, String sort) throws JsonProcessingException;
+    ResponseEntity<?> getAll(int page, String sort) throws Exception;
     ResponseEntity<?> getListCourse(int page, String sort);
     ResponseEntity<?> save(Course course);
     ResponseEntity<?> findCourseById(Long id);

@@ -34,12 +34,15 @@ public class CourseServiceImp implements CourseService {
     RedisServiceImp redis;
     //course -- start
     @Override
-    @Cacheable
-    public ResponseEntity<?> getAll(int page, String sort) throws JsonProcessingException {
+    public ResponseEntity<?> getAll(int page, String sort) throws Exception {
         Pageable pageable= PageRequest.of(page,20,
                 Sort.by(Sort.Direction.ASC,sort));
+        ResponseEntity<?> entity=redis.getAllCourse(page,sort);
+        if (entity!=null) {
+            return entity;
+        }
         List<Course> list= dao.getList(pageable);
-        redis.addAllCourseToRedis(list,page);
+//        redis.addAllCourseToRedis(list,page);
         return ResponseEntity.ok(list);
     }
 
@@ -77,6 +80,7 @@ public class CourseServiceImp implements CourseService {
 
 
     //--end
+
     private void doLongRunningTask(){
         try {
             Thread.sleep(2000);
