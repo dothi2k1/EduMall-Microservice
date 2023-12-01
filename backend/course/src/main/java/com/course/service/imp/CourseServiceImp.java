@@ -34,7 +34,6 @@ public class CourseServiceImp implements CourseService {
     RedisServiceImp redis;
     //course -- start
     @Override
-    @Cacheable
     public ResponseEntity<?> getAll(int page, String sort) throws Exception {
         Pageable pageable= PageRequest.of(page,20,
                 Sort.by(Sort.Direction.ASC,sort));

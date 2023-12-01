@@ -44,8 +44,15 @@ public class RedisServiceImp implements RedisService {
     @Override
     public ResponseEntity<?> getAllCourse(int page, String sort) throws Exception {
         String key="courses"+page+"-"+sort;
+//        if (template.getConnectionFactory().getConnection().ping()==null) return null;
         String json="";
+        try {
             json = (String) template.opsForValue().get(key);
+        }
+          catch (Exception e) {
+            json="";
+            e.printStackTrace();
+          }
 
         List<Course> list=
                 (json!=null) ?
