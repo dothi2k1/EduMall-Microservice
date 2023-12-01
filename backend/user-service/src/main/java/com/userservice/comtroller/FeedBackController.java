@@ -37,6 +37,6 @@ public class FeedBackController {
 
     @PostMapping("/modify")
     public ResponseEntity<?> modify(@RequestBody FeedBack feedBack) {
-        return feedBackServiceImp.save(feedBack);
+        return feedBackServiceImp.modify(feedBack);
     }
 }

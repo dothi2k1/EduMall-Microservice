@@ -19,8 +19,17 @@ public class FeedBackServiceImp implements FeedBackService {
         fb.setStar(feedBack.getStar());
         fb.setCreate_at(new Date());
         fb.setOddt_id(feedBack.getOddt_id());
-        FeedBack feedBack1 = feedBackRepo.save(fb);
-        return ResponseEntity.ok(200);
+        return feedBackRepo.save(fb);
+    }
+
+    @Override
+    public ResponseEntity<?> modify(FeedBack feedBack) {
+        FeedBack fb = new FeedBack();
+        fb.setContent(feedBack.getContent());
+        fb.setStar(feedBack.getStar());
+        fb.setUpdate_at(new Date());
+        fb.setOddt_id(feedBack.getOddt_id());
+        return feedBackRepo.modify(feedBack);
     }
 
     @Override

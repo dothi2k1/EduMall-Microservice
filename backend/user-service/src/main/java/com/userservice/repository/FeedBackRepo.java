@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface FeedBackRepo extends JpaRepository<FeedBack, Long> {
-    FeedBack save(FeedBack feedBack);
+    ResponseEntity<?> save(FeedBack feedBack);
+    ResponseEntity<?> modify(FeedBack feedBack);
     ResponseEntity<?> deleteFeedBackById(Long id);
 
     @Query(value = "SELECT * FROM feedback WHERE oddt_id IN " +
