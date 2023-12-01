@@ -6,35 +6,52 @@ import com.course.service.RedisService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.RedisConnectionFailureException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class RedisServiceImp implements RedisService {
-    @Autowired
-    RedisTemplate<String,Object> template;
-    @Autowired
-    ObjectMapper redisMapper;
 
+    private final RedisTemplate<String,Object> template;
+
+    private final ObjectMapper redisMapper;
+
+    // check connect
+    boolean checkRedisConnect(){
+        if (template==null) return false;
+        return true;
+    }
     //clear cache
     @Override
     public void clear() {
         template.getConnectionFactory().getConnection().serverCommands().flushAll();
     }
+    public void setValueRedis(String key, Object value) {
+        template.opsForValue().set(key, value);
+    }
 
     @Override
-    public ResponseEntity<?> getAllCourse(int page, String sort) throws JsonProcessingException {
+    public ResponseEntity<?> getAllCourse(int page, String sort) throws Exception {
         String key="courses"+page+"-"+sort;
-        String json=(String) template.opsForValue().get(key);
+        String json="";
+            json = (String) template.opsForValue().get(key);
+
         List<Course> list=
                 (json!=null) ?
                         redisMapper.readValue(json, new TypeReference<List<Course>>() {})
-                        :new ArrayList<>();
+                        :null;
+        if (list==null) return null;
         return ResponseEntity.ok(list);
     }
 
@@ -45,29 +62,10 @@ public class RedisServiceImp implements RedisService {
         List<CourseDTo> list=
                 (json!=null)?
                         redisMapper.readValue(json, new TypeReference<List<CourseDTo>>() {})
-                        :new ArrayList<>();
+                        :null;
+        if (list==null) return null;
         return ResponseEntity.ok(list);
     }
 
-    @Override
-    public ResponseEntity<?> addAllCourseToRedis(List<Course> list,int page) throws JsonProcessingException {
-        String key=list.toString()+page;
-        String json= (String) template.opsForValue().get(key);
-        List<CourseDTo> dTos=
-                (json!=null)?
-                        redisMapper.readValue(json, new TypeReference<List<CourseDTo>>() {})
-                        :new ArrayList<>();
-        return ResponseEntity.ok(dTos);
-    }
 
-    @Override
-    public ResponseEntity<?> addCourseRelativeToRedis(List<Course> course,long category,int page) throws JsonProcessingException {
-        String key=course.toString()+category+"-"+page;
-        String json= (String) template.opsForValue().get(key);
-        List<CourseDTo> dTos=
-                (json!=null)?
-                        redisMapper.readValue(json, new TypeReference<List<CourseDTo>>() {})
-                        :new ArrayList<>();
-        return ResponseEntity.ok(dTos);
-    }
 }

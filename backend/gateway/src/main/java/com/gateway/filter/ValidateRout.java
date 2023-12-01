@@ -11,7 +11,7 @@ public class ValidateRout {
     public static List<String> publicRoutes=List.of(
             "/api/sv1/auth/login",
             "/api/sv1/auth/save",
-            "api/sv2/course/preview"
+            "api/sv2/course/get-all"
     );
 
     public Predicate<ServerHttpRequest> isPrivate=
