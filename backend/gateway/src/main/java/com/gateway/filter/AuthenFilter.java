@@ -31,7 +31,7 @@ public class AuthenFilter extends AbstractGatewayFilterFactory<AuthenFilter.Conf
         return ((exchange, chain) ->
         {
             //Check author from header
-
+            if (exchange.getRequest().getURI().getPath().contains("/private/")) {
                 //Missing
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION))
                     throw new RuntimeException("Missing authorization header");
@@ -47,7 +47,7 @@ public class AuthenFilter extends AbstractGatewayFilterFactory<AuthenFilter.Conf
                     System.out.println("Invalid access ...!");
                     throw new RuntimeException("Un Authorization");
                 }
-
+            }
             return chain.filter(exchange);
         });
     }

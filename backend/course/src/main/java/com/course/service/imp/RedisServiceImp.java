@@ -15,10 +15,13 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.net.ConnectException;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +46,7 @@ public class RedisServiceImp implements RedisService {
     }
 
     @Override
-    public ResponseEntity<?> getAllCourse(int page, String sort) throws Exception {
+    public ResponseEntity<?> getAllCourse(int page, String sort) {
         String key="courses"+page+"-"+sort;
         List<Course> list=null;
         String json="";
@@ -56,9 +59,21 @@ public class RedisServiceImp implements RedisService {
             if (list==null) return null;
             else return ResponseEntity.ok(list);
         }
-          catch (Exception e) {
-            e.printStackTrace();
+          catch (RedisConnectionFailureException e) {
+              System.out.println("Fail connect to redis");
           }
+        catch (JsonProcessingException e){
+
+        }
+        catch (Exception e){
+            try {
+                ServerSocket sv=new ServerSocket(6380);
+                sv.close();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+            System.out.println("No response");
+        }
         return null;
     }
 
@@ -76,8 +91,8 @@ public class RedisServiceImp implements RedisService {
             if (list==null) return null;
             else return ResponseEntity.ok(list);
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (RedisConnectionFailureException e) {
+            System.out.println("Fail connect to redis");
         }
         return null;
     }

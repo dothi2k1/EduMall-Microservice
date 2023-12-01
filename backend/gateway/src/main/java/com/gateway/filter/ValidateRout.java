@@ -15,6 +15,5 @@
 //    );
 //
 //    public Predicate<ServerHttpRequest> isPrivate=
-//            request->publicRoutes.
-//                    stream().noneMatch(uri->request.getURI().getPath().contains(uri));
+//            request->request.getURI().getPath().contains("private");
 //}

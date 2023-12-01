@@ -4,21 +4,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import io.lettuce.core.ClientOptions;
+import io.lettuce.core.SocketOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import java.net.ConnectException;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,24 +24,39 @@ import java.time.format.DateTimeFormatter;
 public class RedisConfig {
     @Bean
     public LettuceConnectionFactory factory() {
-        RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration("localhost", 6380);
-        return new LettuceConnectionFactory(configuration);
+        RedisStandaloneConfiguration configuration =
+                new RedisStandaloneConfiguration("localhost", 6380);
+
+        ClientOptions clientOptions = ClientOptions.builder()
+                .disconnectedBehavior(ClientOptions.DisconnectedBehavior.REJECT_COMMANDS)
+                .autoReconnect(true)
+                .socketOptions(SocketOptions.builder().connectTimeout(Duration.ofSeconds(3)).build())
+                .build();
+        LettuceClientConfiguration lettuceClientConfiguration = LettuceClientConfiguration.builder()
+                .commandTimeout(Duration.ofMinutes(1))
+                .shutdownTimeout(Duration.ZERO)
+                .clientOptions(clientOptions)
+                //.readFrom(ReadFrom.REPLICA_PREFERRED)
+                //.clientOptions(ClientOptions.builder().autoReconnect(true).build())
+                //.clientOptions(ClientOptions.builder().timeoutOptions(TimeoutOptions.builder().connectionTimeout().build()).build())
+                .build();
+        return new LettuceConnectionFactory(configuration,lettuceClientConfiguration);
     }
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
+            RedisTemplate<String, Object> template = new RedisTemplate<>();
+            template.setConnectionFactory(factory());
 
-        template.setConnectionFactory(factory());
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
+            template.setKeySerializer(new StringRedisSerializer());
+            template.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
 
-        template.setHashKeySerializer(new StringRedisSerializer());
-        template.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
+            template.setHashKeySerializer(new StringRedisSerializer());
+            template.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
 
-        template.afterPropertiesSet();
+            template.afterPropertiesSet();
 
-        return template;
+            return template;
     }
 
     //add Serializer to mapper's module
