@@ -16,17 +16,17 @@ public class CourseController {
     CourseServiceImp service;
 
     //course -- start
-    @GetMapping("get-all")
+    @GetMapping("/get-all")
     ResponseEntity<?> getAll(int page,String sort) throws Exception {
         return service.getAll(page,sort);
     }
 
-    @PostMapping("save")
+    @PostMapping("/private/save")
     ResponseEntity<?> save(@RequestBody Course course){
         return service.save(course);
     }
 
-    @PutMapping("active")
+    @PutMapping("/private/active")
     ResponseEntity<?> activeCourse(@RequestParam long id,@RequestParam int status){
         boolean stt=false;
         if (status!=0) stt=true;

@@ -45,7 +45,7 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/api/sv2/doc/**"),
                                 new AntPathRequestMatcher("/api/sv2/route/**")
                         ).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/sv2/user/**")).hasAnyAuthority("ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/sv2/private/**")).hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(form->form.disable())
                 .exceptionHandling(ex->ex.authenticationEntryPoint(jwtEntryPoint))
