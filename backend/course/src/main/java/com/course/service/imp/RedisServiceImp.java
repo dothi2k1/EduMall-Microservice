@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -44,34 +45,41 @@ public class RedisServiceImp implements RedisService {
     @Override
     public ResponseEntity<?> getAllCourse(int page, String sort) throws Exception {
         String key="courses"+page+"-"+sort;
-//        if (template.getConnectionFactory().getConnection().ping()==null) return null;
+        List<Course> list=null;
         String json="";
         try {
             json = (String) template.opsForValue().get(key);
+            list=
+                    (json!=null) ?
+                            redisMapper.readValue(json, new TypeReference<List<Course>>() {})
+                            :null;
+            if (list==null) return null;
+            else return ResponseEntity.ok(list);
         }
           catch (Exception e) {
-            json="";
             e.printStackTrace();
           }
-
-        List<Course> list=
-                (json!=null) ?
-                        redisMapper.readValue(json, new TypeReference<List<Course>>() {})
-                        :null;
-        if (list==null) return null;
-        return ResponseEntity.ok(list);
+        return null;
     }
 
     @Override
     public ResponseEntity<?> relativeCourse(int page,long category) throws JsonProcessingException {
         String key="reCourse"+page+"-"+category;
-        String json=(String) template.opsForValue().get(key);
-        List<CourseDTo> list=
-                (json!=null)?
-                        redisMapper.readValue(json, new TypeReference<List<CourseDTo>>() {})
-                        :null;
-        if (list==null) return null;
-        return ResponseEntity.ok(list);
+        List<Course> list=null;
+        String json="";
+        try {
+            json = (String) template.opsForValue().get(key);
+            list=
+                    (json!=null) ?
+                            redisMapper.readValue(json, new TypeReference<List<Course>>() {})
+                            :null;
+            if (list==null) return null;
+            else return ResponseEntity.ok(list);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
