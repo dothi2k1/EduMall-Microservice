@@ -36,9 +36,6 @@ public class RedisConfig {
                 .commandTimeout(Duration.ofMinutes(1))
                 .shutdownTimeout(Duration.ZERO)
                 .clientOptions(clientOptions)
-                //.readFrom(ReadFrom.REPLICA_PREFERRED)
-                //.clientOptions(ClientOptions.builder().autoReconnect(true).build())
-                //.clientOptions(ClientOptions.builder().timeoutOptions(TimeoutOptions.builder().connectionTimeout().build()).build())
                 .build();
         return new LettuceConnectionFactory(configuration,lettuceClientConfiguration);
     }
