@@ -28,17 +28,17 @@ public class RedisServiceImp implements RedisService {
     public void clear() {
         template.getConnectionFactory().getConnection().serverCommands().flushAll();
     }
+
     public void setValueRedis(String key, Object value)throws JsonProcessingException {
         template.opsForValue().set(key, value);
     }
 
     @Override
-    public ResponseEntity<?> getAllCourse(int page, String sort) throws JsonProcessingException, JsonMappingException {
+    public ResponseEntity<?> getAllCourse(int page, String sort) {
         String key="course"+page;
-        List<Course> list=null;
-
         try {
-            Object json= template.opsForValue().get("course0");
+            Object json= template.opsForValue().get(key);
+            if (json!=null)
             return ResponseEntity.ok(json);
         }
           catch (RedisConnectionFailureException e) {
@@ -51,18 +51,12 @@ public class RedisServiceImp implements RedisService {
     }
 
     @Override
-    public ResponseEntity<?> relativeCourse(int page,long category) throws JsonProcessingException {
-        String key="reCourse"+page+"-"+category;
-        List<Course> list=null;
-        String json="";
+    public ResponseEntity<?> relativeCourse(int page,long category) {
+        String key="reCourse"+page+category;
         try {
-            json = (String) template.opsForValue().get(key);
-            list=
-                    (json!=null) ?
-                            redisMapper.readValue(json, new TypeReference<List<Course>>() {})
-                            :null;
-            if (list==null) return null;
-            else return ResponseEntity.ok(list);
+           Object json = template.opsForValue().get(key);
+           if (json!=null)
+            return ResponseEntity.ok(json);
         }
         catch (RedisConnectionFailureException e) {
             System.out.println("Fail connect to redis");
