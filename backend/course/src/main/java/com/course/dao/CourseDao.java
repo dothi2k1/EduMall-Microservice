@@ -1,12 +1,7 @@
 package com.course.dao;
 
 import com.course.DTO.CourseDTo;
-import com.course.DTO.DocumentDto;
-import com.course.DTO.VideoDto;
 import com.course.model.Course;
-import com.course.model.Document;
-import com.course.model.Route;
-import com.course.model.Video;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -55,6 +50,10 @@ public class CourseDao {
         return courseDTo;
     });
 
+    RowMapper<Integer> count = ((rs, rowNum) -> {
+        Integer count=(rs.getInt(1));
+        return count;
+    });
     public CourseDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -141,4 +140,10 @@ public class CourseDao {
         return courseDTo;
     }
 
+    //get total page
+    public int getTotalPage(){
+        String qr="select count(id) from  course";
+        int c= jdbcTemplate.queryForObject(qr,Integer.class);
+        return c;
+    }
 }
