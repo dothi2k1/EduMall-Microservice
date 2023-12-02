@@ -24,10 +24,12 @@ public class ScheduleService {
     @Autowired
     RedisServiceImp redis;
 
-    void addProcess(){
+    //All course
+    void addProcessForFindAll(){
         System.out.println("add process");
         repo.deleteAll();
-        int count= (dao.getTotalPage()%20==0)? dao.getTotalPage()/20 : dao.getTotalPage()/20+1;
+        int size=dao.getTotalPage();
+        int count= (size%10==0)? size/10 : size/10+1;
         for (int i = 0; i < count; i++) {
             Process process=new Process();
             process.setName(("course"+(i)));
@@ -41,10 +43,10 @@ public class ScheduleService {
     }
 
     @Scheduled(fixedDelay = 3,timeUnit = TimeUnit.MINUTES)
-    void doProcess() throws ExecutionException, InterruptedException {
+    void doProcess() {
         System.out.println("do task");
         redis.clear();
-        addProcess();
+        addProcessForFindAll();
         addCourseToRedis();
     }
     public void addCourseToRedis()  {
@@ -52,7 +54,7 @@ public class ScheduleService {
         List<Process> list = getProcesses();
         for (Process i : list) {
             if (!i.isStatus()) {
-                Pageable pageable = PageRequest.of((int) i.getPage(), 20,
+                Pageable pageable = PageRequest.of(i.getPage(), 20,
                         Sort.by(Sort.Direction.ASC, "id"));
                         service.submit(new Runnable() {
                             @Override
@@ -80,5 +82,60 @@ public class ScheduleService {
             }
         }
     }
+    
+    // relative course
+    void addProcessForFindRelative(int cate){
+        System.out.println("add process");
+        repo.deleteAll();
+        int size=dao.getTotalPageByCate(cate);
+        int count= (size%10==0)? 
+                size/10 : size/10+1;
+        for (int i = 0; i < count; i++) {
+            Process process=new Process();
+            process.setName(("course"+(i)));
+            process.setStatus(false);
+            process.setPage(i);
+            repo.save(process);
+        }
+    }
 
+   
+    void doProcessFindRelative(int cate)  {
+        System.out.println("do task");
+        addProcessForFindAll();
+        addCourseToRedis();
+    }
+    public void addCourseRelativeToRedis(int cate)  {
+        ExecutorService service = Executors.newFixedThreadPool(4);
+        List<Process> listByCate = getProcesses();
+        for (Process i : listByCate) {
+            if (!i.isStatus()) {
+                Pageable pageable = PageRequest.of(i.getPage(), 10,
+                        Sort.by(Sort.Direction.ASC, "id"));
+                service.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            System.out.println(Thread.currentThread().getName());
+                            String key=i.getName();
+                            redis.setValueRedis(key,dao.getList(pageable,cate));
+                            i.setStatus(false);
+                            System.out.println(repo.save(i));
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        catch (RedisConnectionFailureException e){
+                            System.out.println("connect fail");
+                        } catch (JsonProcessingException e) {
+                            e.printStackTrace();
+                        }
+                        catch (Exception e){
+                            System.out.println(e);
+                        }
+                    }
+                });
+            }
+        }
+    }
 }

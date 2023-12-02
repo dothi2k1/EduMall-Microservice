@@ -47,6 +47,7 @@ public class CourseDao {
         courseDTo.setTitle(rs.getString("title"));
         courseDTo.setPrice(rs.getDouble("price"));
         courseDTo.setEstimate(rs.getDouble("estimate"));
+        courseDTo.setCate(rs.getInt("cate"));
         return courseDTo;
     });
 
@@ -66,6 +67,15 @@ public class CourseDao {
         return jdbcTemplate.query(query, mapper);
 
     }
+    //get list course by category
+    public List<Course> getList(Pageable pageable,int category) {
+        String query = "SELECT * FROM course where cate="+category+" LIMIT " +
+                pageable.getPageSize() +
+                " OFFSET " + pageable.getOffset();
+        return jdbcTemplate.query(query, mapper);
+
+    }
+
     //get list for preview
     public List<CourseDTo> listCourseDto(Pageable pageable) {
         String query = "SELECT c.id,u.username,c.title,c.description,c.price,c.estimate " +
@@ -134,7 +144,7 @@ public class CourseDao {
 
     //get course by id
     public CourseDTo findCourseById(long id){
-        String qr="SELECT c.id,u.username,c.title,c.description,c.price,c.estimate " +
+        String qr="SELECT c.id,u.username,c.title,c.description,c.price,c.estimate c.cate" +
                 "FROM course c,users u where c.uid=u.id and c.id="+id;
         CourseDTo courseDTo=jdbcTemplate.queryForObject(qr, courseDTO);
         return courseDTo;
@@ -142,7 +152,14 @@ public class CourseDao {
 
     //get total page
     public int getTotalPage(){
-        String qr="select count(id) from  course";
+        String qr="select count(id) from course";
+        int c= jdbcTemplate.queryForObject(qr,Integer.class);
+        return c;
+    }
+
+    //get total page by cate
+    public int getTotalPageByCate(long cate){
+        String qr="select count(id) from course where cate="+cate;
         int c= jdbcTemplate.queryForObject(qr,Integer.class);
         return c;
     }

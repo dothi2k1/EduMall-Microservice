@@ -8,6 +8,7 @@ import com.course.model.Course;
 import com.course.model.Process;
 import com.course.model.Route;
 import com.course.repository.ProcessRepo;
+import com.course.schedule.ScheduleService;
 import com.course.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -30,10 +31,12 @@ public class CourseServiceImp implements CourseService {
     RedisServiceImp redis;
     @Autowired
     ProcessRepo repo;
+    @Autowired
+    ScheduleService scdsv;
     //course -- start
     @Override
     public ResponseEntity<?> getAll(int page, String sort) throws Exception {
-        Pageable pageable= PageRequest.of(page,20,
+        Pageable pageable= PageRequest.of(page,10,
                 Sort.by(Sort.Direction.ASC,sort));
         ResponseEntity<?> entity=redis.getAllCourse(page,sort);
         if (entity!=null) {
@@ -51,7 +54,7 @@ public class CourseServiceImp implements CourseService {
 
     @Override
     public ResponseEntity<?> getListCourse(int page, String sort) {
-        Pageable pageable= PageRequest.of(page,20,
+        Pageable pageable= PageRequest.of(page,10,
                 Sort.by(Sort.Direction.ASC,sort));
         return ResponseEntity.ok(dao.listCourseDto(pageable));
     }
@@ -73,6 +76,7 @@ public class CourseServiceImp implements CourseService {
         CourseResponse courseResponse=new CourseResponse();
         courseResponse.setCourseDTo(courseDTo);
         courseResponse.setRoutes(routes);
+        scdsv.addCourseRelativeToRedis(courseDTo.getCate());
         return ResponseEntity.ok(courseResponse);
     }
 

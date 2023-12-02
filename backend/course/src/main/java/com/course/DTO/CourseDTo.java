@@ -16,5 +16,5 @@ public class CourseDTo {
     private String description;
     private double price;
     private double estimate;
-
+    private int cate;
 }
