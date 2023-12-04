@@ -15,9 +15,14 @@ public class FeedBackController {
     @Autowired
     FeedBackServiceImp serviceImp;
 
-    @GetMapping("/get-all")
-    public ResponseEntity<?> getAll(@RequestParam int page, @RequestParam String sort) {
-        return serviceImp.getAll(page, sort);
+    @GetMapping("/get-all-order-by-time")
+    public ResponseEntity<?> getAllOrderByTime(@RequestParam int page, @RequestParam int direction) {
+        return serviceImp.getAllOrderByTime(page, direction);
+    }
+
+    @GetMapping("/get-all-order-by-star")
+    public ResponseEntity<?> getAllOrderByStar(@RequestParam int page, @RequestParam int direction) {
+        return serviceImp.getAllOrderByTime(page, direction);
     }
 
     @DeleteMapping("/delete")
@@ -25,7 +30,7 @@ public class FeedBackController {
         serviceImp.deleteById(id);
     }
 
-    @PutMapping("/addfeedback")
+    @PutMapping("/add")
     public ResponseEntity<?> save(@RequestBody FeedBack feedBack) {
         return serviceImp.save(feedBack);
     }

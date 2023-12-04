@@ -7,5 +7,6 @@ public interface FeedBackService {
     ResponseEntity<?> save(FeedBack feedBack);
     ResponseEntity<?> deleteById(Long id);
     Boolean existsById(Long id);
-    ResponseEntity<?> getAll(int page,String sort);
+    ResponseEntity<?> getAllOrderByTime(int page, int direction);
+    ResponseEntity<?> getAllOrderByStar(int page, int direction);
 }
