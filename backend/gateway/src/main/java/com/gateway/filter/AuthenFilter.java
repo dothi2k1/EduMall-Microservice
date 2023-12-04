@@ -21,8 +21,6 @@ import java.io.IOException;
 public class AuthenFilter extends AbstractGatewayFilterFactory<AuthenFilter.Config> {
     @Autowired
     JwtProvider jwtProvider;
-    @Autowired
-    ValidateRout rout;
 
     public AuthenFilter() {
         super(Config.class);
@@ -33,7 +31,7 @@ public class AuthenFilter extends AbstractGatewayFilterFactory<AuthenFilter.Conf
         return ((exchange, chain) ->
         {
             //Check author from header
-            if (rout.isPrivate.test(exchange.getRequest())) {
+            if (exchange.getRequest().getURI().getPath().contains("/private/")) {
                 //Missing
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION))
                     throw new RuntimeException("Missing authorization header");

@@ -1,5 +1,7 @@
 package com.course.model;
 
+import com.course.model.listener.CourseListener;
+import jakarta.persistence.EntityListeners;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +13,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
+@EntityListeners(CourseListener.class)
 public class Course {
     private Long id;
     private int type;

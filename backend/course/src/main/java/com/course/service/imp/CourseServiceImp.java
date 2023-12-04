@@ -3,42 +3,64 @@ package com.course.service.imp;
 import com.course.DTO.CourseDTo;
 import com.course.DTO.CourseResponse;
 import com.course.dao.CourseDao;
+import com.course.dao.RouteDao;
 import com.course.model.Course;
-import com.course.model.Document;
+import com.course.model.Process;
 import com.course.model.Route;
-import com.course.model.Video;
+import com.course.repository.ProcessRepo;
+import com.course.schedule.ScheduleService;
 import com.course.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
 public class CourseServiceImp implements CourseService {
     @Autowired
     CourseDao dao;
-
+    @Autowired
+    RouteDao routeDao;
+    @Autowired
+    RedisServiceImp redis;
+    @Autowired
+    ProcessRepo repo;
+    @Autowired
+    ScheduleService scdsv;
     //course -- start
     @Override
-    public ResponseEntity<?> getAll(int page, String sort) {
-        Pageable pageable= PageRequest.of(page,20,
+    public ResponseEntity<?> getAll(int page, String sort) throws Exception {
+        Pageable pageable= PageRequest.of(page,10,
                 Sort.by(Sort.Direction.ASC,sort));
-        return ResponseEntity.ok(dao.getList(pageable));
+        ResponseEntity<?> entity=redis.getAllCourse(page,sort);
+        if (entity!=null) {
+            return entity;
+        }
+        List<Course> list= dao.getList(pageable);
+        try {
+            redis.setValueRedis("course"+page,list);
+        }
+        catch (Exception e){
+            System.out.printf("error");
+        }
+        return ResponseEntity.ok(list);
     }
 
     @Override
     public ResponseEntity<?> getListCourse(int page, String sort) {
-        Pageable pageable= PageRequest.of(page,20,
+        Pageable pageable= PageRequest.of(page,10,
                 Sort.by(Sort.Direction.ASC,sort));
         return ResponseEntity.ok(dao.listCourseDto(pageable));
     }
 
     @Override
+    @CacheEvict(value = "id",key = "#course.id")
     public ResponseEntity<?> save(Course course) {
         long id=0;
         id= dao.save(course);
@@ -50,10 +72,11 @@ public class CourseServiceImp implements CourseService {
     @Override
     public ResponseEntity<?> findCourseById(Long id) {
         CourseDTo courseDTo=dao.findCourseById(id);
-        List<Route> routes=dao.getListRout(id);
+        List<Route> routes=routeDao.getListRout(id);
         CourseResponse courseResponse=new CourseResponse();
         courseResponse.setCourseDTo(courseDTo);
         courseResponse.setRoutes(routes);
+        scdsv.addCourseRelativeToRedis(courseDTo.getCate());
         return ResponseEntity.ok(courseResponse);
     }
 
@@ -65,46 +88,5 @@ public class CourseServiceImp implements CourseService {
 
     //--end
 
-    //Route -- start
-    @Override
-    public ResponseEntity<?> addRoutes(Route route) {
-        return ResponseEntity.ok(dao.addRoute(route));
-    }
 
-    @Override
-    public ResponseEntity<?> getAllRoute(long id) {
-        return ResponseEntity.ok(dao.getListRout(id));
-    }
-    //--end
-
-    //Video and document --start
-    @Override
-    public ResponseEntity<?> getVideo(long routeId) {
-        return ResponseEntity.ok(dao.listVideo(routeId));
-    }
-
-    @Override
-    public ResponseEntity<?> addVideo(Video video) {
-        video.setCreate_at(new Date());
-        video.setStatus(true);
-        long rs=0;
-        rs=dao.addVideo(video);
-        if (rs!=0) return ResponseEntity.ok(rs);
-        return ResponseEntity.ok("Can't add video. Try again!");
-    }
-
-    @Override
-    public ResponseEntity<?> getDocument(long routeId) {
-        return ResponseEntity.ok(dao.listDocument(routeId));
-    }
-
-    @Override
-    public ResponseEntity<?> addDoc(Document document) {
-        document.setCreate_at(new Date());
-        document.setStatus(true);
-        long rs=0;
-        rs=dao.addDocument(document);
-        if (rs!=0) return ResponseEntity.ok(rs);
-        return ResponseEntity.ok("Can't add video. Try again!");
-    }
 }
