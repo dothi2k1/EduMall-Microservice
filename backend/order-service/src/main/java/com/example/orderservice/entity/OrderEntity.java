@@ -20,17 +20,17 @@ public class OrderEntity {
     private Long id;
 
     @Column(name = "uid")
-    private Integer userId;
+    private long userId;
 
     @Column(name = "status")
     private Integer status;
 
     @Column(name = "create_at")
-    private LocalDate createdDate;
+    private Date createdDate;
 
     @Column(name = "update_at")
-    private LocalDate updatedDate;
+    private Date updatedDate;
 
     @Column(name = "delete_at")
-    private LocalDate deletedDate;
+    private Date deletedDate;
 }
