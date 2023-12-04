@@ -16,13 +16,18 @@ public class OrderDetail {
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Column(name = "order_id")
     private Integer orderId;
     @Column(name = "course_id")
     private Integer courseId;
     @Column(name = "start_at")
-    private LocalDate startAt;
+    private Date startAt;
     @Column(name = "end_at")
-    private LocalDate endAt;
+    private Date endAt;
+    @Column(name = "start_hour")
+    private Date startHour;
+    @Column(name = "end_hour")
+    private Date endHour
+    
 }
