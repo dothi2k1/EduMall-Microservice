@@ -13,30 +13,20 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 public class FeedBackController {
     @Autowired
-    FeedBackServiceImp feedBackServiceImp;
+    FeedBackServiceImp serviceImp;
 
-    @GetMapping("/getbyusername")
-    public ResponseEntity<?> getAllByUsername(@RequestParam String username) {
-        return feedBackServiceImp.getAllByUsername(username);
-    }
-
-    @GetMapping("/getbyorderdetail")
-    public ResponseEntity<?> getAllByOddt_id(@RequestParam Long id) {
-        return feedBackServiceImp.getAllByOddt_id(id);
+    @GetMapping("/get-all")
+    public ResponseEntity<?> getAll(@RequestParam int page, @RequestParam String sort) {
+        return serviceImp.getAll(page, sort);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteFeedBackById(@RequestParam Long id) {
-        return feedBackServiceImp.deleteFeedBackById(id);
+    public void deleteById(@RequestParam Long id) {
+        serviceImp.deleteById(id);
     }
 
     @PutMapping("/addfeedback")
     public ResponseEntity<?> save(@RequestBody FeedBack feedBack) {
-        return feedBackServiceImp.save(feedBack);
-    }
-
-    @PostMapping("/modify")
-    public ResponseEntity<?> modify(@RequestBody FeedBack feedBack) {
-        return feedBackServiceImp.modify(feedBack);
+        return serviceImp.save(feedBack);
     }
 }

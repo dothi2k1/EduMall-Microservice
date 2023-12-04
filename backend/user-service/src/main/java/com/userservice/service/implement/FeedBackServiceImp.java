@@ -1,49 +1,46 @@
 package com.userservice.service.implement;
 
 import com.userservice.model.FeedBack;
-import com.userservice.repository.FeedBackRepo;
+import com.userservice.repository.FeedBackRepository;
 import com.userservice.service.FeedBackService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 @Service
 public class FeedBackServiceImp implements FeedBackService {
     @Autowired
-    FeedBackRepo feedBackRepo;
+    FeedBackRepository feedBackRepository;
     @Override
     public ResponseEntity<?> save(FeedBack feedBack) {
-        FeedBack fb = new FeedBack();
-        fb.setContent(feedBack.getContent());
-        fb.setStar(feedBack.getStar());
-        fb.setCreate_at(new Date());
-        fb.setOddt_id(feedBack.getOddt_id());
-        return feedBackRepo.save(fb);
+        if (feedBack == null) {
+            return ResponseEntity.status(500).body("False");
+        }
+        return ResponseEntity.ok(feedBackRepository.save(feedBack));
     }
 
     @Override
-    public ResponseEntity<?> modify(FeedBack feedBack) {
-        FeedBack fb = new FeedBack();
-        fb.setContent(feedBack.getContent());
-        fb.setStar(feedBack.getStar());
-        fb.setUpdate_at(new Date());
-        fb.setOddt_id(feedBack.getOddt_id());
-        return feedBackRepo.modify(feedBack);
+    public ResponseEntity<?> deleteById(Long id) {
+        if (!existsById(id)) {
+            return ResponseEntity.status(400).body("False");
+        }
+        feedBackRepository.deleteById(id);
+        return ResponseEntity.ok("Delete successful");
     }
 
     @Override
-    public ResponseEntity<?> deleteFeedBackById(Long id) {
-        return feedBackRepo.deleteFeedBackById(id);
+    public Boolean existsById(Long id) {
+        return feedBackRepository.existsById(id);
     }
 
     @Override
-    public ResponseEntity<?> getAllByUsername(String username) {
-        return (ResponseEntity<?>) feedBackRepo.getAllByUsername(username);
+    public ResponseEntity<?> getAll(int page, String sort) {
+        Pageable pageable= PageRequest.of(page,20,
+                Sort.by(Sort.Direction.ASC,sort));
+        return ResponseEntity.ok(feedBackRepository.findAll(pageable));
     }
 
-    @Override
-    public ResponseEntity<?> getAllByOddt_id(Long id) {
-        return (ResponseEntity<?>) feedBackRepo.getAllByOddt_id(id);
-    }
 }

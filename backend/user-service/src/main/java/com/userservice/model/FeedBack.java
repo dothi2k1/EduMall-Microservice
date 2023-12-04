@@ -26,6 +26,4 @@ public class FeedBack {
     private Date create_at;
     private Date update_at;
     private Long oddt_id;
-
-
 }

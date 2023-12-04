@@ -5,8 +5,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface FeedBackService {
     ResponseEntity<?> save(FeedBack feedBack);
-    ResponseEntity<?> modify(FeedBack feedBack);
-    ResponseEntity<?> deleteFeedBackById(Long id);
-    ResponseEntity<?> getAllByUsername(String username);
-    ResponseEntity<?> getAllByOddt_id(Long id);
+    ResponseEntity<?> deleteById(Long id);
+    Boolean existsById(Long id);
+    ResponseEntity<?> getAll(int page,String sort);
 }
