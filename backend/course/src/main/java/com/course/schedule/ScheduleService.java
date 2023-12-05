@@ -132,8 +132,8 @@ public class ScheduleService {
                                                 return null;
                                             }
                                     ).collect(Collectors.toList());
-
-                                template.opsForList().rightPushAll("queue_course", list);
+                            if (list.size()!=0)
+                                System.out.println(template.opsForList().rightPushAll("queue_course", list));
 
                         } catch (RedisConnectionFailureException e) {
                             System.out.println("connect fail");
@@ -168,8 +168,8 @@ public class ScheduleService {
                                 Pageable pageable = PageRequest.of(temp, 20,
                                         Sort.by(Sort.Direction.ASC, "id"));
                                 List<RouteDto> list = routeDao.getListRout(courseId.get(temp));
-
-                                    template.opsForList().rightPush("queue_course", redisMapper.writeValueAsString(list));
+                                if (list.size()!=0)
+                                    System.out.println(template.opsForList().rightPush("queue_course", redisMapper.writeValueAsString(list)));
                                 p.setLast_update(new Date());
                                 repo.save(p);
                                 Thread.sleep(1000);
