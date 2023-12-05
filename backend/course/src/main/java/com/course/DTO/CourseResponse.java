@@ -14,5 +14,5 @@ import java.util.List;
 @AllArgsConstructor
 public class CourseResponse {
     private CourseDTo courseDTo;
-    private List<Route> routes;
+    private List<RouteDto> routes;
 }

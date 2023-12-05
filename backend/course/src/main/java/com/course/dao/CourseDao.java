@@ -68,7 +68,7 @@ public class CourseDao {
 
     }
     //get list course by category
-    public List<Course> getList(Pageable pageable,int category) {
+    public List<Course> getList(Pageable pageable,long category) {
         String query = "SELECT * FROM course where cate="+category+" LIMIT " +
                 pageable.getPageSize() +
                 " OFFSET " + pageable.getOffset();

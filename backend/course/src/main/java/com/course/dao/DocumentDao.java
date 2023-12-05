@@ -58,4 +58,14 @@ public class DocumentDao {
         });
         return list;
     }
+
+    public Integer getTotalDocument(long id) {
+        String query="";
+        if (id==0)
+            query = "SELECT count(1) FROM document where routeid>0";
+        else query = "SELECT count(1) FROM document where routeid=" +id;
+        return  jdbcTemplate.queryForObject(query, (rs,i)->
+                rs.getInt(1)
+        );
+    }
 }

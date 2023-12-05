@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,5 +20,7 @@ public class Process {
     private Long id;
     private String name;
     private boolean status;
-    private int page;
+    private Date create_at;
+    private Date last_update;
+    private int timeout;
 }
