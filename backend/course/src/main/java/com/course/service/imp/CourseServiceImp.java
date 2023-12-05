@@ -2,6 +2,7 @@ package com.course.service.imp;
 
 import com.course.DTO.CourseDTo;
 import com.course.DTO.CourseResponse;
+import com.course.DTO.RouteDto;
 import com.course.dao.CourseDao;
 import com.course.dao.RouteDao;
 import com.course.model.Course;
@@ -43,12 +44,12 @@ public class CourseServiceImp implements CourseService {
             return entity;
         }
         List<Course> list= dao.getList(pageable);
-        try {
-            redis.setValueRedis("course"+page,list);
-        }
-        catch (Exception e){
-            System.out.printf("error");
-        }
+//        try {
+//            redis.setValueRedis("course"+page,list);
+//        }
+//        catch (Exception e){
+//            System.out.printf("error");
+//        }
         return ResponseEntity.ok(list);
     }
 
@@ -72,11 +73,11 @@ public class CourseServiceImp implements CourseService {
     @Override
     public ResponseEntity<?> findCourseById(Long id) {
         CourseDTo courseDTo=dao.findCourseById(id);
-        List<Route> routes=routeDao.getListRout(id);
+        List<RouteDto> routes=routeDao.getListRout(id);
         CourseResponse courseResponse=new CourseResponse();
         courseResponse.setCourseDTo(courseDTo);
         courseResponse.setRoutes(routes);
-        scdsv.addCourseRelativeToRedis(courseDTo.getCate());
+//        scdsv.addCourseRelativeToRedis(courseDTo.getCate());
         return ResponseEntity.ok(courseResponse);
     }
 

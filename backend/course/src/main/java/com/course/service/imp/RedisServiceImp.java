@@ -12,7 +12,6 @@ import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -29,8 +28,10 @@ public class RedisServiceImp implements RedisService {
         template.getConnectionFactory().getConnection().serverCommands().flushAll();
     }
 
-    public void setValueRedis(String key, Object value)throws JsonProcessingException {
-        template.opsForValue().set(key, value);
+    public void setValueRedis(String key, Object value,int ttl, TimeUnit t)throws JsonProcessingException {
+        if (ttl!=0)
+            template.opsForValue().set(key, value,ttl,t);
+        else template.opsForValue().set(key,value);
     }
 
     @Override

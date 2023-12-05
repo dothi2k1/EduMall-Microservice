@@ -89,4 +89,13 @@ public class VideoDao {
         });
         return list2;
     }
+    public Long getTotalVideo(long id) {
+        String query="";
+        if (id==0)
+            query = "SELECT count(1) FROM video where routeid>0";
+        else query = "SELECT count(1) FROM video where routeid=" +id;
+        return  jdbcTemplate.queryForObject(query, (rs,i)->
+                rs.getLong(1)
+        );
+    }
 }
