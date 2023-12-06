@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
-    @Data
+@Data
     @NoArgsConstructor
     @AllArgsConstructor
     @Entity
@@ -36,6 +37,6 @@ import java.util.List;
         private Date deletedDate;
 
         @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "order")
-        private List<OrderDetail> list;
+        private Set<OrderDetail> list;
     }
 

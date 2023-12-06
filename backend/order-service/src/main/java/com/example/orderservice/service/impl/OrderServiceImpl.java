@@ -13,10 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -25,23 +23,32 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderDetailRepository orderDetailRepository;
 
+
     @Override
-    public Order create(Order order) {
-        return orderRepository.save(order);
+    public ResponseEntity<?> create(Order orderEntity) {
+        return null;
     }
 
     @Override
     public ResponseEntity<?> save(Order orderEntity) {
-        return ResponseEntity.ok(orderRepository.save(orderEntity));
+        return null;
     }
 
     @Override
-    @Transactional
     public ResponseEntity<?> createOrder(OrderCreateRequest request){
-        Order order = request.getOrder();
-        order.setCreatedDate(new Date());
+        Order order = new Order();
+        order.setUserId(request.getUserId());
+        Set<OrderDetail> set=new HashSet<>();
+
         order.setStatus(0);
-        order.setList(request.getList());
+        Set<OrderDetail> list=Arrays.stream(request.getList()).collect(Collectors.toSet());
+        for (OrderDetail orderDetail:request.getList()){
+            OrderDetail od=new OrderDetail();
+            od.setCourseId(od.getCourseId());
+            set.add(od);
+        }
+        order.setList(list);
+
         orderRepository.save(order);
         return ResponseEntity.ok("Create ss!!");
     }

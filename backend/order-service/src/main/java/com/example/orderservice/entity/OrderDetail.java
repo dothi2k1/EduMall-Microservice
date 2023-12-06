@@ -1,5 +1,8 @@
 package com.example.orderservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,7 +31,8 @@ public class OrderDetail {
     private Date startHour;
     @Column(name = "end_hour")
     private Date endHour;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id",referencedColumnName = "id")
+    @JsonIgnore
     private Order order;
 }

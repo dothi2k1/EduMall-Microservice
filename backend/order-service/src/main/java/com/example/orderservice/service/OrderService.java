@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface OrderService {
-    Order create(Order orderEntity);
+    ResponseEntity<?> create(Order orderEntity);
     ResponseEntity<?> save (Order orderEntity);
     ResponseEntity<?> createOrder(OrderCreateRequest request);
     Order delete(Integer id);
