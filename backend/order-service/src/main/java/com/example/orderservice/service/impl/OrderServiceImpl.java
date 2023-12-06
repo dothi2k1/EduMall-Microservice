@@ -1,36 +1,77 @@
 package com.example.orderservice.service.impl;
 
 import com.example.orderservice.dto.request.create.OrderCreateRequest;
-import com.example.orderservice.dto.response.DataResponse;
-import com.example.orderservice.entity.OrderEntity;
+import com.example.orderservice.dto.request.update.OrderUpdateRequest;
+
+import com.example.orderservice.entity.Order;
+import com.example.orderservice.entity.OrderDetail;
+import com.example.orderservice.repository.OrderDetailRepository;
 import com.example.orderservice.repository.OrderRepository;
 import com.example.orderservice.service.OrderService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
     @Autowired
-    private OrderRepository orderRepository;
+    OrderRepository orderRepository;
+    @Autowired
+    OrderDetailRepository orderDetailRepository;
 
     @Override
-    public DataResponse createOrder(OrderCreateRequest request) {
-        //Hàm xử lí đọc cái userId từ authentication
-        //fake data user
-        OrderEntity entity = new OrderEntity();
-        entity.setUserId(request.getUserId());
-        entity.setCreatedDate(LocalDate.now());
-        entity.setStatus(0);
-        orderRepository.save(entity);
+    public Order create(Order order) {
+        return orderRepository.save(order);
+    }
 
-        DataResponse dataResponse = DataResponse.ok(entity);
-        return  dataResponse;
+    @Override
+    public ResponseEntity<?> save(Order orderEntity) {
+        return ResponseEntity.ok(orderRepository.save(orderEntity));
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> createOrder(OrderCreateRequest request){
+        Order order = new Order();
+        order.setUserId(Math.toIntExact(request.getUserId()));
+        order.setCreatedDate(new Date());
+        order.setStatus(0);
+        List<Order> list = (List<Order>) orderRepository.save(order);
+        for (Order o : list){
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setOrderId(order.getId());
+            orderDetail.setStartAt(new Date());
+            List<OrderDetail> list1 = (List<OrderDetail>)
+                    orderDetailRepository.save(orderDetail);
+        }
+        return ResponseEntity.ok("Create ss!!");
+    }
+
+    @Override
+    public Order delete(Integer id) {
+        Order orderEntity = new Order();
+        Date now = new Date();
+        orderEntity.setDeletedDate(now);
+        orderEntity.setStatus(2);
+        return orderRepository.save(orderEntity);
+    }
+
+    @Override
+    public ResponseEntity<?> update(Integer id, OrderUpdateRequest request) {
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        if (optionalOrder.isPresent()){
+            Order entity = optionalOrder.get();
+            entity.setUpdatedDate(Calendar.getInstance().getTime());
+            entity.setStatus(request.getStatus());
+            orderRepository.save(entity);
+        }
+        return ResponseEntity.ok("Update success");
     }
 
     @Override
@@ -41,9 +82,9 @@ public class OrderServiceImpl implements OrderService {
         return ResponseEntity.ok(orderRepository.findById(id).get());
     }
 
+
     @Override
-    public ResponseEntity<?> getAll(int page,String sort) {
-        Pageable pageable= PageRequest.of(page,20, Sort.by(Sort.Direction.ASC,sort));
-        return ResponseEntity.ok(orderRepository.findAll(pageable));
+    public List<Order> findByStatus(Integer status) {
+        return orderRepository.findByStatus(status);
     }
 }

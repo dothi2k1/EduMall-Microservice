@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -16,7 +17,7 @@ public class OrderDetail {
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     @Column(name = "order_id")
     private Integer orderId;
     @Column(name = "course_id")
@@ -28,6 +29,6 @@ public class OrderDetail {
     @Column(name = "start_hour")
     private Date startHour;
     @Column(name = "end_hour")
-    private Date endHour
-    
+    private Date endHour;
+
 }

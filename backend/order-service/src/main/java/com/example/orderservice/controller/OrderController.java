@@ -1,7 +1,6 @@
 package com.example.orderservice.controller;
 
 import com.example.orderservice.dto.request.create.OrderCreateRequest;
-import com.example.orderservice.dto.response.DataResponse;
 import com.example.orderservice.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,16 +13,17 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @PostMapping("/save")
-    public ResponseEntity<Object> create(@RequestBody OrderCreateRequest request){
-        DataResponse dataResponse = orderService.createOrder(request);
-        return ResponseEntity.ok(dataResponse);
+    @PostMapping("/createOrder")
+    ResponseEntity<?> createOrder(@RequestBody OrderCreateRequest request){
+        return ResponseEntity.ok(request);
     }
 
-    @GetMapping("/getall")
-    ResponseEntity<?> getAll(@RequestParam int page,@RequestParam String sort){
-        return orderService.getAll(page,sort);
-    }
+//    @PostMapping("/save")
+//    public ResponseEntity<Object> create(@RequestBody OrderCreateRequest request){
+//        DataResponse dataResponse = orderService.createOrder(request);
+//        return ResponseEntity.ok(dataResponse);
+//    }
+
 
     @GetMapping("/findById")
     ResponseEntity<?> findById(@PathVariable Integer id){
