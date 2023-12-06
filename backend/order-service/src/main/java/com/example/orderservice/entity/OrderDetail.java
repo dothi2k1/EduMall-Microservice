@@ -17,11 +17,9 @@ public class OrderDetail {
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @Column(name = "order_id")
-    private Integer orderId;
+    private Long id;
     @Column(name = "course_id")
-    private Integer courseId;
+    private Long courseId;
     @Column(name = "start_at")
     private Date startAt;
     @Column(name = "end_at")
@@ -30,5 +28,7 @@ public class OrderDetail {
     private Date startHour;
     @Column(name = "end_hour")
     private Date endHour;
-
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id",referencedColumnName = "id")
+    private Order order;
 }

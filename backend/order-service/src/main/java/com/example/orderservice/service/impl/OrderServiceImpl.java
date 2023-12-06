@@ -38,18 +38,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public ResponseEntity<?> createOrder(OrderCreateRequest request){
-        Order order = new Order();
-        order.setUserId(Math.toIntExact(request.getUserId()));
+        Order order = request.getOrder();
         order.setCreatedDate(new Date());
         order.setStatus(0);
-        List<Order> list = (List<Order>) orderRepository.save(order);
-        for (Order o : list){
-            OrderDetail orderDetail = new OrderDetail();
-            orderDetail.setOrderId(order.getId());
-            orderDetail.setStartAt(new Date());
-            List<OrderDetail> list1 = (List<OrderDetail>)
-                    orderDetailRepository.save(orderDetail);
-        }
+        order.setList(request.getList());
+        orderRepository.save(order);
         return ResponseEntity.ok("Create ss!!");
     }
 

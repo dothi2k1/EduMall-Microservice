@@ -6,12 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
+import java.util.List;
 
     @Data
     @NoArgsConstructor
@@ -23,10 +18,10 @@ import java.time.LocalDate;
         @Column(name = "id")
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Integer id;
+        private Long id;
 
         @Column(name = "uid")
-        private Integer userId;
+        private Long userId;
 
         @Column(name = "status")
         private Integer status;
@@ -39,5 +34,8 @@ import java.time.LocalDate;
 
         @Column(name = "delete_at")
         private Date deletedDate;
+
+        @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "order")
+        private List<OrderDetail> list;
     }
 

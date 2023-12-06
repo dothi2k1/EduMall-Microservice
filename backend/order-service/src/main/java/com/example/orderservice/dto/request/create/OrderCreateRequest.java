@@ -1,5 +1,6 @@
 package com.example.orderservice.dto.request.create;
 
+import com.example.orderservice.entity.Order;
 import com.example.orderservice.entity.OrderDetail;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderCreateRequest {
-    private Long userId;
+    private Order order;
     private List<OrderDetail> list;
 
 }
