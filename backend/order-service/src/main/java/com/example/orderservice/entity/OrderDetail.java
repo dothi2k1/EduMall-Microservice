@@ -2,13 +2,11 @@ package com.example.orderservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -17,7 +15,6 @@ import java.util.Date;
 @Entity
 @Table(name = "order_detail")
 public class OrderDetail {
-    @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,8 +28,8 @@ public class OrderDetail {
     private Date startHour;
     @Column(name = "end_hour")
     private Date endHour;
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id",referencedColumnName = "id")
-    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JsonBackReference
+    @JoinColumn(name = "order_id")
     private Order order;
 }

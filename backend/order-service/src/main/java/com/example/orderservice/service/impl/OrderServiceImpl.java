@@ -8,10 +8,10 @@ import com.example.orderservice.entity.OrderDetail;
 import com.example.orderservice.repository.OrderDetailRepository;
 import com.example.orderservice.repository.OrderRepository;
 import com.example.orderservice.service.OrderService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,26 +35,27 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<?> createOrder(OrderCreateRequest request){
+    @Transactional
+    public ResponseEntity<?> createOrder(OrderCreateRequest request) {
         Order order = new Order();
         order.setUserId(request.getUserId());
-        Set<OrderDetail> set=new HashSet<>();
-
         order.setStatus(0);
-        Set<OrderDetail> list=Arrays.stream(request.getList()).collect(Collectors.toSet());
-        for (OrderDetail orderDetail:request.getList()){
-            OrderDetail od=new OrderDetail();
-            od.setCourseId(od.getCourseId());
+        List<OrderDetail> set = new ArrayList<>();
+        for (OrderDetail orderDetail : request.getList()) {
+            OrderDetail od = new OrderDetail();
+            od.setCourseId(orderDetail.getCourseId());
+            od.setOrder(order);
             set.add(od);
         }
-        order.setList(list);
-
-        orderRepository.save(order);
-        return ResponseEntity.ok("Create ss!!");
+        order.setList(set);
+        order= orderRepository.save(order);
+        if (order.getId()!=null)
+            return ResponseEntity.ok("Create ss!!");
+        else return ResponseEntity.status(400).body("Create fail");
     }
 
     @Override
-    public Order delete(Integer id) {
+    public Order delete(long id) {
         Order orderEntity = new Order();
         Date now = new Date();
         orderEntity.setDeletedDate(now);
@@ -63,9 +64,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<?> update(Integer id, OrderUpdateRequest request) {
+    public ResponseEntity<?> update(long id, OrderUpdateRequest request) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
-        if (optionalOrder.isPresent()){
+        if (optionalOrder.isPresent()) {
             Order entity = optionalOrder.get();
             entity.setUpdatedDate(Calendar.getInstance().getTime());
             entity.setStatus(request.getStatus());
@@ -75,11 +76,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<?> findById(Integer id) {
-        if (!orderRepository.existsById(id)){
-            return ResponseEntity.status(205).body("Not found");
+    public ResponseEntity<?> findById(long id) {
+        if (!orderRepository.existsById(id)) {
+            return ResponseEntity.status(404).body("Not found");
         }
-        return ResponseEntity.ok(orderRepository.findById(id).get());
+        Order order=orderRepository.findById(id).get();
+        return ResponseEntity.ok(order);
     }
 
 

@@ -11,10 +11,10 @@ public interface OrderService {
     ResponseEntity<?> create(Order orderEntity);
     ResponseEntity<?> save (Order orderEntity);
     ResponseEntity<?> createOrder(OrderCreateRequest request);
-    Order delete(Integer id);
-    ResponseEntity<?> update(Integer id, OrderUpdateRequest request);
+    Order delete(long id);
+    ResponseEntity<?> update(long id, OrderUpdateRequest request);
 
-    ResponseEntity<?> findById(Integer id);
+    ResponseEntity<?> findById(long id);
 
     List<Order> findByStatus(Integer status);
 

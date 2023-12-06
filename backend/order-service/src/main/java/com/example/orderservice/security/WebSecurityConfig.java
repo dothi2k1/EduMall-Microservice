@@ -33,10 +33,7 @@ public class WebSecurityConfig {
                 addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                new AntPathRequestMatcher("/api/order/**"),
-                                new AntPathRequestMatcher("/api/sv2/video/**"),
-                                new AntPathRequestMatcher("/api/sv2/doc/**"),
-                                new AntPathRequestMatcher("/api/sv2/route/**")
+                                new AntPathRequestMatcher("/api/order/**")
                         ).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/sv2/private/**")).hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated())
