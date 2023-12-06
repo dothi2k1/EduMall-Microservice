@@ -25,5 +25,5 @@ public class FeedBack {
     @Temporal(TemporalType.DATE)
     private Date create_at;
     private Date update_at;
-    private Long oddt_id;
+    private Long od_id;
 }

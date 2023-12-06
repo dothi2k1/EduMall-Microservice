@@ -3,6 +3,7 @@ package com.userservice.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Date;
 import java.sql.Time;
 
 @Getter
@@ -17,6 +18,7 @@ public class Discussion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
-    private Time time;
-    private Long scid;
+    private Date create_at;
+    private Long od_id;
+    private Date update_at;
 }
