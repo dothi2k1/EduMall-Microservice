@@ -107,7 +107,7 @@ public class ScheduleService {
                 e.printStackTrace();
                 System.out.println("No response");
             }
-        template.expire("queue_relative",10,TimeUnit.SECONDS);
+        template.expire("queue_relative",1,TimeUnit.DAYS);
     }
 
     public void cacheCourseDetail() {
@@ -147,6 +147,7 @@ public class ScheduleService {
             e.printStackTrace();
             System.out.println("No response");
         }
+        template.expire("queue_course",1,TimeUnit.DAYS);
     }
 
     public void cacheRoute() {
@@ -169,7 +170,7 @@ public class ScheduleService {
                                         Sort.by(Sort.Direction.ASC, "id"));
                                 List<RouteDto> list = routeDao.getListRout(courseId.get(temp));
                                 if (list.size()!=0)
-                                    System.out.println(template.opsForList().rightPush("queue_course", redisMapper.writeValueAsString(list)));
+                                    System.out.println(template.opsForList().rightPush("queue_route", redisMapper.writeValueAsString(list)));
                                 p.setLast_update(new Date());
                                 repo.save(p);
                                 Thread.sleep(1000);
@@ -189,6 +190,7 @@ public class ScheduleService {
                 e.printStackTrace();
                 System.out.println("No response");
             }
+        template.expire("queue_route",1,TimeUnit.DAYS);
     }
 
     @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
