@@ -14,28 +14,18 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 public class UserPrinciple implements UserDetails {
-    private Long id;
     private String username;
     private String token;
     private Collection<? extends GrantedAuthority> roles;
 
     //Generate user for security
 
-
-    public UserPrinciple(Long id, String username, String token, List<String> roles) {
-        this.id = id;
+    public UserPrinciple( String username, String token, List<String> roles) {
         this.username = username;
         this.token=token;
         this.roles = roles.stream().map(r->new SimpleGrantedAuthority(r)).collect(Collectors.toList());
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
 
     @Override

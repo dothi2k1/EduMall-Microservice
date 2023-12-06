@@ -1,7 +1,7 @@
 package com.course.dao;
 
+import com.course.DTO.CourseDTo;
 import com.course.model.Course;
-import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -17,8 +17,9 @@ import java.util.List;
 public class CourseDao {
 
     private final JdbcTemplate jdbcTemplate;
+    //holder for get id after safe
     GeneratedKeyHolder holder = new GeneratedKeyHolder();
-
+    //Course mapper
     RowMapper<Course> mapper = ((rs, rowNum) -> {
         Course course = new Course();
         course.setId(rs.getLong("id"));
@@ -32,13 +33,33 @@ public class CourseDao {
         course.setActive(rs.getBoolean(9));
         course.setPrice(rs.getDouble(10));
         course.setEstimate(rs.getDouble(11));
+        course.setTitle(rs.getString(12));
         return course;
     });
+    //route mapper
 
+    //courseDTO mapper
+    RowMapper<CourseDTo> courseDTO = ((rs, rowNum) -> {
+        CourseDTo courseDTo = new CourseDTo();
+        courseDTo.setId(rs.getLong("id"));
+        courseDTo.setUsername(rs.getString("username"));
+        courseDTo.setDescription(rs.getString("description"));
+        courseDTo.setTitle(rs.getString("title"));
+        courseDTo.setPrice(rs.getDouble("price"));
+        courseDTo.setEstimate(rs.getDouble("estimate"));
+        courseDTo.setCate(rs.getInt("cate"));
+        return courseDTo;
+    });
+
+    RowMapper<Integer> count = ((rs, rowNum) -> {
+        Integer count=(rs.getInt(1));
+        return count;
+    });
     public CourseDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    //get list for teacher management
     public List<Course> getList(Pageable pageable) {
         String query = "SELECT * FROM course LIMIT " +
                 pageable.getPageSize() +
@@ -46,12 +67,30 @@ public class CourseDao {
         return jdbcTemplate.query(query, mapper);
 
     }
+    //get list course by category
+    public List<Course> getList(Pageable pageable,long category) {
+        String query = "SELECT * FROM course where cate="+category+" LIMIT " +
+                pageable.getPageSize() +
+                " OFFSET " + pageable.getOffset();
+        return jdbcTemplate.query(query, mapper);
 
+    }
+
+    //get list for preview
+    public List<CourseDTo> listCourseDto(Pageable pageable) {
+        String query = "SELECT c.id,u.username,c.title,c.description,c.price,c.estimate " +
+                "FROM course c,users u where c.uid=u.id LIMIT " +
+                pageable.getPageSize() +
+                " OFFSET " + pageable.getOffset();
+        return jdbcTemplate.query(query, courseDTO);
+
+    }
+    //teacher create course
     public Long save(Course course) {
         String rs = "";
         String query = "insert into course(type,uid,cate,description," +
-                "createat,updateat,deleteat,active,price,estimate)" +
-                " values (?,?,?,?,?,?,?,?,?,?)";
+                "createat,updateat,deleteat,active,price,estimate,title)" +
+                " values (?,?,?,?,?,?,?,?,?,?,?)";
         jdbcTemplate.update(
                 new PreparedStatementCreator() {
                     @Override
@@ -67,13 +106,14 @@ public class CourseDao {
                         statement.setDouble(8, course.getPrice());
                         statement.setBoolean(9, course.isActive());
                         statement.setDouble(10, course.getEstimate());
+                        statement.setString(11, course.getTitle());
                         return statement;
                     }
                 }, holder);
-        Long c=holder.getKey().longValue();
+        Long c = holder.getKey().longValue();
         return c;
     }
-
+    //teacher update
     public String update(Course course) {
         String rs = "";
         String query = "update course set " +
@@ -87,7 +127,7 @@ public class CourseDao {
         if (c == 1) rs += "Update success";
         return rs;
     }
-
+    // teacher update status
     public String active(Long id, boolean status) {
         String rs = "";
         String query = "update course set " +
@@ -100,5 +140,27 @@ public class CourseDao {
             else rs = "Temporarily closed";
         }
         return rs;
+    }
+
+    //get course by id
+    public CourseDTo findCourseById(long id){
+        String qr="SELECT c.id,u.username,c.title,c.description,c.price,c.estimate c.cate" +
+                "FROM course c,users u where c.uid=u.id and c.id="+id;
+        CourseDTo courseDTo=jdbcTemplate.queryForObject(qr, courseDTO);
+        return courseDTo;
+    }
+
+    //get total page
+    public int getTotalPage(){
+        String qr="select count(id) from course";
+        int c= jdbcTemplate.queryForObject(qr,Integer.class);
+        return c;
+    }
+
+    //get total page by cate
+    public int getTotalPageByCate(long cate){
+        String qr="select count(id) from course where cate="+cate;
+        int c= jdbcTemplate.queryForObject(qr,Integer.class);
+        return c;
     }
 }

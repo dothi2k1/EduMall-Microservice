@@ -48,7 +48,6 @@ public class UserServiceImp implements UserService {
 
         int c = 0;
         int [] role= formReg.getRole();
-
             for (int r : role) {
                 UserRole ur=new UserRole();
                 ur.setRid(r);

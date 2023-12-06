@@ -1,4 +1,4 @@
-package com.course.model;
+package com.course.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,8 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Route {
-    private Long id;
-    private long course_id;
-    private int order;
+public class VideoDto {
+    private long id;
     private String title;
-    private String content;
+    private String link;
 }

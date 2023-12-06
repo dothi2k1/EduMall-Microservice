@@ -1,18 +1,19 @@
-package com.course.model;
+package com.course.DTO;
 
+import com.course.model.Video;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Setter
-@Getter
+import java.util.List;
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Route {
+public class RouteDto {
     private Long id;
-    private long course_id;
-    private int order;
     private String title;
     private String content;
+    private int videos;
+    private int documents;
 }

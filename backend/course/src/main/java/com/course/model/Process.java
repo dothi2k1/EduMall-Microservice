@@ -8,19 +8,19 @@ import lombok.Setter;
 
 import java.util.Date;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class Video {
+@Entity
+@Table(name = "process")
+public class Process {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long route_id;
-    private String link;
-    private String title;
-    private Date create_at;
-    private Date update_at;
+    private String name;
     private boolean status;
+    private Date create_at;
+    private Date last_update;
+    private int timeout;
 }

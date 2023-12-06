@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtProvider {
@@ -25,9 +26,14 @@ public class JwtProvider {
         Date now = new Date();
         Date expiryDate=new Date(now.getTime()+JWT_EXPIRATION);
         UserPrinciple userPrinciple=(UserPrinciple) authentication.getPrincipal();
+        List<String> roles = userPrinciple.getAuthorities().stream()
+                .map(authority -> authority.getAuthority())
+                .collect(Collectors.toList());
         //create jwt
         return Jwts.builder()
+                .claim("id",userPrinciple.getId().toString())
                 .setSubject(userPrinciple.getUsername())
+                .claim("roles",roles)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith( key(),SignatureAlgorithm.HS512)
@@ -67,9 +73,5 @@ public class JwtProvider {
         return false;
     }
 
-    public List<String> getRoleFromToken(String token){
-        Claims claims =Jwts.parserBuilder().setSigningKey(key()).build()
-                .parseClaimsJws(token).getBody();
-        return claims.get("roles",List.class);
-    }
+
 }
