@@ -34,14 +34,13 @@ public class RedisServiceImp implements RedisService {
     }
 
     @Override
-    public void lPush(String key, Object o) {
-        template.opsForList().leftPush(key,o);
+    public void lPush(String key, String o) {
+        System.out.println(template.opsForList().leftPush(key,o));
     }
 
     @Override
-    public Object rPop(String key) {
-        template.opsForList().rightPop(key);
-        return null;
+    public String rPop(String key) {
+       return (String) template.opsForList().rightPop(key);
     }
 
     @Override
@@ -50,8 +49,8 @@ public class RedisServiceImp implements RedisService {
     }
 
     @Override
-    public void lPushAll(String key, List<Object> list) {
-        template.opsForList().leftPushAll(key,list);
+    public void lPushAll(String key, List<?> list) {
+        System.out.println(template.opsForList().leftPushAll(key,list));
     }
 
     @Override
@@ -60,7 +59,7 @@ public class RedisServiceImp implements RedisService {
             String json = (String) template.opsForValue().get("course_list");
             List<Course> list =redisMapper.readValue(json, new TypeReference<List<Course>>() {
             });
-            return ResponseEntity.ok(list.stream().limit(10).skip(page*10-1));
+            return ResponseEntity.ok(list.stream().limit(10).skip(page*9));
         }
         catch (Exception e){
             System.out.println("no response");

@@ -26,9 +26,11 @@ public class RouteJob implements Runnable{
                 if (re!=null) {
                     Course course = mapper.readValue(re, Course.class);
                     List<RouteDto> list=dao.getListRout(course.getId());
+                    if (!list.isEmpty())
                     service.setValueRedis("route_course"+course.getId(),
                             mapper.writeValueAsString(list),
                             1, TimeUnit.DAYS);
+                    System.out.println(Thread.currentThread()+" "+"done");
                 }
             }
             Thread.sleep(4000);

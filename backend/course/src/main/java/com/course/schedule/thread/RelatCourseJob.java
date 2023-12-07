@@ -36,6 +36,7 @@ public class RelatCourseJob implements Runnable{
                     service.setValueRedis("re_course"+course.getId(),
                             mapper.writeValueAsString(list),
                             1, TimeUnit.DAYS);
+                    System.out.println(Thread.currentThread()+" "+"done");
                 }
             }
             Thread.sleep(4000);
