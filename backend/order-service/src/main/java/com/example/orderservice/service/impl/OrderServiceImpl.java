@@ -1,49 +1,92 @@
 package com.example.orderservice.service.impl;
 
 import com.example.orderservice.dto.request.create.OrderCreateRequest;
-import com.example.orderservice.dto.response.DataResponse;
-import com.example.orderservice.entity.OrderEntity;
+import com.example.orderservice.dto.request.update.OrderUpdateRequest;
+
+import com.example.orderservice.entity.Order;
+import com.example.orderservice.entity.OrderDetail;
+import com.example.orderservice.repository.OrderDetailRepository;
 import com.example.orderservice.repository.OrderRepository;
 import com.example.orderservice.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
     @Autowired
-    private OrderRepository orderRepository;
+    OrderRepository orderRepository;
+    @Autowired
+    OrderDetailRepository orderDetailRepository;
+
 
     @Override
-    public DataResponse createOrder(OrderCreateRequest request) {
-        //Hàm xử lí đọc cái userId từ authentication
-        //fake data user
-        OrderEntity entity = new OrderEntity();
-        entity.setUserId(request.getUserId());
-        entity.setCreatedDate(LocalDate.now());
-        entity.setStatus(0);
-        orderRepository.save(entity);
-
-        DataResponse dataResponse = DataResponse.ok(entity);
-        return  dataResponse;
+    public ResponseEntity<?> create(Order orderEntity) {
+        return null;
     }
 
     @Override
-    public ResponseEntity<?> findById(Integer id) {
-        if (!orderRepository.existsById(id)){
-            return ResponseEntity.status(205).body("Not found");
+    public ResponseEntity<?> save(Order orderEntity) {
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> createOrder(OrderCreateRequest request) {
+        Order order = new Order();
+        order.setUserId(request.getUserId());
+        order.setStatus(0);
+        List<OrderDetail> set = new ArrayList<>();
+        for (OrderDetail orderDetail : request.getList()) {
+            OrderDetail od = new OrderDetail();
+            od.setCourseId(orderDetail.getCourseId());
+            od.setOrder(order);
+            set.add(od);
         }
-        return ResponseEntity.ok(orderRepository.findById(id).get());
+        order.setList(set);
+        order= orderRepository.save(order);
+        if (order.getId()!=null)
+            return ResponseEntity.ok("Create ss!!");
+        else return ResponseEntity.status(400).body("Create fail");
     }
 
     @Override
-    public ResponseEntity<?> getAll(int page,String sort) {
-        Pageable pageable= PageRequest.of(page,20, Sort.by(Sort.Direction.ASC,sort));
-        return ResponseEntity.ok(orderRepository.findAll(pageable));
+    public Order delete(long id) {
+        Order orderEntity = new Order();
+        Date now = new Date();
+        orderEntity.setDeletedDate(now);
+        orderEntity.setStatus(2);
+        return orderRepository.save(orderEntity);
+    }
+
+    @Override
+    public ResponseEntity<?> update(long id, OrderUpdateRequest request) {
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        if (optionalOrder.isPresent()) {
+            Order entity = optionalOrder.get();
+            entity.setUpdatedDate(Calendar.getInstance().getTime());
+            entity.setStatus(request.getStatus());
+            orderRepository.save(entity);
+        }
+        return ResponseEntity.ok("Update success");
+    }
+
+    @Override
+    public ResponseEntity<?> findById(long id) {
+        if (!orderRepository.existsById(id)) {
+            return ResponseEntity.status(404).body("Not found");
+        }
+        Order order=orderRepository.findById(id).get();
+        return ResponseEntity.ok(order);
+    }
+
+
+    @Override
+    public List<Order> findByStatus(Integer status) {
+        return orderRepository.findByStatus(status);
     }
 }
