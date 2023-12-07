@@ -1,5 +1,6 @@
 package com.course.DTO;
 
+import com.course.model.Course;
 import com.course.model.Route;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseResponse {
-    private CourseDTo courseDTo;
+    private Course course;
     private List<RouteDto> routes;
+    private List<Course> relative;
 }

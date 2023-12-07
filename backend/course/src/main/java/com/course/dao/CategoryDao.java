@@ -24,9 +24,9 @@ public class CategoryDao {
         category.setId(rs.getLong("id"));
         category.setName(rs.getString("name"));
         category.setDescription(rs.getString("description"));
-        category.setCreateAt(rs.getDate("createat"));
-        category.setDeleteAt(rs.getDate("deleteat"));
-        category.setUpdateAt(rs.getDate("updateat"));
+        category.setCreateAt(rs.getDate("create_at"));
+        category.setDeleteAt(rs.getDate("delete_at"));
+        category.setUpdateAt(rs.getDate("update_at"));
         category.setStatus(rs.getBoolean("status"));
         return category;
     });
