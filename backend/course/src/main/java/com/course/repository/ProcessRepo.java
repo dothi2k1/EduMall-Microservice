@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProcessRepo extends JpaRepository<Process,Long> {
-
+    Process findByName(String name);
 }

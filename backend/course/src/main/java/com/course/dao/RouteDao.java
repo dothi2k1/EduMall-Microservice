@@ -1,5 +1,6 @@
 package com.course.dao;
 
+import com.course.DTO.RouteDto;
 import com.course.model.Route;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -20,13 +21,13 @@ public class RouteDao {
     public RouteDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-    RowMapper<Route> rmap = ((rs, rowNum) -> {
-        Route route = new Route();
+    RowMapper<RouteDto> rmap = ((rs, rowNum) -> {
+        RouteDto route = new RouteDto();
         route.setId(rs.getLong("id"));
-        route.setCourse_id(rs.getLong(2));
-        route.setOrder(rs.getInt(3));
-        route.setTitle(rs.getString(4));
-        route.setContent(rs.getString(5));
+        route.setTitle(rs.getString("title"));
+        route.setContent(rs.getString("content"));
+        route.setVideos(rs.getInt("vid"));
+        route.setDocuments(rs.getInt("doc"));
         return route;
     });
     // add route of a course
@@ -50,8 +51,19 @@ public class RouteDao {
         return c;
     }
     // get list route of a course
-    public List<Route> getListRout(long id) {
-        String query = "SELECT * FROM route where courseid=" + id;
+    public List<RouteDto> getListRout(long id) {
+        String query = "SELECT r.*,count(v.id) as vid,count(d.id) as doc FROM route r,video v,document d where courseid=" + id +
+                " and r.id=v.routeid and r.id=d.routeid group by r.id";
         return jdbcTemplate.query(query, rmap);
+    }
+
+    public Long getTotalRoute(long id) {
+        String query="";
+        if (id==0)
+            query = "SELECT count(1) FROM route where courseid>0";
+        else query = "SELECT count(1) FROM route where courseid=" +id;
+        return  jdbcTemplate.queryForObject(query, (rs,i)->
+            rs.getLong(1)
+        );
     }
 }

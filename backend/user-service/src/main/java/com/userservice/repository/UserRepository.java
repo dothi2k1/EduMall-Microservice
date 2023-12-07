@@ -22,8 +22,8 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query(value = "select count(*) from users where id not in (1)",nativeQuery = true)
     Long countUserById();
 
-    @Query(value = "select count(*) from users where active = true",nativeQuery = true)
+    @Query(value = "select count(*) from users where active = true and id not in (1)",nativeQuery = true)
     Long countActive();
-    @Query(value = "select count(*) from users where active = false",nativeQuery = true)
+    @Query(value = "select count(*) from users where active = false and id not in (1)",nativeQuery = true)
     long countOff();
 }

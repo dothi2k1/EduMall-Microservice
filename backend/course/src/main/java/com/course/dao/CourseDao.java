@@ -68,7 +68,7 @@ public class CourseDao {
 
     }
     //get list course by category
-    public List<Course> getList(Pageable pageable,int category) {
+    public List<Course> getList(Pageable pageable,long category) {
         String query = "SELECT * FROM course where cate="+category+" LIMIT " +
                 pageable.getPageSize() +
                 " OFFSET " + pageable.getOffset();
@@ -76,6 +76,13 @@ public class CourseDao {
 
     }
 
+    public List<Course> getListRelative(Pageable pageable,long category,long id) {
+        String query = "SELECT * FROM course where cate="+category+" AND id <>" +id+" LIMIT " +
+                pageable.getPageSize() +
+                " OFFSET " + pageable.getOffset();
+        return jdbcTemplate.query(query, mapper);
+
+    }
     //get list for preview
     public List<CourseDTo> listCourseDto(Pageable pageable) {
         String query = "SELECT c.id,u.username,c.title,c.description,c.price,c.estimate " +
@@ -127,6 +134,8 @@ public class CourseDao {
         if (c == 1) rs += "Update success";
         return rs;
     }
+
+
     // teacher update status
     public String active(Long id, boolean status) {
         String rs = "";

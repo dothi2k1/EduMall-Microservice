@@ -7,12 +7,7 @@ import com.course.service.imp.CourseServiceImp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-
 
 @RestController
 @RequestMapping("api/sv2/course")
@@ -25,7 +20,10 @@ public class CourseController {
     ResponseEntity<?> getAll(int page, String sort) throws Exception {
         return service.getAll(page, sort);
     }
-
+    @GetMapping("/get-course")
+    ResponseEntity<?> getById(@RequestParam long id) {
+        return service.findCourseById(id);
+    }
     @PostMapping("/private/save")
     ResponseEntity<?> save(@RequestBody Course course) {
         return service.save(course);

@@ -6,17 +6,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "process")
+@Entity(name = "process")
+@Table
 public class Process {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private String name;
     private boolean status;
-    private int page;
+    private Date create_at;
+    private Date last_update;
+    private int timeout;
 }

@@ -2,6 +2,7 @@ package com.course.service.imp;
 
 import com.course.DTO.CourseDTo;
 import com.course.DTO.CourseResponse;
+import com.course.DTO.RouteDto;
 import com.course.dao.CourseDao;
 import com.course.dao.RouteDao;
 import com.course.model.Course;
@@ -38,17 +39,11 @@ public class CourseServiceImp implements CourseService {
     public ResponseEntity<?> getAll(int page, String sort) throws Exception {
         Pageable pageable= PageRequest.of(page,10,
                 Sort.by(Sort.Direction.ASC,sort));
-        ResponseEntity<?> entity=redis.getAllCourse(page,sort);
+        ResponseEntity<?> entity=redis.getAllCourse(page);
         if (entity!=null) {
             return entity;
         }
         List<Course> list= dao.getList(pageable);
-        try {
-            redis.setValueRedis("course"+page,list);
-        }
-        catch (Exception e){
-            System.out.printf("error");
-        }
         return ResponseEntity.ok(list);
     }
 
@@ -60,7 +55,6 @@ public class CourseServiceImp implements CourseService {
     }
 
     @Override
-    @CacheEvict(value = "id",key = "#course.id")
     public ResponseEntity<?> save(Course course) {
         long id=0;
         id= dao.save(course);
@@ -71,12 +65,15 @@ public class CourseServiceImp implements CourseService {
 
     @Override
     public ResponseEntity<?> findCourseById(Long id) {
+        ResponseEntity<?> course=redis.getCourseById(id);
+        if (course!=null) return course;
+        Pageable pageable= PageRequest.of(0,10,
+                Sort.by(Sort.Direction.ASC,"id"));
         CourseDTo courseDTo=dao.findCourseById(id);
-        List<Route> routes=routeDao.getListRout(id);
+        List<RouteDto> routes=routeDao.getListRout(id);
         CourseResponse courseResponse=new CourseResponse();
-        courseResponse.setCourseDTo(courseDTo);
+        courseResponse.setRelative(dao.getListRelative(pageable,courseDTo.getCate(), courseDTo.getId()));
         courseResponse.setRoutes(routes);
-        scdsv.addCourseRelativeToRedis(courseDTo.getCate());
         return ResponseEntity.ok(courseResponse);
     }
 

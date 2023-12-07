@@ -1,19 +1,36 @@
 package com.course.schedule;
 
+import com.course.DTO.CourseDTo;
+import com.course.DTO.RouteDto;
+import com.course.dao.CategoryDao;
 import com.course.dao.CourseDao;
+import com.course.dao.RouteDao;
+import com.course.model.Category;
+import com.course.model.Course;
 import com.course.model.Process;
 import com.course.repository.ProcessRepo;
+import com.course.schedule.thread.CourseJob;
+import com.course.schedule.thread.RelatCourseJob;
+import com.course.schedule.thread.RouteJob;
 import com.course.service.imp.RedisServiceImp;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.RedisConnectionFailureException;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 @Component
 public class ScheduleService {
@@ -22,120 +39,67 @@ public class ScheduleService {
     @Autowired
     CourseDao dao;
     @Autowired
-    RedisServiceImp redis;
-
+    CategoryDao cateDao;
+    @Autowired
+    RouteDao routeDao;
+    @Autowired
+    RedisServiceImp service;
+    @Autowired
+    ObjectMapper redisMapper;
+    List<String> queue= Arrays.asList(new String[]{"queue_course", "queue_relative", "queue_route"}) ;
     //All course
-    void addProcessForFindAll(){
+    void addProcess() {
+        String[] processes = new String[]{ "queue_course", "queue_relative", "queue_route"};
         System.out.println("add process");
-        repo.deleteAll();
-        int size=dao.getTotalPage();
-        int count= (size%10==0)? size/10 : size/10+1;
-        for (int i = 0; i < count; i++) {
-            Process process=new Process();
-            process.setName(("course"+(i)));
-            process.setStatus(false);
-            process.setPage(i);
-            repo.save(process);
-        }
-    }
-    public List<Process> getProcesses() {
-        return repo.findAll();
-    }
-
-    @Scheduled(fixedDelay = 3,timeUnit = TimeUnit.MINUTES)
-    void doProcess() {
-        System.out.println("do task");
-        redis.clear();
-        addProcessForFindAll();
-        addCourseToRedis();
-    }
-    public void addCourseToRedis()  {
-        ExecutorService service = Executors.newFixedThreadPool(5);
-        List<Process> list = getProcesses();
-        for (Process i : list) {
-            if (!i.isStatus()) {
-                Pageable pageable = PageRequest.of(i.getPage(), 20,
-                        Sort.by(Sort.Direction.ASC, "id"));
-                        service.submit(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    System.out.println(Thread.currentThread().getName());
-                                    String key=i.getName();
-                                    redis.setValueRedis(key,dao.getList(pageable));
-                                    i.setStatus(false);
-                                    System.out.println(repo.save(i));
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                catch (RedisConnectionFailureException e){
-                                    System.out.println("connect fail");
-                                } catch (JsonProcessingException e) {
-                                    e.printStackTrace();
-                                }
-                                catch (Exception e){
-                                    System.out.println(e);
-                                }
-                            }
-                        });
+        List<Process> list = repo.findAll();
+        if (list.size() == 0)
+            for (int i = 0; i < processes.length; i++) {
+                Process process = new Process();
+                process.setName(processes[i]);
+                process.setStatus(true);
+                process.setCreate_at(new Date());
+                process.setLast_update(process.getCreate_at());
+                process.setTimeout(5);
+                repo.save(process);
             }
-        }
-    }
-    
-    // relative course
-    void addProcessForFindRelative(int cate){
-        System.out.println("add process");
-        repo.deleteAll();
-        int size=dao.getTotalPageByCate(cate);
-        int count= (size%10==0)? 
-                size/10 : size/10+1;
-        for (int i = 0; i < count; i++) {
-            Process process=new Process();
-            process.setName(("course"+(i)));
-            process.setStatus(false);
-            process.setPage(i);
-            repo.save(process);
-        }
     }
 
-   
-    void doProcessFindRelative(int cate)  {
+
+    @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
+    void doProcess() throws JsonProcessingException {
         System.out.println("do task");
-        addProcessForFindAll();
-        addCourseToRedis();
-    }
-    public void addCourseRelativeToRedis(int cate)  {
-        ExecutorService service = Executors.newFixedThreadPool(4);
-        List<Process> listByCate = getProcesses();
-        for (Process i : listByCate) {
-            if (!i.isStatus()) {
-                Pageable pageable = PageRequest.of(i.getPage(), 10,
-                        Sort.by(Sort.Direction.ASC, "id"));
-                service.submit(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            System.out.println(Thread.currentThread().getName());
-                            String key=i.getName();
-                            redis.setValueRedis(key,dao.getList(pageable,cate));
-                            i.setStatus(false);
-                            System.out.println(repo.save(i));
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        catch (RedisConnectionFailureException e){
-                            System.out.println("connect fail");
-                        } catch (JsonProcessingException e) {
-                            e.printStackTrace();
-                        }
-                        catch (Exception e){
-                            System.out.println(e);
-                        }
+        List<Course> list=dao.getList(
+                PageRequest.of(0,10000,
+                        Sort.by(Sort.Direction.ASC,"id")));
+        service.setValueRedis("course_list",list.stream().map(v->{
+            try {
+                return redisMapper.writeValueAsString(v);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }),1,TimeUnit.DAYS);
+        while (true){
+            if (list.isEmpty()) break;
+            for (String q:queue){
+                service.lPushAll(q,list.stream().map(v-> {
+                    try {
+                        return redisMapper.writeValueAsString(v);
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
                     }
-                });
+                    return null;
+                }).collect(Collectors.toList()));
             }
+
+        }
+        ExecutorService executor=Executors.newFixedThreadPool(5);
+        for (Course c:list) {
+            executor.submit(new CourseJob(service));
+            executor.submit(new RouteJob(service, routeDao));
+            executor.submit(new RelatCourseJob(service, dao));
         }
     }
+
+
 }
