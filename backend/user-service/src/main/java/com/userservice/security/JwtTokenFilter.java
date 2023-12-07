@@ -35,14 +35,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = getJwt(request);
             try {
-                username = jwtProvider.getUserFromJwt(jwtToken).toString();
+                username = jwtProvider.getUserFromJwt(jwtToken);
             } catch (IllegalArgumentException e) {
-                logger.error("No se puede encontrar el token JWT");
+                logger.error("Can't find token JWT");
             } catch (ExpiredJwtException e) {
                 logger.error("Token JWT had expired");
             }
         } else {
-            logger.warn("JWT Token not be type Bearer");
+            logger.warn("JWT Token is not type Bearer");
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
@@ -67,13 +67,5 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
         return null;
     }
-    public Authentication getAuthentication(Integer userId, String token) {
-        UserDetails userDetails = org.springframework.security.core.userdetails.User
-                .withUsername("")
-                .password("")
-                .build();
-        return new UsernamePasswordAuthenticationToken("", "", userDetails.getAuthorities());
-    }
-
 
 }

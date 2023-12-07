@@ -1,4 +1,4 @@
-package com.userservice.model.DTO;
+package com.userservice.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FormLogin {
+public class FormReg {
     private String username;
+    private String email;
     private String password;
+    private int[] role;
 }

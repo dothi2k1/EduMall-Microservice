@@ -1,13 +1,12 @@
 package com.userservice.comtroller;
 
-import com.userservice.model.DTO.FormLogin;
-import com.userservice.model.DTO.FormReg;
-import com.userservice.model.DTO.MyRespon;
+import com.userservice.DTO.FormLogin;
+import com.userservice.DTO.FormReg;
+import com.userservice.DTO.MyRespon;
 import com.userservice.model.User;
 import com.userservice.model.request.PasswordResetRequest;
-import com.userservice.model.user_principle.UserPrinciple;
+import com.userservice.user_principle.UserPrinciple;
 import com.userservice.password_reset.IPasswordResetService;
-import com.userservice.password_reset.PasswordResetService;
 import com.userservice.security.JwtProvider;
 import com.userservice.security.JwtResponse;
 import com.userservice.service.implement.UserServiceImp;
@@ -69,7 +68,7 @@ public class AuthController {
         String token = jwtProvider.generateToken(authentication);
         UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();
         return ResponseEntity.ok(
-                new JwtResponse(userPrincipal.getUsername(), token, userPrincipal.getAuthorities()));
+                new JwtResponse( userPrincipal.getId(),userPrincipal.getUsername(), token, userPrincipal.getAuthorities()));
     }
 
 

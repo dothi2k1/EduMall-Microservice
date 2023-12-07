@@ -21,10 +21,10 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private int gender;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
-    private int gender;
     private Date birthday;
     private String school;
     private String major;
@@ -35,4 +35,5 @@ public class User {
     private Date update_at;
     private Date delete_at;
     private boolean active;
+    private String avatar;
 }

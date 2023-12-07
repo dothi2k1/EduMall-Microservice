@@ -1,8 +1,7 @@
 package com.userservice.service.implement;
 
-import com.userservice.model.DTO.FormReg;
-import com.userservice.model.DTO.UserDTO;
-import com.userservice.model.Role;
+import com.userservice.DTO.FormReg;
+import com.userservice.DTO.UserDTO;
 import com.userservice.model.User;
 import com.userservice.model.UserRole;
 import com.userservice.model.response.Summary;
@@ -49,7 +48,6 @@ public class UserServiceImp implements UserService {
 
         int c = 0;
         int [] role= formReg.getRole();
-
             for (int r : role) {
                 UserRole ur=new UserRole();
                 ur.setRid(r);
