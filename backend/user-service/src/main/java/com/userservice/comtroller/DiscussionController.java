@@ -1,9 +1,7 @@
 package com.userservice.comtroller;
 
 import com.userservice.model.Discussion;
-import com.userservice.model.FeedBack;
 import com.userservice.service.implement.DiscussionServiceImp;
-import com.userservice.service.implement.FeedBackServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
