@@ -20,20 +20,23 @@ public class AppConfig {
     }
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http){
-        http.csrf(csrf->csrf.disable());
+        http.csrf(csrf->csrf.disable()).cors(corsSpec -> corsSpec.disable());
         return http.build();
     }
 
     @Bean
     public CorsWebFilter filter(){
         org.springframework.web.cors.CorsConfiguration config= new CorsConfiguration();
-        config.addAllowedOrigin("*");
+//        config.addAllowedOrigin("*");
+        config.setAllowedOrigins(Arrays.asList("*","*"));
         config.addExposedHeader("Authorization");
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
-        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Content-Disposition", "Content-Length", "Accept", "Authorization", "Cookie"));
+        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type",
+                "Content-Disposition", "Content-Length",
+                "Accept", "Authorization", "Cookie"));
         config.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration("/api/**", config);
         return new CorsWebFilter(source);
     }
 }

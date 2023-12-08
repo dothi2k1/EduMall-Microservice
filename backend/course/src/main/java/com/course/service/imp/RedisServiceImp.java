@@ -1,6 +1,8 @@
 package com.course.service.imp;
 
 import com.course.DTO.CourseDTo;
+import com.course.DTO.CourseResponse;
+import com.course.DTO.RouteDto;
 import com.course.model.Course;
 import com.course.service.RedisService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,7 +14,10 @@ import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -28,44 +33,63 @@ public class RedisServiceImp implements RedisService {
         template.getConnectionFactory().getConnection().serverCommands().flushAll();
     }
 
-    public void setValueRedis(String key, Object value,int ttl, TimeUnit t)throws JsonProcessingException {
+    @Override
+    public void lPush(String key, String o) {
+        System.out.println(template.opsForList().leftPush(key,o));
+    }
+
+    @Override
+    public String rPop(String key) {
+       return (String) template.opsForList().rightPop(key);
+    }
+
+    @Override
+    public boolean check(String key) throws NullPointerException{
+        return template.hasKey(key);
+    }
+
+    @Override
+    public void lPushAll(String key, List<?> list) {
+        System.out.println(template.opsForList().leftPushAll(key,list));
+    }
+
+    @Override
+    public ResponseEntity<?> getAllCourse(int page) {
+        try {
+            String json = (String) template.opsForValue().get("course_list");
+            List<Course> list =redisMapper.readValue(json, new TypeReference<List<Course>>() {
+            });
+            return ResponseEntity.ok(list.stream().limit(10).skip(page*9));
+        }
+        catch (Exception e){
+            System.out.println("no response");
+        }
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<?> getCourseById(long id) {
+        try {
+            String json = (String) template.opsForValue().get("course" + id);
+            Course c= redisMapper.convertValue(json, new TypeReference<Course>() {
+            });
+            String routJson=(String) template.opsForValue().get("route_course"+id);
+            List<RouteDto> routeDtos=redisMapper.readValue(routJson, new TypeReference<List<RouteDto>>() {
+            });
+            String reJson=(String) template.opsForValue().get("re_course"+id);
+            List<Course> relative=redisMapper.readValue(reJson, new TypeReference<List<Course>>() {
+            });
+            return ResponseEntity.ok(new CourseResponse(c,routeDtos,relative));
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
+    public void setValueRedis(String key, Object value,int ttl, TimeUnit t){
         if (ttl!=0)
             template.opsForValue().set(key, value,ttl,t);
         else template.opsForValue().set(key,value);
-    }
-
-    @Override
-    public ResponseEntity<?> getAllCourse(int page, String sort) {
-        String key="course"+page;
-        try {
-            Object json= template.opsForValue().get(key);
-            if (json!=null)
-            return ResponseEntity.ok(json);
-        }
-          catch (RedisConnectionFailureException e) {
-              System.out.println("Fail connect to redis");
-          }
-        catch (RuntimeException e){
-            System.out.println("No response");
-        }
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<?> relativeCourse(int page,long category) {
-        String key="reCourse"+page+category;
-        try {
-           Object json = template.opsForValue().get(key);
-           if (json!=null)
-            return ResponseEntity.ok(json);
-        }
-        catch (RedisConnectionFailureException e) {
-            System.out.println("Fail connect to redis");
-        }
-        catch (RuntimeException e){
-            System.out.println("No response");
-        }
-        return null;
     }
 
 

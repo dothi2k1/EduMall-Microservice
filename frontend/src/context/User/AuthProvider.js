@@ -1,6 +1,10 @@
 "use client"
 import React, { createContext, useState, useEffect } from "react";
 import Cookies from 'js-cookie';
+import axios from "axios";
+import axiosInstance from "@/utils/axios";
+import api, { Api } from "@/utils/api/api";
+import { bool } from "random-js";
 
 export const AuthContext = createContext();
 
@@ -20,59 +24,11 @@ const AuthProvider = ({ children }) => {
         }
     }, [isLoggedIn]);
 
-    const handleLogin = async (usernameOrEmail, password) => {
-        try {
-            const response = await fetch(process.env.DOMAIN + "/user/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ usernameOrEmail, password }),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                const token = data.token;
-                Cookies.set("token", token, {
-                    expires: 1, // Cookie expires in 1 day
-                    secure: true, // Send cookie only over HTTPS
-                    sameSite: "strict", // Restrict cookie to the same site
-                });
-                // Fetch user data from the server using the token
-                fetchUserData(token);
-                setErrorMessage("Đăng nhập thành công");
-                return true;
-            } else {
-                const data = await response.json();
-                setErrorMessage(data.message || "Đăng nhập không thành công. Vui lòng kiểm tra thông tin đăng nhập.");
-                return false;
-            }
-        } catch (error) {
-            console.error("Đã xảy ra lỗi:", error);
-            setErrorMessage("Đã xảy ra lỗi trong quá trình đăng nhập.");
-            return false;
-        }
-    };
+    
 
     const handleRegister = async (username, email, password) => {
         try {
-            const response = await fetch(process.env.DOMAIN + "/user/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ username, email, password }),
-            });
-
-            if (response.ok) {
-                setErrorMessage("Đăng ký thành công, đang đăng nhập")
-                const success = await handleLogin(username, password);
-                return success;
-            } else {
-                const data = await response.json();
-                setErrorMessage(data.message || "Đăng ký không thành công. Vui lòng kiểm tra thông tin đăng ký.");
-                return false;
-            }
+           
         } catch (error) {
             console.error("Đã xảy ra lỗi:", error);
             setErrorMessage("Đã xảy ra lỗi trong quá trình đăng ký.");
@@ -120,7 +76,7 @@ const AuthProvider = ({ children }) => {
                 username,
                 email,
                 errorMessage,
-                handleLogin,
+            
                 handleRegister,
                 handleLogout,
                 fetchUserData,

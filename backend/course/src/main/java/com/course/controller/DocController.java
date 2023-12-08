@@ -7,16 +7,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/sv2/doc")
+@RequestMapping("api/sv2")
 public class DocController {
     @Autowired
     DocumentServiceImp service;
-    @PostMapping("add-doc")
+    @PostMapping("private/doc/add-doc")
     ResponseEntity<?> addDocument(@RequestBody Document document){
         return service.addDoc(document);
     }
 
-    @GetMapping("get-list-document")
+    @GetMapping("/doc/get-list-document")
     ResponseEntity<?> getListDocument(@RequestParam long id){
         return service.getDocument(id);
     }

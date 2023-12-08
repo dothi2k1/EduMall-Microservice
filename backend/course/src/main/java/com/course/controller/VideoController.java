@@ -7,17 +7,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/sv2/video")
+@RequestMapping("api/sv2")
 public class VideoController {
     @Autowired
     VideoServiceImp service;
 
-    @PostMapping("add-video")
+    @PostMapping("private/video/add-video")
     ResponseEntity<?> addVideo(@RequestBody Video video){
         return service.addVideo(video);
     }
 
-    @GetMapping("get-list-video")
+    @GetMapping("/video/get-list-video")
     ResponseEntity<?> getListVideo(@RequestParam long id){
         return service.getVideo(id);
     }

@@ -7,17 +7,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/sv2/route")
+@RequestMapping("api/sv2")
 public class RouteController {
     @Autowired
     RouteServiceImp service;
     //route-start
-    @PostMapping("add-route")
+    @PostMapping("private/route/add-route")
     ResponseEntity<?> add(@RequestBody Route route){
         return service.addRoutes(route);
     }
 
-    @GetMapping("get-list-route")
+    @GetMapping("/route/get-list-route")
     ResponseEntity<?> getListRoute(@RequestParam long id){
         return service.getAllRoute(id);
     }

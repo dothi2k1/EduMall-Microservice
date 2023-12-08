@@ -4,11 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.ResponseEntity;
 
 import java.net.ConnectException;
+import java.util.List;
 
 
 public interface RedisService {
     void clear();
-    ResponseEntity<?> getAllCourse(int page,String sort) throws JsonProcessingException, Exception;
-    ResponseEntity<?> relativeCourse(int page,long category) throws JsonProcessingException;
-
+    void lPush(String key ,String o);
+    String rPop(String key);
+    boolean check(String key);
+    void lPushAll(String key,List<?> list);
+    ResponseEntity<?> getAllCourse(int page );
+    ResponseEntity<?> getCourseById(long id);
 }
