@@ -27,7 +27,7 @@ import java.util.Random;
 
 @RestController
 @RequestMapping("/api/sv1/auth")
-@CrossOrigin("*")
+
 public class AuthController {
     @Autowired
     UserServiceImp serviceImp;
@@ -61,14 +61,23 @@ public class AuthController {
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody FormLogin loginForm) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginForm.getUsername(), loginForm.getPassword())
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtProvider.generateToken(authentication);
-        UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();
-        return ResponseEntity.ok(
-                new JwtResponse( userPrincipal.getId(),userPrincipal.getUsername(), token, userPrincipal.getAuthorities()));
+        if (!serviceImp.existsByUsername(loginForm.getUsername()))
+        return ResponseEntity.status(400).body("Username not found");
+        try
+        {
+
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginForm.getUsername(), loginForm.getPassword())
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String token = jwtProvider.generateToken(authentication);
+            UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();
+            return ResponseEntity.ok(
+                    new JwtResponse(userPrincipal.getId(), userPrincipal.getUsername(), token, userPrincipal.getAuthorities()));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(400).body("Username or password was wrong");
+        }
     }
 
 

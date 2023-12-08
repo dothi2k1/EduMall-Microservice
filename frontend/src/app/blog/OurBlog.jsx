@@ -70,7 +70,7 @@ function OurBlog() {
         <h2 className="text-4xl lg:text-4xl font-semibold text-gray-600">Latest Post</h2>
 
         <div className="mt-10 grid grid-cols-1 gap-y-10 md:grid-cols-2 md:gap-x-6 lg:mt-16 lg:grid-cols-3 lg:gap-x-6 lg:gap-y-16">
-          {blog.map((b, index) => {
+          {blog?.map((b, index) => {
             return <CardLatestPost key={index} cardItem={b} />;
           })}
         </div>
@@ -80,7 +80,7 @@ function OurBlog() {
         <h2 className="text-4xl lg:text-4xl font-semibold text-gray-600">Most Popular Post</h2>
 
         <div className="mt-10 grid grid-cols-1 gap-y-10 md:grid-cols-2 md:gap-x-6 lg:mt-16 lg:grid-cols-3 lg:gap-x-6 lg:gap-y-16">
-          {blog.map((b, index) => {
+          {blog?.map((b, index) => {
             return <CardLatestPost key={index} cardItem={b} />;
           })}
         </div>

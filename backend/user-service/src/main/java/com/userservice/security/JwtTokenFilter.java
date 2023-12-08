@@ -32,30 +32,32 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         final String requestTokenHeader = request.getHeader("Authorization");
         String username = null;
         String jwtToken = null;
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            jwtToken = getJwt(request);
-            try {
-                username = jwtProvider.getUserFromJwt(jwtToken);
-            } catch (IllegalArgumentException e) {
-                logger.error("Can't find token JWT");
-            } catch (ExpiredJwtException e) {
-                logger.error("Token JWT had expired");
-            }
-        } else {
-            logger.warn("JWT Token is not type Bearer");
-        }
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            try {
-                if (jwtProvider.validateToken(jwtToken)) {
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
-                    usernamePasswordAuthenticationToken
-                            .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+        if (request.getRequestURI().contains("/private/")) {
+            if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+                jwtToken = getJwt(request);
+                try {
+                    username = jwtProvider.getUserFromJwt(jwtToken);
+                } catch (IllegalArgumentException e) {
+                    logger.error("Can't find token JWT");
+                } catch (ExpiredJwtException e) {
+                    logger.error("Token JWT had expired");
                 }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            } else {
+                logger.warn("JWT Token is not type Bearer");
+            }
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+                try {
+                    if (jwtProvider.validateToken(jwtToken)) {
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities());
+                        usernamePasswordAuthenticationToken
+                                .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
         chain.doFilter(request, response);
