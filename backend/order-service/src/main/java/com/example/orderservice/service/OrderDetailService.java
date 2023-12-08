@@ -1,8 +1,16 @@
 package com.example.orderservice.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.example.orderservice.dto.request.create.OrderCreateRequest;
+import com.example.orderservice.dto.response.orderdetail.OrderDetailResponse;
+import com.example.orderservice.entity.Order;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 
 public interface OrderDetailService {
+    ResponseEntity<?> updateOrderDetail(Long id);
+    Order deleteOrder(Long id);
+    ResponseEntity<?> getAll(int page,String sort);
+    List<OrderDetailResponse> findAllOrder(Integer courseId);
 }

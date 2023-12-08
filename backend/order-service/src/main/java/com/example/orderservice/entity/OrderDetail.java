@@ -28,8 +28,11 @@ public class OrderDetail {
     private Date startHour;
     @Column(name = "end_hour")
     private Date endHour;
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JsonBackReference
-    @JoinColumn(name = "order_id")
+    @Column(name = "price")
+    private double price;
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id",referencedColumnName = "id")
+    @JsonIgnore
+
     private Order order;
 }
