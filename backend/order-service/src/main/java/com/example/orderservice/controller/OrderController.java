@@ -16,18 +16,41 @@ public class OrderController {
 
     @PostMapping("/createOrder")
     ResponseEntity<?> createOrder(@RequestBody OrderCreateRequest request){
-        return orderService.createOrder(request);
+        return ResponseEntity.ok(orderService.createOrder(request));
     }
+    //thêm
+    @PutMapping("/updateOrder")
+    ResponseEntity<?> updateOrder(@RequestParam long id,@RequestParam Integer status){
+        return ResponseEntity.ok(orderService.updateStatus(id,status));
+    }
+    //sửa
+    @DeleteMapping("/delete")
+    ResponseEntity<?> deleteOrder(@RequestParam long id){
+        return ResponseEntity.ok(orderService.delete(id));
+    }
+    //xóa
 
-//    @PostMapping("/save")
-//    public ResponseEntity<Object> create(@RequestBody OrderCreateRequest request){
-//        DataResponse dataResponse = orderService.createOrder(request);
-//        return ResponseEntity.ok(dataResponse);
-//    }
+    @GetMapping("/getall")
+    ResponseEntity<?> getAll(@RequestParam int page,@RequestParam String sort){
+        return orderService.getAll(page,sort);
+    }
+    //lấy tất cả order
 
+    @GetMapping("/findById")
+    ResponseEntity<?> findById(@RequestParam Long id){
+        return orderService.findById(id);}
+    //tìm theo orderId
 
-    @GetMapping("/findById/{id}")
-    ResponseEntity<?> findById(@PathVariable(name = "id") Long id){
-        return orderService.findById(id);
+    @GetMapping("/findByStatus")
+    ResponseEntity<?> findByStatus(@RequestParam(required = false) Integer status){
+        return ResponseEntity.ok(orderService.findByStatus(status));}
+    //tìm theo trạng thái
+    @GetMapping("/countAll")
+    ResponseEntity<?> countAll(){
+        return ResponseEntity.ok(orderService.countAll());
+    }
+    @GetMapping("/getCountStatus")
+    ResponseEntity<?> getCountByStatus(@RequestParam int status){
+        return ResponseEntity.ok(orderService.getCountByStatus(status));
     }
 }

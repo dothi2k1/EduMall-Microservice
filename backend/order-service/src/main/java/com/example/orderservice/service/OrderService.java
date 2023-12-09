@@ -1,26 +1,20 @@
 package com.example.orderservice.service;
 
 import com.example.orderservice.dto.request.create.OrderCreateRequest;
-import com.example.orderservice.dto.request.update.OrderUpdateRequest;
+import com.example.orderservice.dto.response.OrderResponse;
 import com.example.orderservice.entity.Order;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface OrderService {
-    ResponseEntity<?> create(Order orderEntity);
-    ResponseEntity<?> save (Order orderEntity);
     ResponseEntity<?> createOrder(OrderCreateRequest request);
-    Order delete(long id);
-    ResponseEntity<?> update(long id, OrderUpdateRequest request);
-
-    ResponseEntity<?> findById(long id);
-
+    ResponseEntity<?> updateStatus(Long id,Integer status);
+    ResponseEntity<?> delete(Long id);
+    ResponseEntity<?> getAll(int page,String sort);
+    ResponseEntity<?> findById(Long id);
     List<Order> findByStatus(Integer status);
-
-
-    //order detail tìm theo id ứng với course id
-
-    //order
+    ResponseEntity<?> countAll();
+    ResponseEntity<?> getCountByStatus(int status);
 
 }
