@@ -5,9 +5,9 @@ import { AuthContext } from "@/context/User/AuthProvider";
 import Link from "next/link";
 import "animate.css";
 import { login } from "@/service/AuthService";
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 const Login = () => {
-  const {  errorMessage, isLoggedIn } = useContext(AuthContext);
+  const { errorMessage, isLoggedIn } = useContext(AuthContext);
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter(); // Create useRouter object
@@ -15,28 +15,29 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     login({ username: usernameOrEmail, password: password }).then(res => {
+      if (!res) toast("Lost connection", { autoClose: 2000, type: 'error', closeButton: false })
       if (res.status == 200) {
         window.localStorage.setItem("token", JSON.stringify(res))
         router.push('/')
       }
-      else toast(res.data,{autoClose: 2000, type: 'error',closeButton:false});
-    }).catch(err=> toast(err,{autoClose:2000,type:'error'}))
-      
-        
-    ;
-    
+      else toast(res.data, { autoClose: 2000, type: 'error', closeButton: false });
+    })
+
+
+      ;
+
   };
 
   return isLoggedIn ? (
     <p>You were logged in!</p>
   ) : (
-      <section className="bg-[url('/bgtim.webp')] bg-cover">
-      <div className=" animate__animated animate__fadeIn flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <section className="bg-[url('/bgtim.webp')] bg-cover pt-12">
+      <div className=" animate__animated animate__fadeIn flex flex-col items-center justify-center px-4 mx-auto md:h-screen lg:py-0">
         <div className="max-w-screen-sm	 bg-white bg-opacity-80 rounded-lg shadow dark:border md:mt-0 sm:max-w-[1000px] xl:p-0 dark:bg-gray-800 dark:border-gray-700 lg:flex">
-          <div className="w-full p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h3 className="text-3xl text-center font-bold leading-tight tracking-tight text-emerald-500  dark:text-white">
+          <div className="w-full p-4 space-y-1 ">
+            <h3 className="text-1xl text-center font-bold leading-tight tracking-tight text-emerald-500  dark:text-white">
               <p>Welcome to</p>
-              <p className="lg:text-6xl == text-violet-600">EDUMALL</p>
+              <p className="lg:text-4xl == text-violet-600">EDUMALL</p>
             </h3>
             {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
             <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit} method="post">
