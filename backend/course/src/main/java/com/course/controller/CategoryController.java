@@ -3,7 +3,6 @@ package com.course.controller;
 import com.course.model.Category;
 import com.course.service.imp.CategoryServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
