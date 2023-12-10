@@ -53,8 +53,10 @@ public class OrderServiceImpl implements OrderService {
         if (optionalOrder.isPresent()) {
             Order orderUpdate = optionalOrder.get();
             if (status == 1 || status == 2){
+                OrderDetail orderDetail = orderDetailRepository.getReferenceById(id);
                 orderUpdate.setStatus(status);
                 orderUpdate.setUpdatedDate(new Date());
+                orderDetailRepository.save(orderDetail);
                 orderRepository.save(orderUpdate);
             }else if(status == 3){
                 orderUpdate.setStatus(status);
@@ -117,5 +119,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResponseEntity<?> getCountByStatus(int status) {
         return ResponseEntity.ok(orderRepository.countByStatus(status));
+    }
+
+    @Override
+    public ResponseEntity<?> studentCourse(int uid) {
+        return ResponseEntity.ok(orderRepository.studentCourse(uid));
     }
 }

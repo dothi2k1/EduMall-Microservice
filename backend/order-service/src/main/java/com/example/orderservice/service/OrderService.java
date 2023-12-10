@@ -17,4 +17,6 @@ public interface OrderService {
     ResponseEntity<?> countAll();
     ResponseEntity<?> getCountByStatus(int status);
 
+    ResponseEntity<?> studentCourse(int uid);
+
 }

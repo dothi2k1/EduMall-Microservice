@@ -53,4 +53,9 @@ public class OrderController {
     ResponseEntity<?> getCountByStatus(@RequestParam int status){
         return ResponseEntity.ok(orderService.getCountByStatus(status));
     }
+
+    @GetMapping("/studentCourse")
+    ResponseEntity<?> studentCourse(@RequestParam int uid){
+        return ResponseEntity.ok(orderService.studentCourse(uid));
+    }
 }
