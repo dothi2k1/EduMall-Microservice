@@ -4,11 +4,13 @@ import com.example.orderservice.dto.request.create.OrderCreateRequest;
 import com.example.orderservice.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/order")
+@RequestMapping("api/order")
 public class OrderController {
 
     @Autowired
@@ -19,6 +21,17 @@ public class OrderController {
         return ResponseEntity.ok(orderService.createOrder(request));
     }
     //thêm
+
+    @PostMapping("/distance-order")
+    ResponseEntity<?> distanceOrder(@RequestBody OrderCreateRequest request){
+        return ResponseEntity.ok(orderService.orderDistanceLearning(request));
+    }
+
+    @PutMapping("/accept")
+    ResponseEntity<?> acceptToClass(@RequestParam long id,@RequestParam int status){
+        return ResponseEntity.ok(orderService.acceptToClass(id,status));
+    }
+
     @PutMapping("/updateOrder")
     ResponseEntity<?> updateOrder(@RequestParam long id,@RequestParam Integer status){
         return ResponseEntity.ok(orderService.updateStatus(id,status));
@@ -36,21 +49,35 @@ public class OrderController {
     }
     //lấy tất cả order
 
-    @GetMapping("/findById")
-    ResponseEntity<?> findById(@RequestParam Long id){
-        return orderService.findById(id);}
+    @GetMapping("/find-by-id")
+    ResponseEntity<?> findById(@RequestParam(required = false) long id){
+        return orderService.findById( id);
+    }
     //tìm theo orderId
 
     @GetMapping("/findByStatus")
-    ResponseEntity<?> findByStatus(@RequestParam(required = false) Integer status){
-        return ResponseEntity.ok(orderService.findByStatus(status));}
+    ResponseEntity<?> findByStatus(@RequestParam int status){
+        return ResponseEntity.ok(orderService.findByStatus(status));
+    }
+
     //tìm theo trạng thái
     @GetMapping("/countAll")
     ResponseEntity<?> countAll(){
-        return ResponseEntity.ok(orderService.countAll());
+        return (orderService.countAll());
     }
+
     @GetMapping("/getCountStatus")
     ResponseEntity<?> getCountByStatus(@RequestParam int status){
-        return ResponseEntity.ok(orderService.getCountByStatus(status));
+        return (orderService.getCountByStatus(status));
+    }
+
+    @GetMapping("/pivate/statistic")
+    ResponseEntity<?> getStatistic(){
+        return orderService.statistic();
+    }
+
+    @GetMapping("get-own")
+    ResponseEntity<?> getBoughtList(@RequestParam long uid,@RequestParam int page){
+        return orderService.getOwnOrder(uid, page);
     }
 }

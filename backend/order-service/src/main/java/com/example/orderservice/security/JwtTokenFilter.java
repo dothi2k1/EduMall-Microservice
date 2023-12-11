@@ -38,7 +38,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         final String requestTokenHeader = request.getHeader("Authorization");
         String username = null;
         String jwtToken = null;
-        if (request.getRequestURI().contains("/private/")) {
+        if (request.getRequestURI().contains("private")) {
             if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
                 jwtToken = getJwt(request);
                 try {
