@@ -24,7 +24,8 @@ public class OrderController {
 
     @PostMapping("/distance-order")
     ResponseEntity<?> distanceOrder(@RequestBody OrderCreateRequest request){
-        return ResponseEntity.ok(orderService.orderDistanceLearning(request));
+        String s=orderService.orderDistanceLearning(request);
+        return ResponseEntity.ok(s);
     }
 
     @PutMapping("/accept")

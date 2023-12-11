@@ -94,18 +94,19 @@ public class OrderServiceImpl implements OrderService {
         ExecutorService service= Executors.newFixedThreadPool(2);
         String[] rs = new String[1];
         Order finalOrder = orderRepository.save(order);
+
+        service.execute(new Runnable() {
+            @Override
+            public void run() {
+                sendMail(wait);
+            }
+        });
         service.execute(new Runnable() {
             @Override
             public void run() {
                 if (finalOrder.getId() != null) {
                     rs[0] ="Create success";
                 }
-            }
-        });
-        service.execute(new Runnable() {
-            @Override
-            public void run() {
-                sendMail(wait);
             }
         });
         service.shutdown();

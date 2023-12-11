@@ -13,7 +13,7 @@ public class UserController {
     @Autowired
     UserServiceImp serviceImp;
 
-    @GetMapping("/get-all")
+    @GetMapping("/private/get-all")
     public ResponseEntity<?> getAll(@RequestParam int page,@RequestParam String sort){
         return serviceImp.getAll(page,sort);
     }
