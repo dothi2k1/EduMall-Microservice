@@ -1,6 +1,6 @@
 package com.userservice.security;
 
-import com.userservice.model.user_principle.UserPrinciple;
+import com.userservice.user_principle.UserPrinciple;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -11,11 +11,14 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtProvider {
     public static final Logger log= LoggerFactory.getLogger(JwtProvider.class);
-    private final String JWT_SECRET="secretaaaaaaaaaaaaahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhaaaaaaaaaaaaaaatttttttttttttttttttttttttttttttttt";
+    private final String JWT_SECRET="secretaaaaaaaaaaaaahhhhhhhhh" +
+            "hhhhhhhhhhhhhhhhhhhhhaaaaaaaaaaaaaaatttttttttttttttttttttttttttttttttt";
     private final long JWT_EXPIRATION=86400000L;
 
     //create token from user
@@ -23,9 +26,14 @@ public class JwtProvider {
         Date now = new Date();
         Date expiryDate=new Date(now.getTime()+JWT_EXPIRATION);
         UserPrinciple userPrinciple=(UserPrinciple) authentication.getPrincipal();
+        List<String> roles = userPrinciple.getAuthorities().stream()
+                .map(authority -> authority.getAuthority())
+                .collect(Collectors.toList());
         //create jwt
         return Jwts.builder()
+                .claim("id",userPrinciple.getId().toString())
                 .setSubject(userPrinciple.getUsername())
+                .claim("roles",roles)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith( key(),SignatureAlgorithm.HS512)
@@ -36,17 +44,17 @@ public class JwtProvider {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(JWT_SECRET));
     }
     //get user from jwt
-    public Claims getUserFromJwt(String token){
+    public String getUserFromJwt(String token){
         Claims claims=Jwts.parserBuilder()
                 .setSigningKey(key())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        return claims;
+        return claims.getSubject();
     }
-    public boolean validateToken(String authToken) throws Exception {
+    public boolean validateToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(authToken);
+            Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(authToken);
             return true;
         } catch (MalformedJwtException ex) {
             log.error("Invalid format jwt->Message:{}",ex);
@@ -59,6 +67,11 @@ public class JwtProvider {
         } catch (IllegalArgumentException e){
             log.error("jwt class is empty->Message:{}",e);
         }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }
         return false;
     }
+
+
 }

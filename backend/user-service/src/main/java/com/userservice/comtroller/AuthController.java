@@ -1,13 +1,12 @@
 package com.userservice.comtroller;
 
-import com.userservice.model.DTO.FormLogin;
-import com.userservice.model.DTO.FormReg;
-import com.userservice.model.DTO.MyRespon;
+import com.userservice.DTO.FormLogin;
+import com.userservice.DTO.FormReg;
+import com.userservice.DTO.MyRespon;
 import com.userservice.model.User;
 import com.userservice.model.request.PasswordResetRequest;
-import com.userservice.model.user_principle.UserPrinciple;
+import com.userservice.user_principle.UserPrinciple;
 import com.userservice.password_reset.IPasswordResetService;
-import com.userservice.password_reset.PasswordResetService;
 import com.userservice.security.JwtProvider;
 import com.userservice.security.JwtResponse;
 import com.userservice.service.implement.UserServiceImp;
@@ -27,8 +26,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Random;
 
 @RestController
-@RequestMapping("user")
-@CrossOrigin("*")
+@RequestMapping("/api/sv1/auth")
+
 public class AuthController {
     @Autowired
     UserServiceImp serviceImp;
@@ -62,20 +61,26 @@ public class AuthController {
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody FormLogin loginForm) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginForm.getUsername(), loginForm.getPassword())
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtProvider.generateToken(authentication);
-        UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();
-        return ResponseEntity.ok(
-                new JwtResponse(userPrincipal.getUsername(), token, userPrincipal.getAuthorities()));
+        if (!serviceImp.existsByUsername(loginForm.getUsername()))
+        return ResponseEntity.status(400).body("Username not found");
+        try
+        {
+
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginForm.getUsername(), loginForm.getPassword())
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String token = jwtProvider.generateToken(authentication);
+            UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();
+            return ResponseEntity.ok(
+                    new JwtResponse(userPrincipal.getId(), userPrincipal.getUsername(), token, userPrincipal.getAuthorities()));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(400).body("Username or password was wrong");
+        }
     }
 
-    @GetMapping("/getall")
-    ResponseEntity<?> getAll(@RequestParam int page,@RequestParam String sort){
-        return serviceImp.getAll(page,sort);
-    }
+
     @PostMapping(value = "/forget-password")
     public ResponseEntity<String> forgotPass(@RequestBody PasswordResetRequest resetRequest, HttpServletRequest request) {
         String token = "";
@@ -85,16 +90,16 @@ public class AuthController {
         resetPassword.generatePassReset(user, token);
         SimpleMailMessage message=new SimpleMailMessage();
         message.setTo("aloalo1981998@gmail.com");
-        message.setSubject("Click to reset your password");
-        message.setText(token);
+        message.setSubject("Password reset code");
+        message.setText("Copy this code and paste into "+token);
         javaMailSender.send(message);
         return ResponseEntity.ok("A verified code was been sent to your email. Please check your email!");
     }
     @PostMapping(value = "/reset-password")
-    public ResponseEntity<?> resetPass(@RequestBody PasswordResetRequest request, @RequestParam("token") String token){
-        if (!resetPassword.validateToken(token).equalsIgnoreCase("valid"))
+    public ResponseEntity<?> resetPass(@RequestBody PasswordResetRequest request){
+        if (!resetPassword.validateToken(request.getToken()).equalsIgnoreCase("valid"))
             return ResponseEntity.ok("Invalid code");
-        User user= resetPassword.findByToken(token);
+        User user= resetPassword.findByToken(request.getToken());
         if (user!= null)
             serviceImp.resetPassword(user,request.getPassword());
         return ResponseEntity.ok("password reset successfully");

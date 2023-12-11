@@ -1,7 +1,15 @@
+import './loading.css'
 export default function Loading() {
   return (
-    <>
-    <h1>Đang load đợi xíu nhé...</h1>
-    </>
-  )
+    <div style={{display:'flex',flexDirection:'column',width:"100%",alignItems:'center',paddingTop:'20%'}}>
+      <div class='btnMore'>
+        <div class='ellipsis'>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  );
 }

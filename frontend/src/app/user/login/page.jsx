@@ -4,36 +4,43 @@ import { useRouter } from "next/navigation"; // Import useRouter
 import { AuthContext } from "@/context/User/AuthProvider";
 import Link from "next/link";
 import "animate.css";
-
+import { login } from "@/service/AuthService";
+import { toast } from "react-toastify";
 const Login = () => {
-  const { handleLogin, errorMessage, isLoggedIn } = useContext(AuthContext);
+  const { errorMessage, isLoggedIn } = useContext(AuthContext);
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter(); // Create useRouter object
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const success = await handleLogin(usernameOrEmail, password);
-    console.log(success);
+    login({ username: usernameOrEmail, password: password }).then(res => {
+      if (!res) toast("Lost connection", { autoClose: 2000, type: 'error', closeButton: false })
+      if (res.status == 200) {
+        window.localStorage.setItem("token", JSON.stringify(res))
+        router.push('/')
+      }
+      else toast(res.data, { autoClose: 2000, type: 'error', closeButton: false });
+    })
 
-    if (success) {
-      router.push("/"); // Redirect to "use client" page on successful login
-    }
+
+      ;
+
   };
 
   return isLoggedIn ? (
-    <p>Bạn đã login rồi</p>
+    <p>You were logged in!</p>
   ) : (
-    <section className="bg-[url('/bgtim.webp')] bg-cover">
-      <div className=" animate__animated animate__fadeIn flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white bg-opacity-80 rounded-lg shadow dark:border md:mt-0 sm:max-w-[1000px] xl:p-0 dark:bg-gray-800 dark:border-gray-700 lg:flex">
-          <div className="w-full p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h3 className="text-3xl font-bold leading-tight tracking-tight text-emerald-500  dark:text-white">
+    <section className="bg-[url('/bgtim.webp')] bg-cover pt-12">
+      <div className=" animate__animated animate__fadeIn flex flex-col items-center justify-center px-4 mx-auto md:h-screen lg:py-0">
+        <div className="max-w-screen-sm	 bg-white bg-opacity-80 rounded-lg shadow dark:border md:mt-0 sm:max-w-[1000px] xl:p-0 dark:bg-gray-800 dark:border-gray-700 lg:flex">
+          <div className="w-full p-4 space-y-1 ">
+            <h3 className="text-1xl text-center font-bold leading-tight tracking-tight text-emerald-500  dark:text-white">
               <p>Welcome to</p>
-              <p className="lg:text-6xl ==">ATOM SHOP</p>
+              <p className="lg:text-4xl == text-violet-600">EDUMALL</p>
             </h3>
             {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
-            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit} method="post">
               <div>
                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                   Email or UserName
@@ -162,7 +169,7 @@ const Login = () => {
               </p>
             </form>
           </div>
-          <img className="hidden lg:block w-1/2 object-scale-down" src="/login.png" alt="" />
+          {/* <img className="hidden lg:block w-1/2 object-scale-down" src="/login.png" alt="" /> */}
         </div>
       </div>
     </section>

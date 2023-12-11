@@ -1,6 +1,6 @@
 package com.userservice.service;
 
-import com.userservice.model.DTO.FormReg;
+import com.userservice.DTO.FormReg;
 import com.userservice.model.User;
 import org.springframework.http.ResponseEntity;
 
@@ -12,6 +12,7 @@ public interface UserService {
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
     User findByEmail(String email);
-
     ResponseEntity<?> activeToLecture(long id);
+    ResponseEntity<?> summary();
+    ResponseEntity<?> disableAcc(long id);
 }
