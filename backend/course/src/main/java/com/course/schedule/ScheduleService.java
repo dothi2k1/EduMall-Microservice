@@ -68,7 +68,7 @@ public class ScheduleService {
     }
 
 
-    @Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
+    @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.DAYS)
     void doProcess() throws JsonProcessingException {
         System.out.println("do task");
         List<Course> list = dao.getList(

@@ -19,7 +19,6 @@ public class UserController {
     }
 
     @PutMapping("/active")
-    @Secured("ADMIN")
     public ResponseEntity<?> upgradeToLecture(@RequestParam long id){
         return serviceImp.activeToLecture(id);
     }
