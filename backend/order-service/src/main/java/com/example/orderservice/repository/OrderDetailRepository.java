@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface OrderDetailRepository extends JpaRepository<OrderDetail, Integer> {
+public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
 
     @Query(value = "SELECT order_detail.id AS id, order_detail.order_id AS orderId, order_detail.course_id AS courseId, " +
             "order_detail.start_at AS startAt, order_detail.end_at AS endAt, course.title AS title " +
@@ -19,8 +19,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Intege
             "LEFT JOIN course ON course.id = order_detail.course_id " +
             "WHERE :courseId IS NULL OR order_detail.course_id = :courseId", nativeQuery = true)
     List<OrderDetailResponse> findAllOrder(@Param("courseId") Integer courseId);
-
-
-
+    @Query(value = "select sum(price) from OrderDetail where order.id=:oid")
+    Double getAmount(@Param("oid")long oid);
 
 }

@@ -18,7 +18,7 @@ export default function Home() {
     <>
       <NavBarReponsive />
       <TransitionEffect />
-      <div className="container mx-auto ">
+      <div className="container mx-auto pt-12">
         {/* <HeroTitle /> */}
         <Banner />
         <Category />

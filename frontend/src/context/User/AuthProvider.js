@@ -1,10 +1,6 @@
 "use client"
 import React, { createContext, useState, useEffect } from "react";
 import Cookies from 'js-cookie';
-import axios from "axios";
-import axiosInstance from "@/utils/axios";
-import api, { Api } from "@/utils/api/api";
-import { bool } from "random-js";
 
 export const AuthContext = createContext();
 
