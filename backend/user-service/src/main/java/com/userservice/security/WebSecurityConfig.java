@@ -57,9 +57,11 @@ public class WebSecurityConfig {
         http.cors(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable).
                 addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(new AntPathRequestMatcher("/api/sv1/auth/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/sv1/auth/**"),
+                                new AntPathRequestMatcher("/api/sv1/feedback/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/sv1/user/**")).hasAnyAuthority("ADMIN")
-                        .anyRequest().authenticated())
+                        .anyRequest().authenticated()
+                )
                 .formLogin(form->form.disable())
                 .exceptionHandling(ex->ex.authenticationEntryPoint(jwtEntryPoint))
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
