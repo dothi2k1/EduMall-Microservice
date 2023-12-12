@@ -5,7 +5,11 @@ import Cookies from 'js-cookie';
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(() => {
+        let log =window.localStorage.getItem('isLoggedIn');
+        if (log) return true;
+        return false
+    });
     const [username, setUsername] = useState("");
     const [userId, setUserId] = useState("");
     const [user, setUser] = useState("");
