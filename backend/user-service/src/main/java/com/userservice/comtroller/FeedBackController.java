@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/sv1/feedback")
-@Secured("")
 @CrossOrigin("*")
 public class FeedBackController {
     @Autowired

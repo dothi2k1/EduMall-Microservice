@@ -23,7 +23,7 @@ public class FeedBack {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
-    private Date create_at;
-    private Date update_at;
+    private Date createat;
+    private Date updateat;
     private Long od_id;
 }
