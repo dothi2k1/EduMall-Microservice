@@ -1,17 +1,18 @@
 'use client';
 import React, { useState, useEffect, useContext } from 'react';
-import { useRouter } from 'next/navigation';
 import { CartContext } from '../../context/Products/cartContext';
 import jwtDecode from 'jwt-decode';
 import Link from 'next/link';
+import './navbar.css'
 import { AuthContext } from '@/context/User/AuthProvider';
 import SearchBar from '../SearchBar';
 import DropDown from './DropDown';
+import Image from 'next/image';
 
 export default function NavBar() {
   const { isLoggedIn, username, user, handleLogout } = useContext(AuthContext);
 
-  const [openNav, setOpenNav] = useState('l-[-200px]');
+  const [openNav, setOpenNav] = useState("translate-x-[-100%]");
   const { cartItems, calculateTotalPrice, totalProducts, clearCartItems } = useContext(CartContext);
   const [dropDown, setDropDown] = useState(false);
 
@@ -39,17 +40,17 @@ export default function NavBar() {
   return (
     <>
 
-      <div className='fixed top-0 left-0 w-full z-10 bg-gray-300 bg-opacity-25'>
+      <div className='fixed top-0 left-0 w-full z-10 bg-gray-100 bg-opacity-75'>
         <nav
           className=" flex-no-wrap relative flex w-full items-center 
             justify-between 
-            py-2 shadow-md shadow-black/5
+             shadow-md shadow-black/5
             dark:shadow-black/10 lg:flex-wrap
-            lg:justify-start lg:py-4">
-          <div className="flex w-full flex-wrap items-center justify-between px-3">
+            lg:justify-start h-[40px] lg:h-[70px]">
+          <div className="flex w-full lg:flex-wrap justify-between px-3">
 
             <button
-              onClick={() => setOpenNav(0)}
+              onClick={() => setOpenNav('translate-x-[0%]')}
               className="block border-0 bg-transparent px-2 text-black-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-black-200 lg:hidden"
               type="button"
               data-te-collapse-init
@@ -73,19 +74,19 @@ export default function NavBar() {
             </button>
 
             <div
-              className="!visible md:hidden flex-grow basis-[100%] items-center lg:!flex lg:basis-auto"
+              className="flex-grow navlink items-center lg:flex"
               id="navbarSupportedContent12"
               data-te-collapse-item>
               {/* logo */}
               <a
-                className="mb-4 ml-2 mr-5 mt-3 flex items-center  hover:text-white  dark:text-black-200  lg:mb-0 lg:mt-0"
+                className="mb-4 ml-2 mr-5 mt-3 flex items-center dark:text-black-200  lg:mb-0 lg:mt-0"
                 href="/">
                 <h1 className='text-2xl font-black [text-shadow:1px_1px_2px_var(--tw-shadow-color)] shadow-gray-600'>EDUMALL</h1>
               </a>
               {/* end logo */}
 
               {/* nav link full*/}
-              <div className="relative mr-3 md:mr-0 hidden md:block px-4">
+              <div className="relative mr-3 md:mr-0 px-4">
                 <div className="absolute inset-y-0 left-3 pl-3 flex items-center pointer-events-none">
                   <svg className="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
                 </div>
@@ -105,53 +106,6 @@ export default function NavBar() {
                 ))}
               </ul>
               {/* nav link */}
-            </div>
-
-            <div className={`transition duration-500 ease-in-out left-0 translate-x-[${openNav}px]  lg:hidden fixed top-0 bg-white border-r-1 border border-black-900 z-11 w-[200px] h-full`}
-            >
-              {/* nav link mobile*/}
-              <div className='w-full flex flex-row justify-between'>
-                <div>
-
-                </div>
-                <div>
-                  <button
-                    onClick={() => setOpenNav(-300)}
-                    className="block border-0 bg-transparent px-2 pt-2 text-black-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-black-200 lg:hidden"
-                    type="button"
-                    data-te-collapse-init
-                    data-te-target="#navbarSupportedContent12"
-                    aria-controls="navbarSupportedContent12"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-
-                    <span className="p-2">
-                      <i className="fa-solid fa-xmark"></i>
-                    </span>
-                  </button>
-                </div>
-              </div>
-              <div className="relative  p-2 w-[200px]">
-                <div className="absolute inset-y-0 left-3 pl-3 flex items-center pointer-events-none">
-                  <svg className="w-[15px] text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
-                </div>
-                <input type="text" id="email-adress-icon" className="bg-gray-100 bg-opacity-25 focus:bg-white border border-gray-300 text-gray-900 sm:text-sm outline-0	 rounded-lg focus:ring-blue-500 focus:border-blue-300 block w-full pl-10 p-2" placeholder="Search..." />
-              </div>
-              <ul
-                className="list-style-none p-2 w-[200px]"
-                data-te-navbar-nav-ref>
-                {navItem.map((item, i) => (
-                  <li className="mb-4 w-[200px]" data-te-nav-item-ref key={i}>
-                    <a className="text-sm hover:text-black-400 hover:[text-shadow:1px_1px_2px_var(--tw-shadow-color)] shadow-gray-600 dark:text-black-200"
-                      href={item.link}
-                      data-te-nav-link-ref
-                    >{item.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-
-              {/* nav link mobile*/}
             </div>
             <div className="relative flex items-center ">
               <a
@@ -210,29 +164,97 @@ export default function NavBar() {
                 </a>
               </div>
 
+              {isLoggedIn ? <div className="group inline-block relative">
+                <a
+                  className="bg-gray-300 text-gray-700 font-semibold rounded-full inline-flex items-center"
+                >
+                  <Image alt="avatar" width={30} height={40} className="rounded-full lg:h-[50px] lg:w-[50px] w-[30px] h-[30px]" src='/bgtim.webp' style={{ borderRadius: '50%' }} />
+                </a>
+                <ul className="absolute hidden lg:w-[200px] w-[120px] bg-white rounded shadow shadow-[rgba(0,0,3,0.3)_0_0_3px_3px] text-gray-700 pt-1 group-hover:block right-[3px] top-[45px]">
+                  <li className="">
+                    <a
+                      className="rounded-t bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                      href="#"
+                    >Profile</a>
 
-              <div className=" peer-hover:flex hover:flex
-                  w-[200px]
-                    flex-col bg-white drop-shadow-lg">
-                <button className="peer px-5 py-2 bg-green-600 hover:bg-green-700 text-white">Dropdown</button>
-                <div >
-                  <a className="px-5 py-3 hover:bg-gray-200" href="#">About Us</a>
-                  <a className="px-5 py-3 hover:bg-gray-200" href="#">Contact Us</a>
-                  <a className="px-5 py-3 hover:bg-gray-200" href="#">Privacy Policy</a>
+                  </li>
+                  <li className="">
+                    <a
+                      className="bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                      href="#"
+                    >My learning</a>
+
+                  </li>
+                  <li className="">
+                    <a id='loginbtn'
+                      className="rounded-b bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+                      href="#"
+                    >Log out
+                    </a>
+                    <a href='/user/register' className='lg:hidden className="rounded-b bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"'>
+                      <i className="fa-solid fa-right-from-bracket px-2" style={{ color: "#ff0000" }} /></a>
+
+                  </li>
+                </ul>
+              </div> : <div className='flex items-center justify-center' >
+                <div className="border w-fit rounded-xl m-3 shadow-sm" id='loginbtn'>
+                    <a href='/user/login'  className="px-4 py-2 rounded-l-xl text-white m-0 bg-blue-500 hover:bg-red-600 transition">Login</a>
+                    <a href='/user/register' className="px-4 py-2 rounded-r-xl bg-neutral-50 hover:bg-neutral-100 transition">Register</a>
+                </div>
+                  <a href="/user/login" className=' lg:hidden'><i className="fa-solid fa-right-to-bracket" style={{ color: "#000" }} /></a>
+              </div>}
+              <div className={`transition duration-500 ease-in-out left-0 ${openNav} lg:hidden fixed top-0 bg-white border-r-1 border border-black-900 z-1000 w-[200px] h-full`}
+            >
+              {/* nav link mobile*/}
+              <div className='w-full flex flex-row justify-between'>
+                <div>
+
+                </div>
+                <div>
+                  <button
+                    onClick={() => setOpenNav('translate-x-[-100%]')}
+                    className="block border-0 bg-transparent px-2 pt-2 text-black-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-black-200 lg:hidden"
+                    type="button"
+                    data-te-collapse-init
+                    data-te-target="#navbarSupportedContent12"
+                    aria-controls="navbarSupportedContent12"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+
+                    <span className="p-2">
+                      <i className="fa-solid fa-xmark"></i>
+                    </span>
+                  </button>
                 </div>
               </div>
+              <div className="relative  p-2 w-[200px]">
+                <div className="absolute inset-y-0 left-3 pl-3 flex items-center pointer-events-none">
+                  <svg className="w-[15px] text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                </div>
+                <input type="text" id="email-adress-icon" className="bg-gray-100 bg-opacity-25 focus:bg-white border border-gray-300 text-gray-900 sm:text-sm outline-0	 rounded-lg focus:ring-blue-500 focus:border-blue-300 block w-full pl-10 p-2" placeholder="Search..." />
+              </div>
+              <ul
+                className="list-style-none p-2 w-[200px]"
+                data-te-navbar-nav-ref>
+                {navItem.map((item, i) => (
+                  <li className="mb-4 w-[200px]" data-te-nav-item-ref key={i}>
+                    <a className="text-sm hover:text-black-400 hover:[text-shadow:1px_1px_2px_var(--tw-shadow-color)] shadow-gray-600 dark:text-black-200"
+                      href={item.link}
+                      data-te-nav-link-ref
+                    >{item.name}
+                    </a>
+                  </li>
+                ))}
+              
+              </ul>
+
+              {/* nav link mobile*/}
+            </div>
+
             </div>
           </div>
         </nav>
-        {/* <svg
-                  className="mr-2 fill-slate-600 group-hover:fill-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="1em"
-                  viewBox="0 0 448 512"
-                >
-                  <path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" />
-                </svg> */}
-        {/* <div className="h-[77.3px]"></div> */}
+
       </div>
     </>
   );

@@ -88,9 +88,7 @@ export default function Products() {
 
   return (
     <>
-      <Title page={"Product"} Title={"Our Product"} />
-
-      <div className="container mx-auto px-5">
+      <div className="container mx-auto px-5 pt-[55px] lg:pt-[75px]" >
         <div className="pb-20 pt-16 lg:pb-36 lg:pt-20 ">
           <div className="flex flex-col space-y-14 lg:flex-row lg:space-x-20 lg:space-y-0">
             <div>

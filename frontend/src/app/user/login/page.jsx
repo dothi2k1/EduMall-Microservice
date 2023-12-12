@@ -11,7 +11,10 @@ const Login = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter(); // Create useRouter object
-
+  
+  useEffect(() => {
+    if (isLoggedIn)  router.push('/')
+  },[])
   const handleSubmit = (e) => {
     e.preventDefault();
     login({ username: usernameOrEmail, password: password }).then(res => {
@@ -28,28 +31,26 @@ const Login = () => {
 
   };
 
-  return isLoggedIn ? (
-    <p>You were logged in!</p>
-  ) : (
-    <section className="bg-[url('/bgtim.webp')] bg-cover pt-12">
+  return  (
+    <section className="bg-[url('/bgtim.webp')] bg-cover  pt-[55px] lg:pt-[75px] pb-7">
       <div className=" animate__animated animate__fadeIn flex flex-col items-center justify-center px-4 mx-auto md:h-screen lg:py-0">
-        <div className="max-w-screen-sm	 bg-white bg-opacity-80 rounded-lg shadow dark:border md:mt-0 sm:max-w-[1000px] xl:p-0 dark:bg-gray-800 dark:border-gray-700 lg:flex">
+        <div className="max-w-screen-sm	 bg-white bg-opacity-80 rounded-lg shadow dark:border md:mt-0 sm:max-w-[1000px] xl:p-0  lg:flex">
           <div className="w-full p-4 space-y-1 ">
-            <h3 className="text-1xl text-center font-bold leading-tight tracking-tight text-emerald-500  dark:text-white">
+            <h3 className="text-1xl text-center font-bold leading-tight tracking-tight text-emerald-500">
               <p>Welcome to</p>
               <p className="lg:text-4xl == text-violet-600">EDUMALL</p>
             </h3>
             {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
             <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit} method="post">
               <div>
-                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Email or UserName
+                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">
+                UserName
                 </label>
                 <input
                   type="text"
                   name="email"
                   id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-white border border-gray-300 text-gray-900 outline-0 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-700 block w-full p-2.5"
                   placeholder="Enter Username Or Email Address"
                   required=""
                   value={usernameOrEmail}
@@ -57,7 +58,7 @@ const Login = () => {
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 ">
                   Password
                 </label>
                 <input
@@ -65,7 +66,7 @@ const Login = () => {
                   name="password"
                   id="password"
                   placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-white border border-gray-300 text-gray-900 outline-0 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-blue-700 block w-full p-2.5"
                   required=""
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -78,13 +79,13 @@ const Login = () => {
                       id="remember"
                       aria-describedby="remember"
                       type="checkbox"
-                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                      className="w-4 h-4 border border-gray-300 outline-0 rounded focus:ring-3 focus:bg-white "
                       required=""
                     />
                   </div>
                   <div className="ml-3 text-sm">
-                    <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">
-                      Ghi nhớ
+                    <label htmlFor="remember" className="text-gray-500">
+                      Remember username
                     </label>
                   </div>
                 </div>
@@ -162,14 +163,13 @@ const Login = () => {
                 Do not have an account?{" "}
                 <Link
                   href="/user/register"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  className="font-medium text-blue-700 hover:[text-shadow:1px_1px_2px_var(--tw-shadow-color)] shadow-blue-700"
                 >
                   Register now
                 </Link>
               </p>
             </form>
           </div>
-          {/* <img className="hidden lg:block w-1/2 object-scale-down" src="/login.png" alt="" /> */}
         </div>
       </div>
     </section>
