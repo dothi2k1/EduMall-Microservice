@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"; // Import useRouter
 import { AuthContext } from "@/context/User/AuthProvider";
 import Link from "next/link";
 import "animate.css";
+import './login.css'
 import { login } from "@/service/AuthService";
 import { toast } from "react-toastify";
 const Login = () => {
@@ -32,8 +33,8 @@ const Login = () => {
   };
 
   return  (
-    <section className="bg-[url('/bgtim.webp')] bg-cover  pt-[55px] lg:pt-[75px] pb-7">
-      <div className=" animate__animated animate__fadeIn flex flex-col items-center justify-center px-4 mx-auto md:h-screen lg:py-0">
+    <section className="bg-[url('/bgtim.webp')] bg-cover pt-[55px] lg:pb-5 lg:pt-[90px] lg:min-h-[650px]">
+      <div className=" animate__animated animate__fadeIn  login_page flex flex-col items-center justify-center px-4 mx-auto md:h-screen lg:py-0">
         <div className="max-w-screen-sm	 bg-white bg-opacity-80 rounded-lg shadow dark:border md:mt-0 sm:max-w-[1000px] xl:p-0  lg:flex">
           <div className="w-full p-4 space-y-1 ">
             <h3 className="text-1xl text-center font-bold leading-tight tracking-tight text-emerald-500">
