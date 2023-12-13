@@ -8,7 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FeedBackRepository extends PagingAndSortingRepository<FeedBack, Long>,JpaRepository<FeedBack,Long> {
-    Page<FeedBack> getFeedBacksByIdNotNullOrderByCreateatAsc(org.springframework.data.domain.Pageable pageable);
+public interface FeedBackRepository extends JpaRepository<FeedBack,Long> {
+    Page<FeedBack> getAllByStar(org.springframework.data.domain.Pageable pageable,int star);
     Page<FeedBack> getFeedBacksByIdNotNullOrderByCreateatDesc(Pageable pageable);
 }

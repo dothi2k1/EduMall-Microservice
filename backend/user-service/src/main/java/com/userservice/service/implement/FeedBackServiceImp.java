@@ -4,6 +4,7 @@ import com.userservice.model.FeedBack;
 import com.userservice.repository.FeedBackRepository;
 import com.userservice.service.FeedBackService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -39,8 +40,9 @@ public class FeedBackServiceImp implements FeedBackService {
     @Override
     public ResponseEntity<?> getAllOrderByTime(int page, int direction) {
         switch (direction) {
-            case 1: Pageable pageable1 = PageRequest.of(page,20);
-                return ResponseEntity.ok(feedBackRepository.getFeedBacksByIdNotNullOrderByCreateatAsc(pageable1));
+            case 1: Pageable pageable1 = PageRequest.of(page,20,Sort.by(Sort.Direction.ASC,"createat"));
+                Page<FeedBack> page1=feedBackRepository.findAll(pageable1);
+                return ResponseEntity.ok(page1);
             case 2: Pageable pageable2 = PageRequest.of(page,20);
                 return ResponseEntity.ok(feedBackRepository.getFeedBacksByIdNotNullOrderByCreateatDesc(pageable2));
         }
