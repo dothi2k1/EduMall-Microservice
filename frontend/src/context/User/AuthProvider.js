@@ -26,44 +26,18 @@ const AuthProvider = ({ children }) => {
 
     
 
-    const handleRegister = async (username, email, password) => {
-        try {
-           
-        } catch (error) {
-            console.error("Đã xảy ra lỗi:", error);
-            setErrorMessage("Đã xảy ra lỗi trong quá trình đăng ký.");
-            return false;
-        }
-    };
+    
 
     const handleLogout = () => {
         // Clear the token and user data when logging out
-        Cookies.remove("token");
+        console.log(1)
         setIsLoggedIn(false);
-        setUsername("");
+        window.localStorage.removeItem('token');
+        window.localStorage.removeItem('isLoggedIn');
     };
 
     const fetchUserData = async (token) => {
-        try {
-            const response = await fetch(process.env.DOMAIN + "/user/profile", {
-                headers: {
-                    Authorization: token,
-                },
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setIsLoggedIn(true);
-                setUserId(data.user_id);
-                setUsername(data.username);
-                setEmail(data.email);
-                setUser(data);
-            } else {
-                console.error("Error fetching user data:", response.statusText);
-            }
-        } catch (error) {
-            console.error("Error fetching user data:", error);
-        }
+        
     };
 
 
@@ -76,8 +50,8 @@ const AuthProvider = ({ children }) => {
                 username,
                 email,
                 errorMessage,
-            
-                handleRegister,
+                setIsLoggedIn,
+                
                 handleLogout,
                 fetchUserData,
             }}

@@ -10,21 +10,13 @@ import DropDown from './DropDown';
 import Image from 'next/image';
 
 export default function NavBar() {
-  const { isLoggedIn, username, user, handleLogout } = useContext(AuthContext);
+  const { isLoggedIn, handleLogout } = useContext(AuthContext);
 
   const [openNav, setOpenNav] = useState("translate-x-[-100%]");
   const { cartItems, calculateTotalPrice, totalProducts, clearCartItems } = useContext(CartContext);
   const [dropDown, setDropDown] = useState(false);
 
-  const handleDropDown = () => {
-    setDropDown(!dropDown);
-  };
-
-  function handleLogoutAndClearCart() {
-    handleLogout();
-    clearCartItems();
-  }
-
+ 
 
   const navItem = [
     {
@@ -170,7 +162,7 @@ export default function NavBar() {
                 >
                   <Image alt="avatar" width={30} height={40} className="rounded-full lg:h-[50px] lg:w-[50px] w-[30px] h-[30px]" src='/bgtim.webp' style={{ borderRadius: '50%' }} />
                 </a>
-                <ul className="absolute hidden lg:w-[200px] w-[120px] bg-white rounded shadow shadow-[rgba(0,0,3,0.3)_0_0_3px_3px] text-gray-700 pt-1 group-hover:block right-[3px] top-[45px]">
+                <ul className="absolute hidden lg:w-[200px] w-[120px] bg-white rounded shadow shadow-[rgba(0,0,3,0.3)_0_0_3px_3px] text-gray-700 pt-1 pb-1 group-hover:block right-[3px] top-[45px]">
                   <li className="">
                     <a
                       className="rounded-t bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
@@ -187,11 +179,12 @@ export default function NavBar() {
                   </li>
                   <li className="">
                     <a id='loginbtn'
+                      href='/'
                       className="rounded-b bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
-                      href="#"
+                      onClick={handleLogout}
                     >Log out
                     </a>
-                    <a href='/user/register' className='lg:hidden className="rounded-b bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"'>
+                    <a href='/' onClick={handleLogout} className='lg:hidden className="rounded-b bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"'>
                       <i className="fa-solid fa-right-from-bracket px-2" style={{ color: "#ff0000" }} /></a>
 
                   </li>
@@ -231,7 +224,7 @@ export default function NavBar() {
                 <div className="absolute inset-y-0 left-3 pl-3 flex items-center pointer-events-none">
                   <svg className="w-[15px] text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
                 </div>
-                <input type="text" id="email-adress-icon" className="bg-gray-100 bg-opacity-25 focus:bg-white border border-gray-300 text-gray-900 sm:text-sm outline-0	 rounded-lg focus:ring-blue-500 focus:border-blue-300 block w-full pl-10 p-2" placeholder="Search..." />
+                <input type="text"  className="bg-gray-100 bg-opacity-25 focus:bg-white border border-gray-300 text-gray-900 sm:text-sm outline-0	 rounded-lg focus:ring-blue-500 focus:border-blue-300 block w-full pl-10 p-2" placeholder="Search..." />
               </div>
               <ul
                 className="list-style-none p-2 w-[200px]"

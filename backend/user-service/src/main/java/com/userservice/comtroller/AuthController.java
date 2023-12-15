@@ -49,11 +49,15 @@ public class AuthController {
         MyRespon myRespon = new MyRespon();
         if (serviceImp.existsByUsername(signForm.getUsername())) {
             myRespon.setMessage("The user name is already used! Try again!");
-            return new ResponseEntity<>(myRespon.getMessage(), HttpStatus.OK);
+            return ResponseEntity.status(400).body(myRespon.getMessage());
         }
         if (serviceImp.existsByEmail(signForm.getEmail())) {
             myRespon.setMessage("The email is already used! Try again!");
-            return new ResponseEntity<>(myRespon.getMessage(), HttpStatus.OK);
+            return ResponseEntity.status(400).body(myRespon.getMessage());
+        }
+        if (serviceImp.existsByPhone(signForm.getPhone())) {
+            myRespon.setMessage("The phone number is already used! Try again!");
+            return ResponseEntity.status(400).body(myRespon.getMessage());
         }
         serviceImp.save(signForm);
         myRespon.setMessage("create user success");

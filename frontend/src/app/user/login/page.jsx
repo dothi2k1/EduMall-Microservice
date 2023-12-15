@@ -8,7 +8,7 @@ import './login.css'
 import { login } from "@/service/AuthService";
 import { toast } from "react-toastify";
 const Login = () => {
-  const { errorMessage, isLoggedIn } = useContext(AuthContext);
+  const { errorMessage, isLoggedIn,setIsLoggedIn } = useContext(AuthContext);
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter(); // Create useRouter object
@@ -21,10 +21,12 @@ const Login = () => {
     login({ username: usernameOrEmail, password: password }).then(res => {
       if (!res) toast("Lost connection", { autoClose: 2000, type: 'error', closeButton: false })
       if (res.status == 200) {
-        window.localStorage.setItem("token", JSON.stringify(res))
+        window.localStorage.setItem("token", JSON.stringify(res.data));
+        window.localStorage.setItem('isLoggedIn', true);
+        setIsLoggedIn(true);
         router.push('/')
       }
-      else toast(res.data, { autoClose: 2000, type: 'error', closeButton: false });
+      else toast("Lost connection", { autoClose: 2000, type: 'error', closeButton: false });
     })
 
 
