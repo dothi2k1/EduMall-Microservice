@@ -1,12 +1,8 @@
 "use client";
 import NavBarReponsive from "../components/NavBar";
 import Footer from "../components/Footer";
-import Explore from "@/components/HomePageComponents/Explore";
 import AboutUs from "@/components/HomePageComponents/AboutUs";
-import PopularMenu from "@/components/HomePageComponents/PopularMenu";
-import Testimonial from "@/components/HomePageComponents/Testimonial";
 import OurBlog from "@/components/HomePageComponents/OurBlog";
-import HeroTitle from "@/components/HomePageComponents/HeroTitle";
 import TransitionEffect from "@/components/TransitionEffect";
 import ScrollButton from "@/components/HomePageComponents/ScrollButton";
 import Cart from "@/context/Products/Cart";
@@ -29,7 +25,7 @@ export default function Home() {
       </div>
       <Footer />
       <Cart />
-      {/* <ScrollButton /> */}
+      <ScrollButton />
     </>
   );
 }

@@ -10,10 +10,18 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class FeedBackServiceImp implements FeedBackService {
     @Autowired
     FeedBackRepository feedBackRepository;
+
+    @Override
+    public ResponseEntity<?> getAll() {
+        return ResponseEntity.ok(feedBackRepository.findAll());
+    }
+
     @Override
     public ResponseEntity<?> save(FeedBack feedBack) {
         if (feedBack == null) {
@@ -40,9 +48,9 @@ public class FeedBackServiceImp implements FeedBackService {
     public ResponseEntity<?> getAllOrderByTime(int page, int direction) {
         switch (direction) {
             case 1: Pageable pageable1 = PageRequest.of(page,20);
-                return ResponseEntity.ok(feedBackRepository.getFeedBacksByIdNotNullOrderByCreateatAsc(pageable1));
+                return ResponseEntity.ok(feedBackRepository.getFeedBacksByIdNotNullOrderByCreateatAsc(pageable1).getContent());
             case 2: Pageable pageable2 = PageRequest.of(page,20);
-                return ResponseEntity.ok(feedBackRepository.getFeedBacksByIdNotNullOrderByCreateatDesc(pageable2));
+                return ResponseEntity.ok(feedBackRepository.getFeedBacksByIdNotNullOrderByCreateatDesc(pageable2).getContent());
         }
         return ResponseEntity.status(400).body("False");
     }
@@ -51,13 +59,13 @@ public class FeedBackServiceImp implements FeedBackService {
     public ResponseEntity<?> getAllOrderByStar(int page, int direction) {
         switch (direction) {
             case 1: Pageable pageable1 = PageRequest.of(page,20,
-                    Sort.by(Sort.Direction.ASC,"id"));
-                return ResponseEntity.ok(feedBackRepository.findAll(pageable1));
+                    Sort.by(Sort.Direction.ASC,"star"));
+                return ResponseEntity.ok(feedBackRepository.findAll(pageable1).getContent());
             case 2: Pageable pageable2 = PageRequest.of(page,20,
-                    Sort.by(Sort.Direction.DESC,"id"));
-                return ResponseEntity.ok(feedBackRepository.findAll(pageable2));
+                    Sort.by(Sort.Direction.DESC,"star"));
+                return ResponseEntity.ok(feedBackRepository.findAll(pageable2).getContent());
         }
-        return ResponseEntity.status(500).body("False");
+        return ResponseEntity.status(400).body("False");
     }
 
 }

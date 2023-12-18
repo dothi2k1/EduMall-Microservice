@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 public class FeedBackController {
     @Autowired
     FeedBackServiceImp serviceImp;
+    @GetMapping("/get-all")
+    public ResponseEntity<?> getAll() {
+        return serviceImp.getAll();
+    }
 
     @GetMapping("/get-all-order-by-time")
     public ResponseEntity<?> getAllOrderByTime(@RequestParam int page, @RequestParam int direction) {
@@ -21,7 +25,7 @@ public class FeedBackController {
 
     @GetMapping("/get-all-order-by-star")
     public ResponseEntity<?> getAllOrderByStar(@RequestParam int page, @RequestParam int direction) {
-        return serviceImp.getAllOrderByTime(page, direction);
+        return serviceImp.getAllOrderByStar(page, direction);
     }
 
     @DeleteMapping("/delete")
