@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface FeedBackRepository extends JpaRepository<FeedBack,Long> {
     Page<FeedBack> getAllByStar(org.springframework.data.domain.Pageable pageable,int star);
     Page<FeedBack> getFeedBacksByIdNotNullOrderByCreateatDesc(Pageable pageable);
+    Page<FeedBack> getFeedBacksByIdNotNullOrderByCreateatAsc(Pageable pageable);
 }

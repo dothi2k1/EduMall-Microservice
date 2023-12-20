@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/sv1/feedback")
-@CrossOrigin("*")
+//@CrossOrigin("*")
 public class FeedBackController {
     @Autowired
     FeedBackServiceImp serviceImp;
