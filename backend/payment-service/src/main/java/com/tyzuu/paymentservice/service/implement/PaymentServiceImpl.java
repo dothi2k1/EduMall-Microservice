@@ -32,7 +32,7 @@ public class PaymentServiceImpl implements PaymentService {
     private String apiKey;
 
     @Value("${payos.checksum-key}")
-    private String checksumKey; // Secret key for hashing
+    private String checksumKey;
 
     public PaymentServiceImpl(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl("https://api-merchant.payos.vn").build();
@@ -54,7 +54,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .body(BodyInserters.fromValue(paymentRequest))
                 .retrieve()
                 .bodyToMono(String.class)
-                .block(); // Blocking for simplicity, consider using reactive programming instead
+                .block(); 
     }
 
     private String generateSignature(PaymentRequest paymentRequest) {
@@ -65,9 +65,6 @@ public class PaymentServiceImpl implements PaymentService {
         signatureMap.put("orderCode", String.valueOf(paymentRequest.getOrderCode()));
         signatureMap.put("returnUrl", paymentRequest.getReturnUrl());
 
-        // Add additional parameters if needed
-
-        // Create the signature data by concatenating key-value pairs
         String signatureData = signatureMap.entrySet().stream()
                 .map(entry -> entry.getKey() + "=" + entry.getValue())
                 .reduce((s1, s2) -> s1 + "&" + s2)
@@ -80,7 +77,6 @@ public class PaymentServiceImpl implements PaymentService {
 
             return toHexString(sha256_HMAC.doFinal(signatureData.getBytes(StandardCharsets.UTF_8)));
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            // Handle exception or log an error
             e.printStackTrace();
             return null;
         }
