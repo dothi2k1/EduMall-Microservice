@@ -2,7 +2,7 @@ import React from "react";
 
 const FeedBackCard = ({ feedback }) => {
   return (
-    <div className="mb-[50px] mx-4 text-justify border-b-gray-950">
+    <div className="mb-4 px-2 py-2 border border-solid text-justify">
       <div>
         <div className="flex">
           <img
@@ -11,7 +11,7 @@ const FeedBackCard = ({ feedback }) => {
             className="w-[40px] h-[40px] rounded-full"
           />
           <div className="ml-2">
-            <p className="">User</p>
+            <p className="font-bold">User</p>
             <p>*****</p>
           </div>
         </div>

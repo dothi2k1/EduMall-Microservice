@@ -49,10 +49,10 @@ public class FeedBackServiceImp implements FeedBackService {
     public ResponseEntity<?> getAllOrderByTime(int page, int direction) {
         switch (direction) {
 
-            case 1: Pageable pageable1 = PageRequest.of(page,20);
+            case 1: Pageable pageable1 = PageRequest.of(page,4);
                 return ResponseEntity.ok(feedBackRepository.getFeedBacksByIdNotNullOrderByCreateatAsc(pageable1).getContent());
 
-            case 2: Pageable pageable2 = PageRequest.of(page,20);
+            case 2: Pageable pageable2 = PageRequest.of(page,4);
                 return ResponseEntity.ok(feedBackRepository.getFeedBacksByIdNotNullOrderByCreateatDesc(pageable2).getContent());
         }
         return ResponseEntity.status(400).body("False");

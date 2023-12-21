@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import FeedbackList from "./FeedBackList";
 import axios from "axios";
 import NavBar from "@/components/NavBar";
-import footer from "@/components/Footer";
+import Footer from "@/components/Footer";
 import Banner from "./Banner";
 import ContentText from "./ContentText";
 import ThisCourseInclude from "./ThisCourseInclude";
+import Description from "./Description";
 
 const FeedBackPage = () => {
   const [feedbackData, setFeedbackData] = useState([]);
@@ -14,7 +15,9 @@ const FeedBackPage = () => {
   useEffect(() => {
     const fetchFeedBack = async () => {
       try {
-        const response = await axios.get("http://localhost:9000/api/sv1/feedback/get-all");
+        const response = await axios.get(
+          "http://localhost:9000/api/sv1/feedback/get-all-order-by-time?page=0&direction=1",
+        );
         const data = response.data;
         console.log(data);
         setFeedbackData(data);
@@ -35,10 +38,11 @@ const FeedBackPage = () => {
         <div className="columns-1">
           <ContentText />
           <ThisCourseInclude />
+          <Description />
           <FeedbackList feedbackData={feedbackData} />
         </div>
       </div>
-      <footer />
+      <Footer />
     </div>
   );
 };
