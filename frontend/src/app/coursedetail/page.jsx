@@ -11,24 +11,30 @@ import Description from "./Description";
 
 const FeedBackPage = () => {
   const [feedbackData, setFeedbackData] = useState([]);
+  const [url, setUrl] = useState("get-all-order-by-time?page=0&direction=1");
+
+  const changeUrlFeedBackList = () => {
+    // Nếu url hiện tại là "get-all", thì đặt lại về giá trị ban đầu
+    if (url === "get-all") {
+      setUrl("get-all-order-by-time?page=0&direction=1");
+    } else {
+      // Ngược lại, đặt url thành "get-all"
+      setUrl("get-all");
+    }
+  };
 
   useEffect(() => {
     const fetchFeedBack = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:9000/api/sv1/feedback/get-all-order-by-time?page=0&direction=1",
-        );
+        const response = await axios.get(`http://localhost:9000/api/sv1/feedback/${url}`);
         const data = response.data;
-        console.log(data);
         setFeedbackData(data);
-        console.log(feedbackData);
       } catch (error) {
         console.error("Error fetching feedback:", error);
       }
     };
-
     fetchFeedBack();
-  }, []);
+  }, [url]);
 
   return (
     <div>
@@ -39,7 +45,7 @@ const FeedBackPage = () => {
           <ContentText />
           <ThisCourseInclude />
           <Description />
-          <FeedbackList feedbackData={feedbackData} />
+          <FeedbackList feedbackData={feedbackData} onClickChangeUrlFeedBackList={changeUrlFeedBackList} />
         </div>
       </div>
       <Footer />

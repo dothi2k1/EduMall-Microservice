@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import FeedBackCard from "./FeedBackCard";
 
-const FeedBackList = ({ feedbackData }) => {
+const FeedBackList = ({ feedbackData, onClickChangeUrlFeedBackList }) => {
+  const [showAll, setShowAll] = useState("Hiển thị tất cả đánh giá");
+  const onClickShowAll = () => {
+    if (showAll === "Thu gọn") {
+      setShowAll("Hiển thị tất cả đánh giá");
+    } else {
+      setShowAll("Thu gọn");
+    }
+  };
   return (
     <div className="mt-4">
       <div>
@@ -12,9 +20,9 @@ const FeedBackList = ({ feedbackData }) => {
           <FeedBackCard key={index} feedback={feedback} />
         ))}
       </div>
-      <div className="px-5 justify-between mx-2 border border-solid">
-        <div className="text-base text-center font-semibold my-5">
-          <span className="ml-2">Hiển thị tất cả đánh giá</span>
+      <div onClick={onClickChangeUrlFeedBackList} className="px-5 justify-between mx-2 border border-solid">
+        <div onClick={onClickShowAll} className="text-base text-center font-semibold my-5">
+          <span className="ml-2">{showAll}</span>
         </div>
       </div>
     </div>
