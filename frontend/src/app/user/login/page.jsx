@@ -7,6 +7,7 @@ import "animate.css";
 import './login.css'
 import { login } from "@/service/AuthService";
 import { toast } from "react-toastify";
+
 const Login = () => {
   const { errorMessage, isLoggedIn,setIsLoggedIn } = useContext(AuthContext);
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
@@ -14,7 +15,7 @@ const Login = () => {
   const router = useRouter(); // Create useRouter object
   
   useEffect(() => {
-    if (isLoggedIn)  router.push('/')
+    if (isLoggedIn) router.push('/');
   },[])
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,8 +29,6 @@ const Login = () => {
       }
       else toast("Lost connection", { autoClose: 2000, type: 'error', closeButton: false });
     })
-
-
       ;
 
   };

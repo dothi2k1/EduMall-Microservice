@@ -39,8 +39,7 @@ public class FeedBackServiceImp implements FeedBackService {
     @Override
     public ResponseEntity<?> getAllOrderByTime(int page, int direction) {
         switch (direction) {
-            case 1: Pageable pageable1 = PageRequest.of(page,20,
-                    Sort.by(Sort.Direction.ASC,"created_at"));
+            case 1: Pageable pageable1 = PageRequest.of(page,20);
                 return ResponseEntity.ok(feedBackRepository.findAll(pageable1));
             case 2: Pageable pageable2 = PageRequest.of(page,20,
                     Sort.by(Sort.Direction.DESC,"created_at"));

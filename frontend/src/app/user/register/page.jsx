@@ -87,8 +87,11 @@ const Register = () => {
     }
 
     sigup(value).then(res => {
-      if (res.status == 200) toast(res.data, { autoClose: 2000, type: 'success', closeButton: false });
-      route.push('user/login')
+      if (res.status == 200) {
+        toast(res.data, { autoClose: 2000, type: 'success', closeButton: false });
+        // route.push('user/login');
+        setStep(3);
+      }
     });
   }
   const setRole = (e) => {
@@ -491,9 +494,14 @@ const Register = () => {
           </div>
         </div>
         <div className='relative'>
-          <button type='submit' style={{ display: (step == 3) ? 'none' : '' }} className='mt-5 w-full rounded-md bg-blue-600 p-2 text-center font-semibold text-white'>
+          {(step == 2) && <button type='submit' style={{ display: (step == 3) ? 'none' : '' }} className='mt-5 w-full rounded-md bg-blue-600 p-2 text-center font-semibold text-white'>
             Get Started
+          </button>}
+          {(step==1)&&
+            <button type='button' onClick={()=>setStep(2)} style={{ display: (step == 3) ? 'none' : '' }} className='mt-5 w-full rounded-md bg-blue-600 p-2 text-center font-semibold text-white'>
+            Next
           </button>
+          }
         </div>
       </form>
     </div>

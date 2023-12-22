@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Stack;
 
 
 @Component
@@ -67,6 +68,11 @@ public class CourseDao {
         return jdbcTemplate.query(query, mapper);
 
     }
+    public List<Course> getAll() {
+        String query = "SELECT * FROM course ";
+        return jdbcTemplate.query(query, mapper);
+
+    }
     //get list course by category
     public List<Course> getList(Pageable pageable,long category) {
         String query = "SELECT * FROM course where cate="+category+" LIMIT " +
@@ -89,6 +95,7 @@ public class CourseDao {
                 "FROM course c,users u where c.uid=u.id LIMIT " +
                 pageable.getPageSize() +
                 " OFFSET " + pageable.getOffset();
+        
         return jdbcTemplate.query(query, courseDTO);
 
     }
@@ -160,16 +167,16 @@ public class CourseDao {
     }
 
     //get total page
-    public int getTotalPage(){
-        String qr="select count(id) from course";
-        int c= jdbcTemplate.queryForObject(qr,Integer.class);
+    public long getTotalPage(){
+        String qr="select count(id) from course where id not in (1)";
+        long c= jdbcTemplate.queryForObject(qr,Integer.class);
         return c;
     }
 
     //get total page by cate
-    public int getTotalPageByCate(long cate){
+    public long getTotalPageByCate(long cate){
         String qr="select count(id) from course where cate="+cate;
-        int c= jdbcTemplate.queryForObject(qr,Integer.class);
+        long c= jdbcTemplate.queryForObject(qr,Integer.class);
         return c;
     }
 }
