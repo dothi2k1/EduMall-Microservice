@@ -95,7 +95,7 @@ public class CourseDao {
                 "FROM course c,users u where c.uid=u.id LIMIT " +
                 pageable.getPageSize() +
                 " OFFSET " + pageable.getOffset();
-        
+
         return jdbcTemplate.query(query, courseDTO);
 
     }

@@ -38,6 +38,7 @@ const CategoriesList = () => {
           })}
         </div>
       </div>
-    </>
+    </div>
   );
 }
+export default CategoriesList;
