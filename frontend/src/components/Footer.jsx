@@ -173,7 +173,7 @@ export default function footer() {
                 </div>
                 <div className="grid grid-cols-2 gap-x-12 gap-y-10 lg:grid-cols-3 lg:gap-x-28 lg:gap-y-0">
                   <div className="flex flex-col space-y-6">
-                    <p className="font-semibold text-xl text-white">Shopping</p>
+                    <p className="font-semibold text-xl text-white">Shoppingg</p>
                     <a className="text-body-3 text-white hover:underline" href="/products">
                       Products
                     </a>

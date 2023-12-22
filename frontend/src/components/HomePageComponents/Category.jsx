@@ -21,10 +21,10 @@ const Category = ({ image,category }) => {
 const CategoriesList = () => {
   const [categories, setCate] = useState(['python']);
   const categories_images = [
-    
+
   './cat_aws.png'
-    
-    
+
+
   ]
   return (
     <div className='p-5 w-full'>
@@ -38,10 +38,6 @@ const CategoriesList = () => {
           })}
         </div>
       </div>
-    </div>
+    </>
   );
-};
-
-
-
-export default CategoriesList;
+}
