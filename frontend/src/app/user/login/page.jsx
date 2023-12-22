@@ -6,6 +6,7 @@ import Link from "next/link";
 import "animate.css";
 import { login } from "@/service/AuthService";
 import { toast } from "react-toastify";
+import axiosInstance from "@/utils/axios";
 const Login = () => {
   const { errorMessage, isLoggedIn } = useContext(AuthContext);
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
@@ -13,7 +14,8 @@ const Login = () => {
   const router = useRouter(); // Create useRouter object
   
   useEffect(() => {
-    if (isLoggedIn)  router.push('/')
+    // if (isLoggedIn)  router.push('/')
+    axiosInstance.get("http://localhost:9000/api/sv1/feedback/get-all").then(res => console.log(res))
   },[])
   const handleSubmit = (e) => {
     e.preventDefault();

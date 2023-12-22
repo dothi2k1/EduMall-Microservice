@@ -28,7 +28,7 @@ public class AppConfig {
     public CorsWebFilter filter(){
         org.springframework.web.cors.CorsConfiguration config= new CorsConfiguration();
 //        config.addAllowedOrigin("*");
-        config.setAllowedOrigins(Arrays.asList("*","*"));
+        config.setAllowedOrigins(Arrays.asList("*","*","http://localhost:3000"));
         config.addExposedHeader("Authorization");
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
         config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type",
