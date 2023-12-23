@@ -13,7 +13,7 @@ const FeedBackList = ({ feedbackData, onClickChangeUrlFeedBackList }) => {
   return (
     <div className="mt-4">
       <div>
-        <p className="text-[24px] font-bold text-gray-800 my-2">Đánh giá:</p>
+        <p className="text-[24px] font-bold text-gray-800 my-2">Các đánh giá của người dùng:</p>
       </div>
       <div className="grid grid-cols-2">
         {feedbackData.map((feedback, index) => (
