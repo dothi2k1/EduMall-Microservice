@@ -12,7 +12,7 @@ const StarRating = ({ rating }) => {
 
 const FeedBackCard = ({ feedback }) => {
   return (
-    <div className="mb-4 px-2 py-2 border border-solid text-justify">
+    <div className="mb-4 px-2 py-2 border border-solid text-justify rounded-md shadow-md">
       <div className="flex justify-between">
         <div className="flex">
           <img

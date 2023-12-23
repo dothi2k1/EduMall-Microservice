@@ -30,9 +30,9 @@ export default function Description(params) {
             whether its Linux, MacOS, or Windows, we've got you covered.
           </p> */}
         </div>
-        <div className="px-5 justify-between mx-2 border border-solid">
+        <div className="px-5 justify-between border border-solid">
           <div className="text-base text-center font-semibold my-5">
-            <span className="ml-2">Hiển thị thêm</span>
+            <span className="">Hiển thị thêm</span>
           </div>
         </div>
       </div>
