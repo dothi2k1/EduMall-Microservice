@@ -19,6 +19,11 @@ public class FeedBackServiceImp implements FeedBackService {
     FeedBackRepository feedBackRepository;
 
     @Override
+    public ResponseEntity<?> getAllByCourseId(Long id) {
+        return ResponseEntity.ok(feedBackRepository.getAllCourseId(id));
+    }
+
+    @Override
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(feedBackRepository.findAll());
     }

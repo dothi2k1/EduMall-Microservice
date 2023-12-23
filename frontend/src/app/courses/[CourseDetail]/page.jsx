@@ -9,9 +9,10 @@ import ContentText from "./ContentText";
 import ThisCourseInclude from "./ThisCourseInclude";
 import Description from "./Description";
 
-const FeedBackPage = () => {
+const CourseDetail = ({ params }) => {
+  const Course_ID = parseInt(params.CourseDetail);
   const [feedbackData, setFeedbackData] = useState([]);
-  const [url, setUrl] = useState("get-all-order-by-time?page=0&direction=1");
+  const [url, setUrl] = useState(`get-by-course-detail/${Course_ID}`);
 
   const changeUrlFeedBackList = () => {
     // Nếu url hiện tại là "get-all", thì đặt lại về giá trị ban đầu
@@ -53,4 +54,4 @@ const FeedBackPage = () => {
   );
 };
 
-export default FeedBackPage;
+export default CourseDetail;
