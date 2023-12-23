@@ -13,8 +13,10 @@ import java.util.List;
 
 @Repository
 public interface FeedBackRepository extends JpaRepository<FeedBack,Long> {
-    @Query(value = "SELECT * FROM feedback WHERE od_id IN (SELECT id FROM order_detail WHERE course_id = :course_id)", nativeQuery = true)
+    @Query(value = "SELECT * FROM feedback WHERE od_id IN (SELECT id FROM order_detail WHERE course_id = :course_id) ORDER BY createat DESC", nativeQuery = true)
     List<FeedBack> getAllCourseId(@PathVariable Long course_id);
+    @Query(value = "SELECT * FROM feedback WHERE od_id IN (SELECT id FROM order_detail WHERE course_id = :course_id) ORDER BY createat DESC", nativeQuery = true)
+    Page<FeedBack> getFeedBacksByCourseId(@PathVariable Long course_id, Pageable pageable);
     Page<FeedBack> getAllByStar(org.springframework.data.domain.Pageable pageable,int star);
     Page<FeedBack> getFeedBacksByIdNotNullOrderByCreateatDesc(Pageable pageable);
     Page<FeedBack> getFeedBacksByIdNotNullOrderByCreateatAsc(Pageable pageable);

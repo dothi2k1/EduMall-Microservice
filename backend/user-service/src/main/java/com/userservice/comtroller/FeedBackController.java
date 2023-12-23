@@ -18,7 +18,11 @@ public class FeedBackController {
     FeedBackServiceImp serviceImp;
     @GetMapping("/get-by-course-detail/{course_id}")
     public ResponseEntity<?> getByCourseDetail(@PathVariable Long course_id) {
-        return serviceImp.getAllByCourseId(course_id);
+        return serviceImp.getAllFeedBackByCourseId(course_id);
+    }
+    @GetMapping("/get-by-course-detail-pageable/{course_id}")
+    public ResponseEntity<?> getFeedBacksByCourseIdPageable(@PathVariable Long course_id, @RequestParam int page, @RequestParam int direction) {
+        return serviceImp.getFeedBacksByCourseIdPageable(course_id, page, direction);
     }
 
 //    @GetMapping("/get-by-course-detail/{course_id}")

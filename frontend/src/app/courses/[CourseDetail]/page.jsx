@@ -12,15 +12,13 @@ import Description from "./Description";
 const CourseDetail = ({ params }) => {
   const Course_ID = parseInt(params.CourseDetail);
   const [feedbackData, setFeedbackData] = useState([]);
-  const [url, setUrl] = useState(`get-by-course-detail/${Course_ID}`);
+  const [url, setUrl] = useState(`get-by-course-detail-pageable/${Course_ID}?page=0&direction=1`);
 
   const changeUrlFeedBackList = () => {
-    // Nếu url hiện tại là "get-all", thì đặt lại về giá trị ban đầu
-    if (url === "get-all") {
-      setUrl("get-all-order-by-time?page=0&direction=1");
+    if (url === `get-by-course-detail/${Course_ID}`) {
+      setUrl(`get-by-course-detail-pageable/${Course_ID}?page=0&direction=1`);
     } else {
-      // Ngược lại, đặt url thành "get-all"
-      setUrl("get-all");
+      setUrl(`get-by-course-detail/${Course_ID}`);
     }
   };
 

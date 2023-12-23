@@ -19,8 +19,25 @@ public class FeedBackServiceImp implements FeedBackService {
     FeedBackRepository feedBackRepository;
 
     @Override
-    public ResponseEntity<?> getAllByCourseId(Long id) {
+    public ResponseEntity<?> getAllFeedBackByCourseId(Long id) {
         return ResponseEntity.ok(feedBackRepository.getAllCourseId(id));
+    }
+
+//    @Override
+//    public ResponseEntity<?> getFeedBacksByCourseId(Long id, int page, int direction) {
+//        return ResponseEntity.ok(feedBackRepository.getFeedBacksByCourseId(id, page, direction));
+//    }
+    @Override
+    public ResponseEntity<?> getFeedBacksByCourseIdPageable(Long id, int page, int direction) {
+        switch (direction) {
+
+            case 1: Pageable pageable1 = PageRequest.of(page,4);
+                return ResponseEntity.ok(feedBackRepository.getFeedBacksByCourseId(id, pageable1).getContent());
+
+            case 2: Pageable pageable2 = PageRequest.of(page,4);
+                return ResponseEntity.ok(feedBackRepository.getFeedBacksByCourseId(id, pageable2).getContent());
+        }
+        return ResponseEntity.status(400).body("False");
     }
 
     @Override
