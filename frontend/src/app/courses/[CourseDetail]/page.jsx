@@ -9,11 +9,31 @@ import ContentText from "./ContentText";
 import ThisCourseInclude from "./ThisCourseInclude";
 import Description from "./Description";
 import AddFeedBack from "./AddFeedBack";
+import LightBoxEditFeedBack from "./LightBoxEditFeedBack";
 
 const CourseDetail = ({ params }) => {
   const Course_ID = parseInt(params.CourseDetail);
   const [feedbackData, setFeedbackData] = useState([]);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [feedBackId, setFeedBackId] = useState();
   const [url, setUrl] = useState(`get-by-course-detail-pageable/${Course_ID}?page=0&direction=1`);
+
+  const handleFeedBackListClick = (feedBackId) => {
+    // Xử lý khi feedback được chọn từ FeedBackList
+    console.log("FeedBackId selected in Page:", feedBackId);
+  };
+
+  const handleFeedBackSetId = (id) => {
+    setFeedBackId(id);
+  };
+
+  const openLightbox = () => {
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+  };
 
   const changeUrlFeedBackList = () => {
     if (url === `get-by-course-detail/${Course_ID}`) {
@@ -46,8 +66,16 @@ const CourseDetail = ({ params }) => {
           <ThisCourseInclude />
           <Description />
           <AddFeedBack />
-          <FeedbackList feedbackData={feedbackData} onClickChangeUrlFeedBackList={changeUrlFeedBackList} />
+          <FeedbackList
+            feedbackData={feedbackData}
+            onClickChangeUrlFeedBackList={changeUrlFeedBackList}
+            openLightbox={openLightbox}
+            onFeedBackListClick={handleFeedBackListClick}
+          />
         </div>
+        <div></div>
+        {/* Hiển thị LightBoxEditFeedBack chỉ khi lightboxOpen là true */}
+        {lightboxOpen && <LightBoxEditFeedBack onClose={closeLightbox} />}
       </div>
       <Footer />
     </div>

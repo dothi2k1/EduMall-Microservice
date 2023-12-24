@@ -49,6 +49,8 @@ public class FeedBackController {
         return serviceImp.getAll();
     }
 
+
+
     @GetMapping("/get-all-order-by-time")
     public ResponseEntity<?> getAllOrderByTime(@RequestParam int page, @RequestParam int direction) {
         return serviceImp.getAllOrderByTime(page, direction);
@@ -66,6 +68,11 @@ public class FeedBackController {
 
     @PutMapping("/add")
     public ResponseEntity<?> save(@RequestBody FeedBack feedBack) {
+        return serviceImp.save(feedBack);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> update(@RequestBody FeedBack feedBack) {
         return serviceImp.save(feedBack);
     }
 }

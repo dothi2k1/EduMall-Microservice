@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const StarRating = ({ rating }) => {
   const stars = [];
@@ -10,7 +10,33 @@ const StarRating = ({ rating }) => {
   return <div>{stars}</div>;
 };
 
-const FeedBackCard = ({ feedback }) => {
+const FeedBackCard = ({ feedback, openLightbox, onFeedBackClick }) => {
+  const [url, setUrl] = useState();
+  const handleEditFeedBack = () => {
+    // Gọi callback function để truyền feedBackId lên component cha (FeedBackList)
+    onFeedBackClick(feedback.id);
+  };
+  const handleDeleteFeedback = async (feedbackId) => {
+    console.log(feedbackId);
+    try {
+      // Gọi API để xóa feedback
+      const response = await fetch(`http://localhost:9000/api/sv1/feedback/delete?id=${feedbackId}`, {
+        method: "DELETE",
+      });
+
+      alert("Delete Successfully !!!");
+
+      // if (response.ok) {
+      //   // Nếu xóa thành công, cập nhật state
+      //   // const newFeedbacks = feedback.filter((feedback) => feedback.id !== feedbackId);
+      //   // setFeedbacks(newFeedbacks);
+      // } else {
+      //   console.error("Failed to delete feedback");
+      // }
+    } catch (error) {
+      console.error("Error deleting feedback:", error);
+    }
+  };
   return (
     <div className="mb-4 px-2 py-2 border border-solid text-justify rounded-md shadow-md">
       <div className="flex justify-between">
@@ -32,6 +58,18 @@ const FeedBackCard = ({ feedback }) => {
       <div className="">
         <p className="mt-2 text-500">{feedback.content}</p>
         <button className="mt-4 text-blue-500">Show More</button>
+      </div>
+      <div className="flex justify-between">
+        <div onClick={handleEditFeedBack}>
+          <button className="py-1 px-1 rounded-md" onClick={openLightbox}>
+            <i class="fa-regular fa-pen-to-square"></i>
+          </button>
+        </div>
+        <div onClick={() => handleDeleteFeedback(feedback.id)}>
+          <button className="py-1 px-1 rounded-md">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
       </div>
     </div>
   );

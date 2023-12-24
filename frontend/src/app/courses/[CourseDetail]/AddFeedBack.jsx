@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { FaStar } from "react-icons/fa";
 
-const AddFeedBack = () => {
+const AddFeedBack = ({ handleClose, lightboxOpen, feedBackId }) => {
   // State để lưu trữ dữ liệu của feedback
   const [content, setContent] = useState("");
   //   const [rating, setRating] = useState(0);
@@ -26,43 +26,89 @@ const AddFeedBack = () => {
 
   // Hàm xử lý khi người dùng gửi feedback
   const handleSubmit = async () => {
-    try {
-      // Tạo đối tượng dữ liệu để gửi lên server
-      const feedbackData = {
-        content,
-        star: rating,
-        createat: createAt.toISOString(),
-        updateat: updateAt ? updateAt.toISOString() : null,
-        od_id: odId,
-      };
+    if (lightboxOpen) {
+      try {
+        // Tạo đối tượng dữ liệu để gửi lên server
+        const feedbackData = {
+          id: feedBackId,
+          content,
+          star: rating,
+          createat: createAt.toISOString(),
+          updateat: updateAt ? updateAt.toISOString() : null,
+          od_id: odId,
+        };
 
-      // Gửi yêu cầu POST đến API
-      const response = await axios.put("http://localhost:9000/api/sv1/feedback/add", feedbackData);
+        // Gửi yêu cầu POST đến API
+        const response = await axios.put("http://localhost:9000/api/sv1/feedback/update", feedbackData);
 
-      // Kiểm tra kết quả từ server
-      if (response.status === 200) {
-        console.log("Feedback submitted successfully:", response.data);
-        alert("Success !!");
-        // Thực hiện các tác vụ cần thiết sau khi gửi feedback thành công
-      } else {
-        console.error("Failed to submit feedback. Server response:", response);
-        alert("Fail from Server :((");
-        // Xử lý trường hợp gửi feedback thất bại
+        // Kiểm tra kết quả từ server
+        if (response.status === 200) {
+          console.log("Feedback submitted successfully:", response.data);
+          alert("Success !!");
+          // Thực hiện các tác vụ cần thiết sau khi gửi feedback thành công
+        } else {
+          console.error("Failed to submit feedback. Server response:", response);
+          alert("Fail from Server :((");
+          // Xử lý trường hợp gửi feedback thất bại
+        }
+      } catch (error) {
+        console.error("An error occurred while submitting feedback:", error);
+        alert("Error from while submit :((");
+        // Xử lý trường hợp lỗi
       }
-    } catch (error) {
-      console.error("An error occurred while submitting feedback:", error);
-      alert("Error from while submit :((");
-      // Xử lý trường hợp lỗi
+    } else {
+      try {
+        // Tạo đối tượng dữ liệu để gửi lên server
+        const feedbackData = {
+          content,
+          star: rating,
+          createat: createAt.toISOString(),
+          updateat: updateAt ? updateAt.toISOString() : null,
+          od_id: odId,
+        };
+
+        // Gửi yêu cầu POST đến API
+        const response = await axios.put("http://localhost:9000/api/sv1/feedback/add", feedbackData);
+
+        // Kiểm tra kết quả từ server
+        if (response.status === 200) {
+          console.log("Feedback submitted successfully:", response.data);
+          alert("Success !!");
+          // Thực hiện các tác vụ cần thiết sau khi gửi feedback thành công
+        } else {
+          console.error("Failed to submit feedback. Server response:", response);
+          alert("Fail from Server :((");
+          // Xử lý trường hợp gửi feedback thất bại
+        }
+      } catch (error) {
+        console.error("An error occurred while submitting feedback:", error);
+        alert("Error from while submit :((");
+        // Xử lý trường hợp lỗi
+      }
     }
   };
   return (
-    <div>
+    <div className="relative">
+      <button
+        // className={`absolute top-[-20px] right-[-10px] text-gray-600 ${lightboxOpen ? "" : "hidden"}`}
+        className={`absolute top-[-20px] right-[-10px] text-gray-600}`}
+        onClick={handleClose}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          className="h-6 w-6"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
       <div>
         <p className="text-[24px] font-bold text-gray-800 my-2">Nhập đánh giá của bạn:</p>
       </div>
-      <div className="max-w-full mx-auto p-4 border rounded-md shadow-md">
+      <div className="relative max-w-full mx-auto p-4 border rounded-md shadow-md">
         <h2 className="text-xl font-semibold mb-4">Form Feedback:</h2>
-
         {/* Khung nhập nội dung */}
         <textarea
           className="w-full h-32 p-2 border rounded-md mb-2"
@@ -70,19 +116,6 @@ const AddFeedBack = () => {
           value={content}
           onChange={handleContentChange}
         ></textarea>
-
-        {/* Chỗ để đánh giá sao */}
-        {/* <div className="flex items-center mb-4">
-          <span className="mr-2">Rating star:</span>
-          <select className="p-2 border rounded-md" value={rating} onChange={handleRatingChange}>
-            {[1, 2, 3, 4, 5].map((value) => (
-              <option key={value} value={value}>
-                {value}
-              </option>
-            ))}
-          </select>
-        </div> */}
-
         {/* Chỗ để đánh giá sao */}
         <div className="flex">
           <h2 className="text-xl my-auto font-semibold mb-2">Rating Star:</h2>

@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import FeedBackCard from "./FeedBackCard";
 
-const FeedBackList = ({ feedbackData, onClickChangeUrlFeedBackList }) => {
+const FeedBackList = ({ feedbackData, onClickChangeUrlFeedBackList, openLightbox, onFeedBackListClick }) => {
   const [showAll, setShowAll] = useState("Hiển thị tất cả đánh giá");
+  const handleFeedBackClick = (feedBackId) => {
+    // Gọi callback function để truyền feedBackId lên component cha (Page)
+    onFeedBackListClick(feedBackId);
+  };
   const onClickShowAll = () => {
     if (showAll === "Thu gọn") {
       setShowAll("Hiển thị tất cả đánh giá");
@@ -16,8 +20,13 @@ const FeedBackList = ({ feedbackData, onClickChangeUrlFeedBackList }) => {
         <p className="text-[24px] font-bold text-gray-800 my-2">Các đánh giá của người dùng:</p>
       </div>
       <div className="grid grid-cols-2 gap-2">
-        {feedbackData.map((feedback, index) => (
-          <FeedBackCard key={index} feedback={feedback} />
+        {feedbackData.map((feedback) => (
+          <FeedBackCard
+            key={feedback.id}
+            feedback={feedback}
+            openLightbox={openLightbox}
+            onFeedBackClick={handleFeedBackClick}
+          />
         ))}
       </div>
       <div onClick={onClickChangeUrlFeedBackList} className="px-5 justify-between border border-solid ">
