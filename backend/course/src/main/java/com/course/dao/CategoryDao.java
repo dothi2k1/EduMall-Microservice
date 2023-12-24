@@ -27,6 +27,7 @@ public class CategoryDao {
         category.setId(rs.getLong("id"));
         category.setName(rs.getString("name"));
         category.setDescription(rs.getString("description"));
+        category.setImage(rs.getString("image"));
         category.setCreateAt(rs.getDate("create_at"));
         category.setDeleteAt(rs.getDate("delete_at"));
         category.setUpdateAt(rs.getDate("update_at"));
@@ -38,8 +39,8 @@ public class CategoryDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Category> getAllCate(){
-        String query = "SELECT * FROM category";
+    public List<Category> getAllCate(Pageable pageable,String name ){
+        String query = "SELECT * FROM category WHERE name LIKE '" + name + "%' LIMIT "+pageable.getPageSize()+" OFFSET "+pageable.getOffset();
         return jdbcTemplate.query(query, cateMapper);
     }
     public Long save(Category category) {

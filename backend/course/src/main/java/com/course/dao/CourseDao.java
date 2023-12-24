@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Stack;
 
 
 @Component
@@ -24,16 +25,17 @@ public class CourseDao {
         Course course = new Course();
         course.setId(rs.getLong("id"));
         course.setType(rs.getInt("type"));
-        course.setUid(rs.getInt(3));
-        course.setCate(rs.getInt(4));
-        course.setDescription(rs.getString(5));
-        course.setCreateat(rs.getDate(6));
-        course.setUpdateat(rs.getDate(7));
-        course.setDeleteat(rs.getDate(8));
-        course.setActive(rs.getBoolean(9));
-        course.setPrice(rs.getDouble(10));
-        course.setEstimate(rs.getDouble(11));
-        course.setTitle(rs.getString(12));
+        course.setUid(rs.getInt("uid"));
+        course.setCate(rs.getInt("cate"));
+        course.setDescription(rs.getString("description"));
+        course.setCreateat(rs.getDate("createat"));
+        course.setUpdateat(rs.getDate("updateat"));
+        course.setDeleteat(rs.getDate("deleteat"));
+        course.setActive(rs.getBoolean("active"));
+        course.setPrice(rs.getDouble("price"));
+        course.setEstimate(rs.getDouble("estimate"));
+        course.setTitle(rs.getString("title"));
+        course.setImage(rs.getString("image"));
         return course;
     });
     //route mapper
@@ -67,6 +69,11 @@ public class CourseDao {
         return jdbcTemplate.query(query, mapper);
 
     }
+    public List<Course> getAll() {
+        String query = "SELECT * FROM course ";
+        return jdbcTemplate.query(query, mapper);
+
+    }
     //get list course by category
     public List<Course> getList(Pageable pageable,long category) {
         String query = "SELECT * FROM course where cate="+category+" LIMIT " +
@@ -89,6 +96,7 @@ public class CourseDao {
                 "FROM course c,users u where c.uid=u.id LIMIT " +
                 pageable.getPageSize() +
                 " OFFSET " + pageable.getOffset();
+
         return jdbcTemplate.query(query, courseDTO);
 
     }
@@ -160,16 +168,16 @@ public class CourseDao {
     }
 
     //get total page
-    public int getTotalPage(){
-        String qr="select count(id) from course";
-        int c= jdbcTemplate.queryForObject(qr,Integer.class);
+    public long getTotalPage(){
+        String qr="select count(id) from course where id not in (1)";
+        long c= jdbcTemplate.queryForObject(qr,Integer.class);
         return c;
     }
 
     //get total page by cate
-    public int getTotalPageByCate(long cate){
+    public long getTotalPageByCate(long cate){
         String qr="select count(id) from course where cate="+cate;
-        int c= jdbcTemplate.queryForObject(qr,Integer.class);
+        long c= jdbcTemplate.queryForObject(qr,Integer.class);
         return c;
     }
 }

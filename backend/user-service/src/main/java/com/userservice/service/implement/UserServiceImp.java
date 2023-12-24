@@ -84,6 +84,11 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public Boolean existsByPhone(String phone) {
+        return repository.existsByPhone(phone);
+    }
+
+    @Override
     public User findByEmail(String email) {
         return repository.findByEmail(email);
     }

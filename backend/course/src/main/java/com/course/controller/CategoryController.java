@@ -16,7 +16,7 @@ public class CategoryController {
         return service.save(category);
     }
     @GetMapping("/category/get-all")
-    ResponseEntity<?> getAll(int page,String sort){
-        return service.getAll(page,sort);
+    ResponseEntity<?> getAll(@RequestParam int page,@RequestParam(defaultValue = "") String name){
+        return service.getAll(page,name);
     }
 }

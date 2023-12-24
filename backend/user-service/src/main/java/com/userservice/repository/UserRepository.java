@@ -12,6 +12,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User,Long> {
     Boolean existsByEmail(String email);
     Boolean existsByUsername(String username);
+    Boolean existsByPhone(String phone);
     @Query(value = "select r.rolename from user_role us," +
             "users u, " +
             "roles r " +

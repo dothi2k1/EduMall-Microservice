@@ -5,8 +5,19 @@ export const login = async body => {
   let res;
   try {
     res = await axiosInstance.post(Api.auth.login, body);
-    return res;
+    return res
   } catch (err) {
     return err.response;
   }
 };
+
+export const sigup = async (body) => {
+  let res;
+  try {
+    res = await axiosInstance.post(Api.auth.register, body);
+    return res;
+  }
+  catch (err) {
+    return err;
+  }
+}

@@ -22,6 +22,7 @@ public class User {
     private String email;
     private String password;
     private int gender;
+    private String phone;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)

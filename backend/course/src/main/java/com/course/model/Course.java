@@ -19,6 +19,7 @@ public class Course {
     private int type;
     private int uid;
     private int cate;
+    private String image;
     private String title;
     private String description;
     private Date createat;
