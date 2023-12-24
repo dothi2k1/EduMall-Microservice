@@ -27,6 +27,16 @@ const AddFeedBack = ({ handleClose, lightboxOpen, feedBackId }) => {
   // Hàm xử lý khi người dùng gửi feedback
   const handleSubmit = async () => {
     if (lightboxOpen) {
+      if (content == null || content == "") {
+        console.error("An error occurred while submitting feedback:");
+        alert("Bạn phải nhập content :((");
+        return;
+      }
+      if (rating == null || rating == "") {
+        console.error("An error occurred while submitting feedback:");
+        alert("Bạn phải nhập sao :((");
+        return;
+      }
       try {
         // Tạo đối tượng dữ liệu để gửi lên server
         const feedbackData = {
@@ -57,6 +67,16 @@ const AddFeedBack = ({ handleClose, lightboxOpen, feedBackId }) => {
         // Xử lý trường hợp lỗi
       }
     } else {
+      if (content == null || content == "") {
+        console.error("An error occurred while submitting feedback:");
+        alert("Bạn phải nhập content :((");
+        return;
+      }
+      if (rating == null || rating == "") {
+        console.error("An error occurred while submitting feedback:");
+        alert("Bạn phải nhập sao :((");
+        return;
+      }
       try {
         // Tạo đối tượng dữ liệu để gửi lên server
         const feedbackData = {
