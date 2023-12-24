@@ -50,6 +50,7 @@ public class CourseDao {
         courseDTo.setPrice(rs.getDouble("price"));
         courseDTo.setEstimate(rs.getDouble("estimate"));
         courseDTo.setCate(rs.getInt("cate"));
+        courseDTo.setImage(rs.getString("image"));
         return courseDTo;
     });
 
@@ -62,8 +63,8 @@ public class CourseDao {
     }
 
     //get list for teacher management
-    public List<Course> getList(Pageable pageable) {
-        String query = "SELECT * FROM course LIMIT " +
+    public List<Course> getList(Pageable pageable,String sort) {
+        String query = "SELECT * FROM course"+" ORDER BY "+sort+" LIMIT " +
                 pageable.getPageSize() +
                 " OFFSET " + pageable.getOffset();
         return jdbcTemplate.query(query, mapper);
@@ -91,9 +92,9 @@ public class CourseDao {
 
     }
     //get list for preview
-    public List<CourseDTo> listCourseDto(Pageable pageable) {
-        String query = "SELECT c.id,u.username,c.title,c.description,c.price,c.estimate " +
-                "FROM course c,users u where c.uid=u.id LIMIT " +
+    public List<CourseDTo> listCourseDto(Pageable pageable,String sort) {
+        String query = "SELECT c.id,u.username,c.title,c.description,c.price,c.estimate,c.cate,c.image " +
+                "FROM course c,users u where c.uid=u.id"+" ORDER BY c."+sort+" LIMIT " +
                 pageable.getPageSize() +
                 " OFFSET " + pageable.getOffset();
 

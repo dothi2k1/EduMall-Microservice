@@ -2,7 +2,6 @@ package com.course.controller;
 
 import com.course.model.Course;
 
-import com.course.schedule.ScheduleService;
 import com.course.service.imp.CourseServiceImp;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class CourseController {
     //course -- start
     @GetMapping("/course/get-all")
     ResponseEntity<?> getAll(int page, String sort) throws Exception {
-        return service.getAll(page, sort);
+        return service.getListCourse(page, sort);
     }
     @GetMapping("/course/get-course")
     ResponseEntity<?> getById(@RequestParam long id) {
