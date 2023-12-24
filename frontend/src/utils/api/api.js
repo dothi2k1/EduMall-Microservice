@@ -12,7 +12,7 @@ const media = {
 }
 
 const homepage = {
-          course: "api/sv2/course/get-all",         
+          course: "/api/sv2/course/get-all",         
           
 }
 

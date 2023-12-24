@@ -25,16 +25,17 @@ public class CourseDao {
         Course course = new Course();
         course.setId(rs.getLong("id"));
         course.setType(rs.getInt("type"));
-        course.setUid(rs.getInt(3));
-        course.setCate(rs.getInt(4));
-        course.setDescription(rs.getString(5));
-        course.setCreateat(rs.getDate(6));
-        course.setUpdateat(rs.getDate(7));
-        course.setDeleteat(rs.getDate(8));
-        course.setActive(rs.getBoolean(9));
-        course.setPrice(rs.getDouble(10));
-        course.setEstimate(rs.getDouble(11));
-        course.setTitle(rs.getString(12));
+        course.setUid(rs.getInt("uid"));
+        course.setCate(rs.getInt("cate"));
+        course.setDescription(rs.getString("description"));
+        course.setCreateat(rs.getDate("createat"));
+        course.setUpdateat(rs.getDate("updateat"));
+        course.setDeleteat(rs.getDate("deleteat"));
+        course.setActive(rs.getBoolean("active"));
+        course.setPrice(rs.getDouble("price"));
+        course.setEstimate(rs.getDouble("estimate"));
+        course.setTitle(rs.getString("title"));
+        course.setImage(rs.getString("image"));
         return course;
     });
     //route mapper

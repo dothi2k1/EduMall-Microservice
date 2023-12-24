@@ -43,7 +43,8 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/api/sv2/course/**"),
                                 new AntPathRequestMatcher("/api/sv2/video/**"),
                                 new AntPathRequestMatcher("/api/sv2/doc/**"),
-                                new AntPathRequestMatcher("/api/sv2/route/**")
+                                new AntPathRequestMatcher("/api/sv2/route/**"),
+                                new AntPathRequestMatcher("/api/sv2/category/**")
                         ).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/sv2/private/**")).hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated())
