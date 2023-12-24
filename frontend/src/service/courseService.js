@@ -9,3 +9,11 @@ export const getHomeCourse = async () => {
     return err;
   }
 };
+export const getAll = async (page,sort) => {
+  try {
+    let res = await axiosInstance.get(Api.homepage.course + `?page=${page}&sort=${sort}`);
+    return res;
+  } catch (err) {
+    return err;
+  }
+};

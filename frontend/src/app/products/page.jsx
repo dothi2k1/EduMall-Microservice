@@ -6,6 +6,7 @@ import Categories from "./Categories";
 import Pagination from "./Pagination";
 import Cart from "@/context/Products/Cart";
 import FlashSale from "./FlashSale";
+import { getAll } from "@/service/courseService";
 
 export default function Products() {
   const [items, setItems] = useState([]);
@@ -14,7 +15,7 @@ export default function Products() {
   const [category, setCategory] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState("all");
-  const [sortedProducts, setSortedProducts] = useState(null);
+  const [products, setProducts] = useState([1,2,3,4]);
   const endTime = "2023-08-30T23:59:59";
 
   const handleChangePrice = (e) => {
@@ -37,19 +38,14 @@ export default function Products() {
   let priceArray = [];
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch(`${process.env.DOMAIN}/products`);
-        const data = await response.json();
-        setItems(data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      } finally {
+    
+    getAll(0, "id").then(res => {
+      console.log(res)
+      if (res.status == 200) {
+        setProducts(res.data);
         setLoading(false);
-      }
-    };
-
-    fetchProducts();
+      };
+    });
   }, []);
 
   items.forEach((item) => priceArray.push(parseInt(item.price)));
@@ -57,30 +53,13 @@ export default function Products() {
   let maxPrice = Math.max(...priceArray);
 
   useEffect(() => {
-    const filterProductsByPrice = items.filter((item) => parseInt(item.price) <= parseInt(priceChange));
-    const filteredProducts =
-      category === null ? filterProductsByPrice : filterProductsByPrice.filter((item) => item.category_id === category);
-    let sortedProducts;
-    switch (sortBy) {
-      case "ascending":
-        sortedProducts = [...filteredProducts].sort((a, b) => a.price - b.price);
-        break;
-      case "descending":
-        sortedProducts = [...filteredProducts].sort((a, b) => b.price - a.price);
-        break;
-      default:
-        sortedProducts = [...filteredProducts];
-    }
+   
 
-    setSortedProducts(sortedProducts);
-  }, [category, items, sortBy, priceChange]);
+  }, []);
 
-  const filterProductsByPrice = items.filter((item) => parseInt(item.price) <= parseInt(priceChange));
-  const filteredProducts =
-    category === null ? filterProductsByPrice : filterProductsByPrice.filter((item) => item.category_id === category);
+ 
 
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-  const products = sortedProducts?.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = 0;
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -88,51 +67,34 @@ export default function Products() {
 
   return (
     <>
-      <div className="container mx-auto px-5 pt-[55px] lg:pt-[75px]" >
-        <div className="pb-20 pt-16 lg:pb-36 lg:pt-20 ">
+        <div className="pb-20 pt-16 lg:pb-36 lg:pt-20">
           <div className="flex flex-col space-y-14 lg:flex-row lg:space-x-20 lg:space-y-0">
-            <div>
-              <h5 className="text-heading-5 text-secondary-50 text-gray-600 text-xl font-semibold">Categories</h5>
+            <div className="border-r-[1px] shadow-[rgba(0,0,0,0.3)_1px_0px_0px_0px] px-3">
+              <h5 className="text-heading-5 text-secondary-50 text-gray-600 text-xl font-semibold">Filter</h5>
               <div
-                className="mt-6 flex w-[calc(100vw-32px)] flex-row space-x-4 overflow-y-auto pb-5 lg:w-full lg:flex-col lg:space-x-0 lg:space-y-4 lg:pb-0"
+                className="mt-6 flex lg:w-[200px] flex-row space-x-4 overflow-y-auto pb-5 lg:flex-col lg:space-x-0 lg:space-y-4 lg:pb-0"
                 role="tablist"
                 aria-orientation="horizontal"
-              >
-                <Categories handleCategoryChange={handleCategoryChange} category={category} />
+            >
+              <div className="flex flex-col">
+                <label htmlFor="" className="font-bold">Type</label>
+                <select name="" id="" className="bg-none">
+                  <option value="">e-learning</option>
+                  <option value="">Distance learning</option>
+                </select>
               </div>
-              <div className="mt-5">
-                <span className="text-heading-5 text-secondary-50 text-gray-600 text-xl font-semibold">
-                  Filter by Price:{" "}
-                </span>
-                <span className="font-semibold">
-                  {Intl.NumberFormat("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                  }).format(priceChange)}
-                </span>
-                <input
-                  className="w-[90%]"
-                  type="range"
-                  min={minPrice}
-                  max={maxPrice}
-                  defaultValue={maxPrice}
-                  onChange={handleChangePrice}
-                />
+              <div className="flex flex-col">
+                <label htmlFor="" className="font-bold">Categories</label>
+                <select name="" id="">
+                  <option value="">Python</option>
+                  <option value="">Java</option>
+                </select>
               </div>
-              <div className="mt-20 hidden lg:block">
-                <div className="rounded-[32px] bg-primary-100 bg-emerald-500  text-white bg-cover bg-no-repeat py-14 pl-8 pr-11">
-                  <h5 className="text-heading-5 ">Limited Time Offer</h5>
-                  <h1 className="mt-1.5 w-[216px] font-fredoka-one text-[54px] leading-tight tracking-tight font-semibold ">
-                    Get 50% Off!
-                  </h1>
-                  <p className="text-body-2-All Item mt-3 w-[216px] ">
-                    Enjoy a 50% discount on all our premium features
-                  </p>
-                  <button className="btn-yellow-solid mt-4 font-semibold">Get it now</button>
-                </div>
               </div>
+              
+              
             </div>
-            <div className="lg:grow">
+            <div className="lg:grow ">
               <div>
                 <div
                   id="headlessui-tabs-panel-:rl:"
@@ -142,43 +104,28 @@ export default function Products() {
                   data-headlessui-state="selected"
                 >
                   <div className="flex items-center justify-between">
-                    <h3 className="text-heading-4 lg:text-heading-3 text-secondary-100 text-3xl font-semibold text-gray-600">
+                    <h3 className="text-heading-4 lg:text-heading-3 text-secondary-100 text-xl font-semibold text-gray-600">
                       All Item
                     </h3>
 
                     <select
-                      className="text-caption-2 text-primary-100 text-xl font-semibold text-emerald-500"
+                      className="text-caption-2 text-primary-100 text-sm font-semibold text-emerald-500 p-2" 
                       value={sortBy}
                       onChange={(e) => handleSortByChange(e.target.value)}
                     >
-                      <option value="all">Price: All price</option>
+                      <option value="all">Sort by:</option>
                       <option value="ascending">Price: Low to High</option>
                       <option value="descending">Price: High to Low</option>
                     </select>
                   </div>
-                  <Cart />
-                  <FlashSale products={items} endTime={endTime} />
-
                   <ProductList products={products} loading={loading} />
                   <Pagination totalPages={totalPages} currentPage={currentPage} handlePageChange={handlePageChange} />
                 </div>
               </div>
             </div>
           </div>
-          <div className="mt-20 block bg-emerald-300 lg:hidden">
-            <div className="rounded-[32px] bg-primary-100  py-14 pl-8 pr-11">
-              <h5 className="text-heading-5 text-black">Limited Time Offer</h5>
-              <h1 className="mt-1.5 w-[216px] font-fredoka-one text-[54px] leading-tight tracking-tight text-black">
-                Get 50% Off!
-              </h1>
-              <p className="text-body-2-regular mt-3 w-[216px] text-black">
-                enjoy a 50% discount on all our premium features
-              </p>
-              <button className="btn-yellow-solid mt-4">Get it now</button>
-            </div>
-          </div>
+          
         </div>
-      </div>
     </>
   );
 }

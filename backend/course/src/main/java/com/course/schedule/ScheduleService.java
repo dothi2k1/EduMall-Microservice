@@ -1,5 +1,6 @@
 package com.course.schedule;
 
+import com.course.DTO.CourseDTo;
 import com.course.dao.CategoryDao;
 import com.course.dao.CourseDao;
 import com.course.dao.RouteDao;
@@ -68,9 +69,8 @@ public class ScheduleService {
         long count=dao.getTotalPage();
         long totalPage=(count%10==0)?count/10:count/10+1;
         for (int i = 0; i < totalPage; i++) {
-            List<Course>courses= dao.getList(
-                    PageRequest.of(0, 10,
-                            Sort.by(Sort.Direction.ASC, "id")));
+            List<CourseDTo>courses= dao.listCourseDto(
+                    PageRequest.of(0, 10),"id");
             service.setValueRedis("page"+i,redisMapper.writeValueAsString(courses),1,TimeUnit.DAYS );
         }
 
