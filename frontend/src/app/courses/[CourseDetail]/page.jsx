@@ -8,18 +8,18 @@ import Banner from "./Banner";
 import ContentText from "./ContentText";
 import ThisCourseInclude from "./ThisCourseInclude";
 import Description from "./Description";
+import AddFeedBack from "./AddFeedBack";
 
-const FeedBackPage = () => {
+const CourseDetail = ({ params }) => {
+  const Course_ID = parseInt(params.CourseDetail);
   const [feedbackData, setFeedbackData] = useState([]);
-  const [url, setUrl] = useState("get-all-order-by-time?page=0&direction=1");
+  const [url, setUrl] = useState(`get-by-course-detail-pageable/${Course_ID}?page=0&direction=1`);
 
   const changeUrlFeedBackList = () => {
-    // Nếu url hiện tại là "get-all", thì đặt lại về giá trị ban đầu
-    if (url === "get-all") {
-      setUrl("get-all-order-by-time?page=0&direction=1");
+    if (url === `get-by-course-detail/${Course_ID}`) {
+      setUrl(`get-by-course-detail-pageable/${Course_ID}?page=0&direction=1`);
     } else {
-      // Ngược lại, đặt url thành "get-all"
-      setUrl("get-all");
+      setUrl(`get-by-course-detail/${Course_ID}`);
     }
   };
 
@@ -45,6 +45,7 @@ const FeedBackPage = () => {
           <ContentText />
           <ThisCourseInclude />
           <Description />
+          <AddFeedBack />
           <FeedbackList feedbackData={feedbackData} onClickChangeUrlFeedBackList={changeUrlFeedBackList} />
         </div>
       </div>
@@ -53,4 +54,4 @@ const FeedBackPage = () => {
   );
 };
 
-export default FeedBackPage;
+export default CourseDetail;
