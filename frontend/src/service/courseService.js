@@ -17,3 +17,11 @@ export const getAll = async (page,sort) => {
     return err;
   }
 };
+export const getById = async (id) => {
+  try {
+    let res = await axiosInstance.get(Api.course.getById + id);
+    return res;
+  } catch (err) {
+    return err;
+  }
+};

@@ -8,21 +8,24 @@ import { login } from "@/service/AuthService";
 import { toast } from "react-toastify";
 import axiosInstance from "@/utils/axios";
 const Login = () => {
-  const { errorMessage, isLoggedIn } = useContext(AuthContext);
+  const { errorMessage, isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter(); // Create useRouter object
-  
+
   useEffect(() => {
-    // if (isLoggedIn)  router.push('/')
-    axiosInstance.get("http://localhost:9000/api/sv1/feedback/get-all").then(res => console.log(res))
-  },[])
+    if (isLoggedIn) router.push('/')
+
+  }, [])
   const handleSubmit = (e) => {
     e.preventDefault();
     login({ username: usernameOrEmail, password: password }).then(res => {
       if (!res) toast("Lost connection", { autoClose: 2000, type: 'error', closeButton: false })
       if (res.status == 200) {
-        window.localStorage.setItem("token", JSON.stringify(res))
+        window.localStorage.setItem("token", JSON.stringify(res.data))
+        window.localStorage.setItem("isLoggedIn", true)
+        setIsLoggedIn(true);
+
         router.push('/')
       }
       else toast(res.data, { autoClose: 2000, type: 'error', closeButton: false });
@@ -33,7 +36,7 @@ const Login = () => {
 
   };
 
-  return  (
+  return (
     <section className="bg-[url('/bgtim.webp')] bg-cover  pt-[55px] lg:pt-[75px] pb-7">
       <div className=" animate__animated animate__fadeIn flex flex-col items-center justify-center px-4 mx-auto md:h-screen lg:py-0">
         <div className="max-w-screen-sm	 bg-white bg-opacity-80 rounded-lg shadow dark:border md:mt-0 sm:max-w-[1000px] xl:p-0  lg:flex">
@@ -46,7 +49,7 @@ const Login = () => {
             <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit} method="post">
               <div>
                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">
-                UserName
+                  UserName
                 </label>
                 <input
                   type="text"

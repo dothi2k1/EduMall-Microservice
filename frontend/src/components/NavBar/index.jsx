@@ -35,10 +35,7 @@ export default function NavBar() {
       name: "Teach on Edumall",
       link: "teacher",
     },
-    {
-      name: "Courses/1",
-      link: "/courses/1",
-    },
+
   ];
 
   return (
@@ -122,10 +119,10 @@ export default function NavBar() {
             </div>
             <div className="relative flex items-center ">
               <a
-                className="mr-3 text-secondary-500 transition duration-200 hover:text-secondary-400 hover:ease-in-out focus:text-secondary-400 disabled:text-black/30 motion-reduce:transition-none"
+                className="mr-3 text-secondary-500 transition duration-200  hover:ease-in-out focus:text-secondary-400 disabled:text-black/30 motion-reduce:transition-none"
                 href="#"
               >
-                <span className="[&>svg]:w-6">
+                <span className="[&>svg]:w-6 hover:text-white hover:drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
                     <path d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" />
                   </svg>
@@ -135,29 +132,21 @@ export default function NavBar() {
                 1
               </span>
 
-              <div className="relative" data-te-dropdown-ref data-te-dropdown-alignment="end">
-                <a
-                  className="hidden-arrow mr-4 flex items-center text-secondary-500 transition duration-200 hover:text-secondary-400 hover:ease-in-out focus:text-secondary-400 disabled:text-black/30 motion-reduce:transition-none"
-                  href="#"
-                  id="dropdownMenuButton1"
-                  role="button"
-                  data-te-dropdown-toggle-ref
-                  aria-expanded="false"
-                >
-                  <span className="[&>svg]:w-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-                      <path
-                        fill-rule="evenodd"
-                        d="M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0 24.585 24.585 0 01-4.831-1.244.75.75 0 01-.298-1.205A8.217 8.217 0 005.25 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0 25.057 25.057 0 01-4.496 0z"
-                        clip-rule="evenodd" />
-                    </svg>
-                  </span>
-
-                  <span className="absolute -mt-4 ml-2.5 rounded-full bg-red-500 px-[0.35em] py-[0.15em] text-[0.6rem] font-bold leading-none text-white">
-                    1
-                  </span>
-                </a>
-              </div>
+              <a
+                className="mr-3 text-secondary-500 transition duration-200  hover:ease-in-out focus:text-secondary-400 disabled:text-black/30 motion-reduce:transition-none"
+                href="#"
+              >
+                <span className="[&>svg]:w-6 hover:text-white hover:drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+                    <path
+                      d="M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0 24.585 24.585 0 01-4.831-1.244.75.75 0 01-.298-1.205A8.217 8.217 0 005.25 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0 25.057 25.057 0 01-4.496 0z"
+                    />
+                  </svg>
+                </span>
+              </a>
+              <span className="absolute -mt-4 ml-12 rounded-full bg-red-500 px-[0.35em] py-[0.15em] text-[0.6rem] font-bold leading-none text-white">
+                1
+              </span>
 
               {isLoggedIn ? (
                 <div className="group inline-block relative">

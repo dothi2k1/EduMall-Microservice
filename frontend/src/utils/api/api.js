@@ -15,5 +15,8 @@ const homepage = {
           course: "/api/sv2/course/get-all",         
           
 }
+const course = {
+          getById: "/api/sv2/course/get-course?id=",
+}
 
-export const Api={auth,media,homepage,category}
+export const Api={auth,media,homepage,category,course}

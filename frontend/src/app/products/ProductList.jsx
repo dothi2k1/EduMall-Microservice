@@ -158,7 +158,7 @@ const ProductList = ({ products, loading }) => {
         >
           {products?.map((v, i) => (
             <div className="w-52 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl" key={i} title={v.title }>
-                <a href="#">
+              <a href={`/courses/${v.id}`}>
                   <img
                   src={v.image}
                     alt="Product"
