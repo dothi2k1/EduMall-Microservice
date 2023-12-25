@@ -19,7 +19,7 @@ const Register = () => {
   const route = useRouter();
   useEffect(() => {
     if (isLoggedIn) route.back('/')
-  },[])
+  }, [])
   // preview avatar
   useEffect(() => {
     pic && setBo(true);
@@ -81,7 +81,7 @@ const Register = () => {
       data.append('images', pic);
       uploads(data).then(res => {
         console.log(res);
-        if (res.code == "ERR_NETWORK") toast("Lost connection", { autoClose: 2000, type: 'error', closeButton: false });
+        if (res.code != 200) toast("Lost connection", { autoClose: 2000, type: 'error', closeButton: false });
         if (res.status == 200) { value = { ...value, avatar: res.data.files[0].imageUrl }; console.log(value); }
       }).catch(res => { toast(res, { autoClose: 2000, type: 'error', closeButton: false }); });
     }
@@ -452,13 +452,13 @@ const Register = () => {
                         className="w-10"
                       />
                       <h2 className="mb-8 text-2xl text-cyan-900  font-bold">
-                      You have signed up successfully!
+                        You have signed up successfully!
                       </h2>
                     </div>
                     <div className="mt-10 grid space-y-4">
                       <a href='/user/login' className="group h-13 px-6  border-2 border-gray-300 rounded-full transition duration-300 hover:border-blue-400 focus:bg-blue-50 active:bg-blue-100">
                         <div className=" flex h-12 items-center space-x-4 justify-center">
-                          
+
                           <span className=" w-max font-semibold tracking-wide text-gray-700 text-sm transition duration-300 group-hover:text-blue-600 sm:text-base">
                             Login
                           </span>
@@ -497,10 +497,10 @@ const Register = () => {
           {(step == 2) && <button type='submit' style={{ display: (step == 3) ? 'none' : '' }} className='mt-5 w-full rounded-md bg-blue-600 p-2 text-center font-semibold text-white'>
             Get Started
           </button>}
-          {(step==1)&&
-            <button type='button' onClick={()=>setStep(2)} style={{ display: (step == 3) ? 'none' : '' }} className='mt-5 w-full rounded-md bg-blue-600 p-2 text-center font-semibold text-white'>
-            Next
-          </button>
+          {(step == 1) &&
+            <button type='button' onClick={() => setStep(2)} style={{ display: (step == 3) ? 'none' : '' }} className='mt-5 w-full rounded-md bg-blue-600 p-2 text-center font-semibold text-white'>
+              Next
+            </button>
           }
         </div>
       </form>

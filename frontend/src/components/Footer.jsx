@@ -3,26 +3,26 @@ import React from "react";
 export default function footer() {
   return (
     <>
-      <footer className="bg-[url('https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg')] bg-cover">
+      <footer className="p-4 bg-[url('https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg')] bg-cover">
         <div className="">
           <div className="container mx-auto divide-y divide-white/40">
-            <div className="flex flex-col space-y-6 pb-8 pt-12 lg:flex-row lg:justify-between lg:space-y-0 lg:pb-16 lg:pt-20">
-              <h2 className="text-heading-4 lg:text-heading-2 text-center leading-none text-white text-6xl font-black">
+            <div className="flex flex-col space-y-6 py-5 lg:flex-row lg:justify-between lg:space-y-0">
+              <h2 className="text-lg lg:text-lg text-center leading-none text-white text-6xl font-black">
                 Newsletter Subscribe
               </h2>
               <div className="flex flex-col items-center space-y-6 lg:flex-row lg:space-x-5 lg:space-y-0">
                 <input
                   type="text"
                   placeholder="Email Address"
-                  className="text-body-2-medium w-full rounded-[32px] border border-white bg-transparent px-10 py-5 text-white placeholder:text-white focus:outline-0 focus:ring-1 focus:ring-white lg:w-96"
+                  className="text-body-2-medium w-full rounded-[32px] border border-white bg-transparent px-10 py-2 text-white placeholder:text-white focus:outline-0 focus:ring-1 focus:ring-white lg:w-96"
                 />
-                <button className="btn-white-solid w-fit leading-[normal]">Subscribe Now</button>
+                <button className="bg-white w-fit py-2 px-1 rounded rounded-full">Subscribe Now</button>
               </div>
             </div>
-            <div className="pb-14 pt-10 lg:py-16">
+            <div className="lg:py-10">
               <div className="flex flex-col space-y-10 lg:flex-row lg:space-x-[120px] lg:space-y-0">
                 <div className="flex flex-col space-y-8">
-                  <h3 className="text-white font-semibold text-3xl">Atom Shop</h3>
+                  <h3 className="text-white font-semibold text-lg">Atom Shop</h3>
                   <div className="flex items-center space-x-1.5 text-white">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
