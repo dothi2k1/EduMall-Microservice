@@ -1,0 +1,7 @@
+http://localhost:2000/upload/images
+params: images
+headers: EDUMALL
+
+http://localhost:2000/upload/videos
+params: videos
+headers: EDUMALL
