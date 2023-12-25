@@ -1,11 +1,9 @@
 package com.course.schedule;
 
 import com.course.DTO.CourseDTo;
-import com.course.DTO.RouteDto;
 import com.course.dao.CategoryDao;
 import com.course.dao.CourseDao;
 import com.course.dao.RouteDao;
-import com.course.model.Category;
 import com.course.model.Course;
 import com.course.model.Process;
 import com.course.repository.ProcessRepo;
@@ -14,18 +12,14 @@ import com.course.schedule.thread.RelatCourseJob;
 import com.course.schedule.thread.RouteJob;
 import com.course.service.imp.RedisServiceImp;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -71,10 +65,15 @@ public class ScheduleService {
     @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.DAYS)
     void doProcess() throws JsonProcessingException {
         System.out.println("do task");
-        List<Course> list = dao.getList(
-                PageRequest.of(0, 10000,
-                        Sort.by(Sort.Direction.ASC, "id")));
-        service.setValueRedis("course_list", redisMapper.writeValueAsString(list), 1, TimeUnit.DAYS);
+        List<Course> list = dao.getAll();
+        long count=dao.getTotalPage();
+        long totalPage=(count%10==0)?count/10:count/10+1;
+        for (int i = 0; i < totalPage; i++) {
+            List<CourseDTo>courses= dao.listCourseDto(
+                    PageRequest.of(0, 10),"id");
+            service.setValueRedis("page"+i,redisMapper.writeValueAsString(courses),1,TimeUnit.DAYS );
+        }
+
 
         List<String> jsons = list.stream().map(v -> {
             try {

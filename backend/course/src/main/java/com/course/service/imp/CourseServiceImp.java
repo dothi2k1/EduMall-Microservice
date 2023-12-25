@@ -37,21 +37,19 @@ public class CourseServiceImp implements CourseService {
     //course -- start
     @Override
     public ResponseEntity<?> getAll(int page, String sort) throws Exception {
-        Pageable pageable= PageRequest.of(page,10,
-                Sort.by(Sort.Direction.ASC,sort));
+        Pageable pageable= PageRequest.of(page,10);
         ResponseEntity<?> entity=redis.getAllCourse(page);
         if (entity!=null) {
             return entity;
         }
-        List<Course> list= dao.getList(pageable);
+        List<Course> list= dao.getList(pageable,sort);
         return ResponseEntity.ok(list);
     }
 
     @Override
     public ResponseEntity<?> getListCourse(int page, String sort) {
-        Pageable pageable= PageRequest.of(page,10,
-                Sort.by(Sort.Direction.ASC,sort));
-        return ResponseEntity.ok(dao.listCourseDto(pageable));
+        Pageable pageable= PageRequest.of(page,10);
+        return ResponseEntity.ok(dao.listCourseDto(pageable,sort));
     }
 
     @Override

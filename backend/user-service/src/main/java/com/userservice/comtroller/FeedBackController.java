@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/sv1/feedback")
-//@CrossOrigin("*")
 public class FeedBackController {
     @Autowired
     FeedBackServiceImp serviceImp;

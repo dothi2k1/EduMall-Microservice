@@ -3,7 +3,7 @@ import React from "react";
 export default function footer() {
   return (
     <>
-      <footer className="bg-[url('https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg')] bg-cover px-5">
+      <footer className="bg-[url('https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg')] bg-cover">
         <div className="">
           <div className="container mx-auto divide-y divide-white/40">
             <div className="flex flex-col space-y-6 pb-8 pt-12 lg:flex-row lg:justify-between lg:space-y-0 lg:pb-16 lg:pt-20">

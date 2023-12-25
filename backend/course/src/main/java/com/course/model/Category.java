@@ -11,6 +11,7 @@ import java.util.Date;
 public class Category {
     private Long id;
     private String name;
+    private String image;
     private String description;
     private Date createAt;
     private Date updateAt;

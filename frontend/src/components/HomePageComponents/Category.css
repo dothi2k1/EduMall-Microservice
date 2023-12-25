@@ -1,0 +1,23 @@
+.category-item-div {
+          border: 1px solid rgb(214, 214, 214);
+          transition: all ease-in-out 0.3s;
+          background-color: rgb(248, 249, 251);
+}
+
+.category-item-div:hover {
+          border: 1px solid rgb(124, 118, 255);
+}
+
+.category-item-img {
+          img {
+                    max-width: 110px;
+          }
+}
+
+.category-item-name {
+          margin-top: 24px;
+
+          h6 {
+                    font-size: 15px;
+          }
+}

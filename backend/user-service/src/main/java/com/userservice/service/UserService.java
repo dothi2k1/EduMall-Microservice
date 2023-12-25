@@ -11,6 +11,7 @@ public interface UserService {
     ResponseEntity<?> getAll(int page,String sort);
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
+    Boolean existsByPhone(String phone);
     User findByEmail(String email);
     ResponseEntity<?> activeToLecture(long id);
     ResponseEntity<?> summary();
