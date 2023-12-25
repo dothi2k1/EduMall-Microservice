@@ -23,10 +23,6 @@ const CourseDetail = ({ params }) => {
     console.log("FeedBackId selected in Page:", feedBackId);
   };
 
-  const handleFeedBackSetId = (id) => {
-    setFeedBackId(id);
-  };
-
   const openLightbox = () => {
     setLightboxOpen(true);
   };
@@ -65,7 +61,7 @@ const CourseDetail = ({ params }) => {
           <ContentText />
           <ThisCourseInclude />
           <Description />
-          <AddFeedBack />
+          <AddFeedBack feedBackId={feedBackId ? feedBackId : null} />
           <FeedbackList
             feedbackData={feedbackData}
             onClickChangeUrlFeedBackList={changeUrlFeedBackList}
