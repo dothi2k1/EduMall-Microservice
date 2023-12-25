@@ -49,7 +49,7 @@ const Register = () => {
       avatar: '',
       address: '',
       achievement: '',
-      role: [2]
+      role: [3]
     },
     validationSchema: Yup.object({
       username: Yup.string().required('Required'),
