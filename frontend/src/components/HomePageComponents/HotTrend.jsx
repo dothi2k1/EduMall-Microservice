@@ -6,7 +6,7 @@ const HotTrend = () => {
   const [course, setCour] = useState([1,33,3,7]);
   useEffect(() => {
     getHomeCourse().then(res => {
-      console.log(res);
+      if (res.status==200)
       setCour(res.data);
     }).catch((err) => {
       console.log(err);

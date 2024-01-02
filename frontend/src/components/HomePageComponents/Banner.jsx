@@ -2,7 +2,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
-import useCountdownTimer from "@/app/products/useCountdownTimer";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -14,14 +13,13 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
 export default function Banner() {
   const endTime = "2023-12-30T23:59:59";
-  const timeLeft1 = useCountdownTimer(endTime);
   const [timeLeft, setTimeLeft] = useState(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setTimeLeft(timeLeft1);
+      setTimeLeft(timeLeft);
     }
-  }, [timeLeft1]);
+  }, [timeLeft]);
 
   const images = ["/banner-1.png", "/banner-2.png", "/banner-3.png"];
   const icons = [

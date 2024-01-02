@@ -89,6 +89,12 @@ public class VideoDao {
         });
         return list2;
     }
+
+    public int countByCourseId(long id){
+        String qr="select count(v.id) as videos from route r,video v where r.id=v.routeid and r.courseid="+id;
+        return jdbcTemplate.queryForObject(qr,Integer.class);
+    }
+
     public Long getTotalVideo(long id) {
         String query="";
         if (id==0)

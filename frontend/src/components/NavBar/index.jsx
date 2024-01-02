@@ -1,19 +1,15 @@
 'use client';
 import React, { useState, useEffect, useContext } from 'react';
 import { CartContext } from '../../context/Products/cartContext';
-import jwtDecode from 'jwt-decode';
-import Link from 'next/link';
 import './navbar.css'
 import { AuthContext } from '@/context/User/AuthProvider';
-import SearchBar from '../SearchBar';
-import DropDown from './DropDown';
 import Image from 'next/image';
 
 export default function NavBar() {
   const { isLoggedIn, username, user, handleLogout } = useContext(AuthContext);
 
   const [openNav, setOpenNav] = useState("translate-x-[-100%]");
-  const { cartItems, calculateTotalPrice, totalProducts, clearCartItems } = useContext(CartContext);
+  const {showCart,setShowCart,calculateTotalProduct } = useContext(CartContext);
   const [dropDown, setDropDown] = useState(false);
 
   const handleDropDown = () => {
@@ -29,7 +25,7 @@ export default function NavBar() {
   const navItem = [
     {
       name: "Course",
-      link: "/products",
+      link: "/courses",
     },
     {
       name: "Teach on Edumall",
@@ -120,7 +116,7 @@ export default function NavBar() {
             <div className="relative flex items-center ">
               <a
                 className="mr-3 text-secondary-500 transition duration-200  hover:ease-in-out focus:text-secondary-400 disabled:text-black/30 motion-reduce:transition-none"
-                href="#"
+                onClick={()=>setShowCart('translate-x-[0%]')}
               >
                 <span className="[&>svg]:w-6 hover:text-white hover:drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
@@ -129,7 +125,7 @@ export default function NavBar() {
                 </span>
               </a>
               <span className="absolute -mt-4 ml-2.5 rounded-full bg-red-500 px-[0.35em] py-[0.15em] text-[0.6rem] font-bold leading-none text-white">
-                1
+                {calculateTotalProduct()}
               </span>
 
               <a

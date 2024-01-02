@@ -71,7 +71,7 @@ public class RedisServiceImp implements RedisService {
     public ResponseEntity<?> getCourseById(long id) {
         try {
             String json = (String) template.opsForValue().get("course" + id);
-            Course c= redisMapper.convertValue(json, new TypeReference<Course>() {
+            CourseDTo c= redisMapper.convertValue(json, new TypeReference<CourseDTo>() {
             });
             String routJson=(String) template.opsForValue().get("route_course"+id);
             List<RouteDto> routeDtos=redisMapper.readValue(routJson, new TypeReference<List<RouteDto>>() {

@@ -21,4 +21,6 @@ public interface OrderService {
     ResponseEntity<?> getCountByStatus(int status);
     ResponseEntity<?> statistic();
     ResponseEntity<?> getOwnOrder(long uid,int page);
+    ResponseEntity<?> updateOrder(Order order);
+    ResponseEntity<?> getPendingOrder(long uid);
 }

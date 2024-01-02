@@ -1,5 +1,6 @@
 package com.course.schedule.thread;
 
+import com.course.DTO.CourseSummary;
 import com.course.DTO.RouteDto;
 import com.course.dao.CourseDao;
 import com.course.dao.RouteDao;
@@ -29,7 +30,7 @@ public class RelatCourseJob implements Runnable{
             if (service.check("queue_relative")){
                 String re=(String) service.rPop("queue_relative");
                 if (re!=null) {
-                    Course course = mapper.readValue(re, Course.class);
+                    CourseSummary course = mapper.readValue(re, CourseSummary.class);
                     Pageable pageable = PageRequest.of(0, 10,
                             Sort.by(Sort.Direction.ASC, "id"));
                     List<Course> list=dao.getListRelative( pageable,course.getCate(),course.getId());
@@ -42,7 +43,7 @@ public class RelatCourseJob implements Runnable{
             Thread.sleep(4000);
         }
         catch (Exception e){
-            System.out.println("Can't cache item");
+            System.out.println("Rlt: Can't cache item");
         }
 
     }

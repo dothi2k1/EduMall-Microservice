@@ -3,7 +3,6 @@
 import { useState } from "react";
 import axios from "axios";
 import { FaStar } from "react-icons/fa";
-import axiosInstance from "@/utils/axios";
 
 const AddFeedBack = () => {
   // State để lưu trữ dữ liệu của feedback
@@ -38,7 +37,7 @@ const AddFeedBack = () => {
       };
 
       // Gửi yêu cầu POST đến API
-      const response = await axiosInstance.put("/api/sv1/feedback/add", feedbackData);
+      const response = await axios.put("http://localhost:9000/api/sv1/feedback/add", feedbackData);
 
       // Kiểm tra kết quả từ server
       if (response.status === 200) {

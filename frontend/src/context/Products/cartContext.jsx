@@ -1,79 +1,45 @@
 "use client";
-import React, { createContext, useState, useEffect } from "react";
+import { getCart } from "@/service/OrderService";
+import { getImage } from "@/service/courseService";
+import React, { createContext, useState, useEffect, useContext } from "react";
 
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [totalProducts, setTotalProducts] = useState(0);
+  let uid = JSON.parse(localStorage.getItem('token')).id;
+  const [itemInfo, setInfo] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [showItem, setShowItem] = useState(true);
-
-  const addToCart = (product) => {
-    const existingItem = cartItems.find((item) => item.id === product.id);
-    setShowItem(true);
-    if (existingItem) {
-      existingItem.quantity += product.quantity;
-      setCartItems((prevItems) => [...prevItems]);
-    } else {
-      setCartItems((prevItems) => [...prevItems, product]);
-    }
+  const [showCart,setShowCart]=useState('translate-x-[200%]')
+  const addToCart = (item) => {
+    setCartItems([...cartItems, item]);
   };
-
-  const clearCartItems = () => {
-    setCartItems([]);
-  };
-
-  const handleIncreaseQuantity = (itemId) => {
-    const updatedItems = cartItems.map((item) => {
-      if (item.id === itemId) {
-        return { ...item, quantity: item.quantity + 1 };
-      }
-      return item;
-    });
-
-    setCartItems(updatedItems);
-  };
-
-  const handleDecreaseQuantity = (itemId) => {
-    const updatedItems = cartItems.map((item) => {
-      if (item.id === itemId) {
-        return { ...item, quantity: item.quantity - 1 };
-      }
-      return item;
-    });
-
-    setCartItems(updatedItems);
-  };
-
-  const handleQuantityChange = (itemId, newQuantity) => {
-    const parsedQuantity = parseInt(newQuantity);
-    if (!isNaN(parsedQuantity) && parsedQuantity >= 0) {
-      const updatedItems = cartItems.map((item) => {
-        if (item.id === itemId) {
-          return { ...item, quantity: parsedQuantity };
-        }
-        return item;
+  useEffect(() => {
+    if(JSON.parse(localStorage.getItem('token')))
+      getCart().then(res => {
+        setCartItems(res.list);
+        getImage(res.list?.map(v=>v.couresId)).then(res=>console.log(res))
+        window.localStorage.setItem('cart', res)
       });
+  },[uid])
+  
 
-      setCartItems(updatedItems);
-    }
-  };
-
-  const handleRemoveItem = (itemId) => {
-    const updatedItems = cartItems.filter((item) => item.id !== itemId);
+  const handleRemoveItem = (i) => {
+    const updatedItems = cartItems.filter((item,index) => index!=i);
     setCartItems(updatedItems);
   };
 
   const calculateTotalPrice = () => {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    return cartItems.reduce((total, item) => total + item.price, 0);
   };
 
   const calculateTotalProduct = () => {
-    setTotalProducts(cartItems.reduce((total, item) => total + item.quantity, 0));
+    return cartItems.length
   };
 
   useEffect(() => {
     calculateTotalProduct();
+    calculateTotalProduct()
   }, [cartItems]);
 
   return (
@@ -82,15 +48,11 @@ export const CartProvider = ({ children }) => {
         cartItems,
         addToCart,
         calculateTotalPrice,
-        totalProducts,
         calculateTotalProduct,
         showItem,
         setShowItem,
-        clearCartItems,
-        handleIncreaseQuantity,
-        handleDecreaseQuantity,
-        handleQuantityChange,
         handleRemoveItem,
+        showCart, setShowCart,
       }}
     >
       {children}

@@ -1,9 +1,9 @@
 import { Api } from "@/utils/api/api"
 import axiosInstance from "@/utils/axios"
 
-export const getAllCate = (page, name) => {
+export const getAllCate = async (page, name) => {
           try {
-                    let res = axiosInstance.get(Api.category.getAll + `?page=${page}&name=${name}`);
+                    let res = await axiosInstance.get(Api.category.getAll + `?page=${page}&name=${name}`);
                     return res;
           }
           catch (err) {

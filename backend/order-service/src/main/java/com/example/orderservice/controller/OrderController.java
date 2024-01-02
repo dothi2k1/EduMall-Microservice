@@ -9,7 +9,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("api/order")
 public class OrderController {
 
@@ -80,5 +79,10 @@ public class OrderController {
     @GetMapping("get-own")
     ResponseEntity<?> getBoughtList(@RequestParam long uid,@RequestParam int page){
         return orderService.getOwnOrder(uid, page);
+    }
+
+    @GetMapping("get-cart")
+    ResponseEntity<?> getCart(@RequestParam long uid){
+        return orderService.getPendingOrder(uid);
     }
 }

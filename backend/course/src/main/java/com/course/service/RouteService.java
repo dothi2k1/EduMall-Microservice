@@ -6,4 +6,5 @@ import org.springframework.http.ResponseEntity;
 public interface RouteService {
     ResponseEntity<?> addRoutes(Route route);
     ResponseEntity<?> getAllRoute(long courseId);
+    ResponseEntity<?> getRouteDetail(long courseId);
 }

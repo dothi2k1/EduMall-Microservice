@@ -1,6 +1,5 @@
 package com.example.orderservice.service.impl;
 
-import com.example.orderservice.dto.OrderDTO;
 import com.example.orderservice.dto.request.create.OrderCreateRequest;
 
 import com.example.orderservice.dto.response.CustomerInfo;
@@ -12,9 +11,7 @@ import com.example.orderservice.repository.OrderDetailRepository;
 import com.example.orderservice.repository.OrderRepository;
 import com.example.orderservice.service.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.experimental.SuperBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -244,6 +241,23 @@ public class OrderServiceImpl implements OrderService {
             customerInfos.add(info);
         }
         return ResponseEntity.ok(customerInfos);
+    }
+
+    @Override
+    public ResponseEntity<?> updateOrder(Order order) {
+        return ResponseEntity.ok(orderRepository.save(order));
+    }
+
+    @Override
+    public ResponseEntity<?> getPendingOrder(long uid) {
+
+        try {
+            Order order =orderRepository.findOrderByUserIdAndStatus(uid,0).get(0);
+            return ResponseEntity.ok(order);
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 
     void sendMail(String msg){

@@ -17,6 +17,10 @@ const homepage = {
 }
 const course = {
           getById: "/api/sv2/course/get-course?id=",
+          getImage:"/api/sv2/course/get-image"
 }
-
-export const Api={auth,media,homepage,category,course}
+const order = {
+          getCart: "/api/order/get-cart?uid=",
+          getOrderById:"/api/order/find-by-id/?id=",
+}
+export const Api={auth,media,homepage,category,course,order}

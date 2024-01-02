@@ -8,7 +8,7 @@ import Banner from "./Banner";
 import ContentText from "./ContentText";
 import ThisCourseInclude from "./ThisCourseInclude";
 import Description from "./Description";
-import AddFeedBack from "./AddFeedBack";
+import AddFeedBack from "../AddFeedBack";
 
 const CourseDetail = ({ params }) => {
   const Course_ID = parseInt(params.CourseDetail);

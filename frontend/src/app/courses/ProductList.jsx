@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { CartContext } from "../../context/Products/cartContext";
 import Link from "next/link";
 
@@ -154,7 +154,7 @@ const ProductList = ({ products, loading }) => {
     <>
       <section
           id="Projects"
-          className="w-fit mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5"
+          className="w-full mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5"
         >
           {products?.map((v, i) => (
             <div className="w-52 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl" key={i} title={v.title }>

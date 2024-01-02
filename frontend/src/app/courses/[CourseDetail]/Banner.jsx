@@ -1,39 +1,54 @@
-export default function Banner(params) {
+import { useEffect, useState } from "react";
+
+export default function Banner({course}) {
+
+  const [expand, setExpand] = useState({ regis: 0, rate: 0 });
+  const a = {
+    bigTitle: "The Complete Python Bootcamp From Zero to Hero in Python",
+    slogan:"Learn Python like a Professional Start from the basics and go all the way to creating your own applications and games"
+  }
+  
   return (
-    <div className="h-[430px] bg-gray-800 w-full leading-10">
-      <div className="ml-[214px] mt-[70px] max-w-[750px] text-white">
-        <div className="py-5 mt-[70px]">
-          <p>Phát triển - Ngôn ngữ lập trình - Python</p>
-          <p className="font-bold text-[34px]">The Complete Python Bootcamp From Zero to Hero in Python</p>
+    <div className=" bg-gray-800 w-full">
+      <div className="w-full lg:px-20 px-10 lg:pt-0 pt-10 mt-[70px] text-white flex flex-col items-center lg:flex-row lg:justify-between	">
+        <div className="py-3 lg:w-[50%] ">
+          <div className="lg:hidden">
+          <img src={course?.image} alt="" />
+        </div>
+          <p className="font-bold text-[34px]">{course?.title?.bigTitle}</p>
           <p>
-            Learn Python like a Professional Start from the basics and go all the way to creating your own applications
-            and games
+            {course?.title?.slogan}
           </p>
           <p className="leading-8 text-sm">
             <span className="text-yellow-700">
-              4,6 <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-            </span>
+              {course?.rate } <i className="fa-solid fa-star"></i>
+              
+            </span> 
             <span className="ml-2">
-              <a href="#" className="text-sky-400">
-                (489267 xếp hạng)
-              </a>{" "}
-              1.831.481 học viên
+              {expand.regis} registrations
             </span>
             <br />
-            Được tạo bởi{" "}
+            Upload by{" "}
             <a href="#" className="text-sky-400">
-              Johnny Dang
+              {course?.username}
             </a>
             <br />
-            <i class="fa-solid fa-circle-exclamation"></i> Lần cập nhật gần nhất 7/2023
-            <i class="fa-solid fa-globe ml-7"></i> Tiếng Anh
+            <i className="fa-solid fa-circle-exclamation"></i> Last updated: {new Date(course?.updateat).toLocaleDateString() }
+            <i className="fa-solid fa-globe ml-7"></i> English
             <br />
-            <i class="fa-solid fa-keyboard"></i> Tiếng Việt [Tự động], Tiếng Anh [Tự động]
+            <i className="fa-solid fa-keyboard"></i> Vietnamese [Auto], English [Auto]
           </p>
+        </div>
+        <div className="lg:w-[50%] flex justify-end ">
+          <div className="space-y-3">
+            <div className="hidden lg:block">
+              <img src={course?.image} alt="" />
+            </div>
+            
+            <button className="h-[40px] bg-violet-900 w-full color-white font-bold">BUY</button>
+            <button className="h-[40px] bg-white w-full text-gray-900 font-bold">ADD TO CART</button>
+            
+          </div>
         </div>
       </div>
     </div>
