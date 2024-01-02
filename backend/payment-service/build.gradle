@@ -17,6 +17,7 @@ configurations {
     }
 }
 
+
 repositories {
     mavenCentral()
 }
@@ -24,6 +25,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '4.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.30'
     compileOnly 'org.projectlombok:lombok'
