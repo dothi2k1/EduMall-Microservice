@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <script lang="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.11.1/simplepeer.min.js"
+      integrity="sha512-0f7Ahsuvr+/P2btTY4mZIw9Vl23lS6LY/Y7amdkmUg2dqsUF+cTe4QjWvj/NIBHJoGksOiqndKQuI9yzn2hB0g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+
+  <body>
+    <div id="videos" class="container">
+      <video id="localVideo" class="vid" autoplay muted></video>
+    </div>
+    <br />
+    <div class="control">
+      <button id="switchButton" class="settings" onclick="switchMedia()">
+        Switch Camera
+      </button>
+      <button id="muteButton" class="settings" onclick="toggleMute()">
+        Unmuted
+      </button>
+      <button id="vidButton" class="settings" onclick="toggleVid()">
+        Video Enabled
+      </button>
+      <button id="shareScreenButton" class="settings" onclick="setScreen()">
+        Share Screen
+      </button>
+    </div>
+  </body>
+  <footer>
+    <script src="/js/main.js" lang="text/javascript"></script>
+  </footer>
+</html>

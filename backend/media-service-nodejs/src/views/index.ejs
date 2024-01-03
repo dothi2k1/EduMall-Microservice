@@ -1,0 +1,225 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>
+            <%= title %>
+        </h1>
+        <p>Cdn ảnh và video.</p>
+        <a href="<%= domain %>/gallery?apikey=<%= apikey %>">Link toàn bộ ảnh</a>
+        <a href="<%= domain %>/video-gallery?apikey=<%= apikey %>">Link toàn bộ video</a>
+        <div class="upload-section">
+            <h3>API upload ảnh. </h3>
+            <span>Method - POST:</span><a href="<%= domain %>/upload/images">
+                <%= domain %>/upload/images
+            </a>
+            <p>Dùng api này để upload ảnh, tối đa 20 ảnh 1 lần, cần truyền 2 tham số apikey và images ở
+                form-data</p>
+            <form action="<%= domain %>/upload/images" method="post" enctype="multipart/form-data"
+                onsubmit="uploadImage(event)">
+                <label for="image">Chọn ảnh (tối đa 20): </label>
+                <input type="file" name="images" accept="image/*" multiple>
+                <br>
+                <label for="apikey">Apikey: </label>
+                <input type="text" name="apikey" value="EDUMALL" required>
+                <br>
+                <button type="submit">Upload ảnh</button>
+            </form>
+            <p>Sau khi gửi dữ liệu, sẽ có link ảnh trả lại</p>
+        </div>
+        <div id="loadingGif" class="loading-gif" style="display: none;">
+            <img style="width: 93px;" src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca.gif"
+                alt="Loading GIF">
+            <p>Uploading...</p>
+        </div>
+        <div id="apiResponse" class="api-response"></div>
+        <div class="upload-section">
+            <h3> Dùng API upload video</h3>
+            <span>Method - POST:</span><a href="<%= domain %>/upload/videos">
+                <%= domain %>/upload/videos
+            </a>
+            <p>Dùng api này để upload video, tối đa 5 video 1 lần, cần truyền 2 tham số apikey và videos ở
+                form-data</p>
+            <form action="<%= domain %>/upload/videos" method="post" enctype="multipart/form-data"
+                onsubmit="uploadVideo(event)">
+                <label for="video">Chọn video (tối đa 5): </label>
+                <input type="file" name="videos" accept="video/*" multiple>
+                <br>
+                <label for="apikey">Apikey: </label>
+                <input type="text" name="apikey" value="EDUMALL" required>
+                <br>
+                <button type="submit">Upload video</button>
+            </form>
+            <p>Sau khi gửi dữ liệu, sẽ có link video trả lại</p>
+        </div>
+
+
+    </div>
+
+    <script>
+
+
+        async function uploadImage(event) {
+            event.preventDefault();
+
+            // Display loading GIF while uploading
+            document.getElementById('loadingGif').style.display = 'block';
+
+            try {
+                // Get form data
+                const form = event.target;
+                const formData = new FormData(form);
+
+                // Make the API request using Fetch API
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                // Hide loading GIF after upload completion
+                document.getElementById('loadingGif').style.display = 'none';
+
+                if (response.ok) {
+                    // Success, display the API response
+                    const responseData = await response.json();
+                    displayApiResponse(responseData);
+                } else {
+                    // Error, display an error message
+                    const errorMessage = 'Error uploading image. Please try again.';
+                    displayApiResponse({ success: false, error: { message: errorMessage } });
+                }
+            } catch (error) {
+                console.error('Error during fetch:', error);
+                const errorMessage = 'An unexpected error occurred. Please try again.';
+                displayApiResponse({ success: false, error: { message: errorMessage } });
+            }
+        }
+
+        async function uploadVideo(event) {
+            event.preventDefault();
+            // Display loading GIF while uploading
+            document.getElementById('loadingGif').style.display = 'block';
+            try {
+                // Get form data
+                const form = event.target;
+                const formData = new FormData(form);
+
+                // Make the API request using Fetch API
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                // Hide loading GIF after upload completion
+                document.getElementById('loadingGif').style.display = 'none';
+
+                if (response.ok) {
+                    // Success, display the API response
+                    const responseData = await response.json();
+                    displayApiResponse(responseData);
+                } else {
+                    // Error, display an error message
+                    const errorMessage = 'Error uploading video. Please try again.';
+                    displayApiResponse({ success: false, error: { message: errorMessage } });
+                }
+            } catch (error) {
+                console.error('Error during fetch:', error);
+                const errorMessage = 'An unexpected error occurred. Please try again.';
+                displayApiResponse({ success: false, error: { message: errorMessage } });
+            }
+        }
+
+        function displayApiResponse(response) {
+            // Display the API response in the 'apiResponse' div
+            const apiResponseDiv = document.getElementById('apiResponse');
+            apiResponseDiv.innerHTML = `<p class="json" >${JSON.stringify(response, null, 2)}</p>`;
+        }
+    </script>
+
+    <style>
+        /* Add this CSS to your existing stylesheet or create a new one */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        .json {
+            color: #10a33f;
+            overflow: scroll;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .upload-section {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+        }
+
+        h3 {
+            color: #4285f4;
+        }
+
+        p {
+            color: #666;
+        }
+
+        form {
+            margin-top: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #4285f4;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0f77c0;
+        }
+
+        /* Style for displaying API response */
+        .api-response {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #10a33f;
+            background-color: #353535;
+            white-space: pre-wrap;
+        }
+    </style>
+</body>
+
+</html>
