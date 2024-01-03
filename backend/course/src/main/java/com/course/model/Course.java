@@ -28,4 +28,6 @@ public class Course {
     private boolean active;
     private double price;
     private double estimate;
+    private double rate;
+    private long regis;
 }

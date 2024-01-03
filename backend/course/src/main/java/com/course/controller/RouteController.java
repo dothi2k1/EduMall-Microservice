@@ -21,8 +21,10 @@ public class RouteController {
     ResponseEntity<?> getListRoute(@RequestParam long id){
         return service.getAllRoute(id);
     }
-
-
+    @GetMapping("/route/get-list-route-detail")
+    ResponseEntity<?> getListCourseDetail(@RequestParam long id){
+        return service.getRouteDetail(id);
+    }
     //--end
 
 }

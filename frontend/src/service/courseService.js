@@ -25,3 +25,13 @@ export const getById = async (id) => {
     return err;
   }
 };
+
+export const getImage = async (body) => {
+  try {
+    let res = await axiosInstance.get(Api.course.getImage, body);
+    return res.data
+  } catch (err)
+  {
+    return err
+  }
+}

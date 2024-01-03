@@ -1,5 +1,6 @@
 package com.course.dao;
 
+import com.course.DTO.CourseSummary;
 import com.course.DTO.RouteDto;
 import com.course.model.Route;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,10 +27,9 @@ public class RouteDao {
         route.setId(rs.getLong("id"));
         route.setTitle(rs.getString("title"));
         route.setContent(rs.getString("content"));
-        route.setVideos(rs.getInt("vid"));
-        route.setDocuments(rs.getInt("doc"));
         return route;
     });
+
     // add route of a course
     public Long addRoute(Route route) {
         String rs = "";
@@ -52,8 +52,7 @@ public class RouteDao {
     }
     // get list route of a course
     public List<RouteDto> getListRout(long id) {
-        String query = "SELECT r.*,count(v.id) as vid,count(d.id) as doc FROM route r,video v,document d where courseid=" + id +
-                " and r.id=v.routeid and r.id=d.routeid group by r.id";
+        String query = "SELECT * FROM route  where courseid=" + id ;
         return jdbcTemplate.query(query, rmap);
     }
 
@@ -66,4 +65,6 @@ public class RouteDao {
             rs.getLong(1)
         );
     }
+
+
 }

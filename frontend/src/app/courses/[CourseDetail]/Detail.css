@@ -1,0 +1,14 @@
+.document {
+          transition: all ease-in-out 0.5s;
+          overflow-y: scroll;
+}
+
+.document {
+          /* This is the magic bit for Firefox */
+          scrollbar-width: none;
+}
+
+.document::-webkit-scrollbar {
+          /* This is the magic bit for WebKit */
+          display: none;
+}

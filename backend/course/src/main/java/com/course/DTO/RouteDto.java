@@ -14,6 +14,6 @@ public class RouteDto {
     private Long id;
     private String title;
     private String content;
-    private int videos;
-    private int documents;
+    private List<VideoDto> videos;
+    private List<DocumentDto> documents;
 }

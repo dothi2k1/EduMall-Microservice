@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 @RestController
 @RequestMapping("api/sv2")
 public class CourseController {
@@ -17,7 +20,7 @@ public class CourseController {
     //course -- start
     @GetMapping("/course/get-all")
     ResponseEntity<?> getAll(int page, String sort) throws Exception {
-        return service.getListCourse(page, sort);
+        return service.getAll(page, sort);
     }
     @GetMapping("/course/get-course")
     ResponseEntity<?> getById(@RequestParam long id) {
@@ -34,7 +37,10 @@ public class CourseController {
         if (status != 0) stt = true;
         return service.activeCourse(id, stt);
     }
-
+    @GetMapping("/course/get-image")
+    ResponseEntity<?> seeCartImage(@RequestBody Long[] courseId){
+        return service.seeCartImage(Arrays.asList(courseId));
+    }
     //--end
 
 

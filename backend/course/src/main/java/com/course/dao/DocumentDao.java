@@ -68,4 +68,8 @@ public class DocumentDao {
                 rs.getInt(1)
         );
     }
+    public int countByCourseId(long id){
+        String qr="select count(v.id) as doc from route r,document v where r.id=v.routeid and r.courseid="+id;
+        return jdbcTemplate.queryForObject(qr,Integer.class);
+    }
 }

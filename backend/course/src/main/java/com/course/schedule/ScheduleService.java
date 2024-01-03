@@ -1,9 +1,8 @@
 package com.course.schedule;
 
 import com.course.DTO.CourseDTo;
-import com.course.dao.CategoryDao;
-import com.course.dao.CourseDao;
-import com.course.dao.RouteDao;
+import com.course.DTO.CourseSummary;
+import com.course.dao.*;
 import com.course.model.Course;
 import com.course.model.Process;
 import com.course.repository.ProcessRepo;
@@ -42,6 +41,10 @@ public class ScheduleService {
     ObjectMapper redisMapper;
     @Autowired
     RedisTemplate<String, Object> template;
+    @Autowired
+    VideoDao videoDao;
+    @Autowired
+    DocumentDao documentDao;
     List<String> queue = Arrays.asList(new String[]{"queue_course", "queue_relative", "queue_route"});
 
     //All course
@@ -65,11 +68,11 @@ public class ScheduleService {
     @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.DAYS)
     void doProcess() throws JsonProcessingException {
         System.out.println("do task");
-        List<Course> list = dao.getAll();
+        List<CourseSummary> list = dao.getAll();
         long count=dao.getTotalPage();
         long totalPage=(count%10==0)?count/10:count/10+1;
         for (int i = 0; i < totalPage; i++) {
-            List<CourseDTo>courses= dao.listCourseDto(
+            List<Course>courses= dao.getList(
                     PageRequest.of(0, 10),"id");
             service.setValueRedis("page"+i,redisMapper.writeValueAsString(courses),1,TimeUnit.DAYS );
         }
@@ -91,9 +94,9 @@ public class ScheduleService {
 
 
         ExecutorService executor = Executors.newFixedThreadPool(5);
-        for (Course c : list) {
-            executor.submit(new CourseJob(service));
-            executor.submit(new RouteJob(service, routeDao));
+        for (CourseSummary c : list) {
+            executor.submit(new CourseJob(service,dao,videoDao,documentDao));
+            executor.submit(new RouteJob(service, routeDao,videoDao,documentDao));
             executor.submit(new RelatCourseJob(service, dao));
         }
     }

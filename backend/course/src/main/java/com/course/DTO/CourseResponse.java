@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseResponse {
-    private Course course;
+    private CourseDTo course;
     private List<RouteDto> routes;
     private List<Course> relative;
 }

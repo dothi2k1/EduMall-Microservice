@@ -4,6 +4,7 @@ import { CartProvider } from '@/context/Products/cartContext';
 import AuthProvider from '@/context/User/AuthProvider';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 const inter = Inter({ subsets: ['latin'] });
 
 // export const metadata = {

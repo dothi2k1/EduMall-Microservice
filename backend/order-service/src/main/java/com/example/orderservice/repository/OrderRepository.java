@@ -20,4 +20,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     int countByStatus(Integer status);
     long countAllByIdNotIn(List<Long> id);
+    List<Order> findOrderByUserIdAndStatus(long userId,int status);
 }

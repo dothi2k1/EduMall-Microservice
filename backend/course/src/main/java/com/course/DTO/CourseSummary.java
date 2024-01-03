@@ -1,29 +1,25 @@
 package com.course.DTO;
 
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
-public class CourseDTo {
+public class CourseSummary {
     private long id;
     private String username;
     private String title;
-    private String description;
     private double price;
     private double estimate;
     private int cate;
     private String image;
     private Date updateat;
-    private int routes;
-    private int videos;
-    private int doc;
     private double rate;
     private long regis;
 }
-
