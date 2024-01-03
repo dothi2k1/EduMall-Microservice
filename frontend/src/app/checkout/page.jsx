@@ -285,7 +285,7 @@ const Checkout = () => {
               </div>
             </div>
             <button className='mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white'>
-              Place Order
+              <a href="/payment">Place Order</a>
             </button>
           </div>
         </div>
