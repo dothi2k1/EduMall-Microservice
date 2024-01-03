@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import FeedbackList from "./FeedBackList";
-import axios from "axios";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import Banner from "./Banner";

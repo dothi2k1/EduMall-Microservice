@@ -124,9 +124,9 @@ export default function NavBar() {
                   </svg>
                 </span>
               </a>
-              <span className="absolute -mt-4 ml-2.5 rounded-full bg-red-500 px-[0.35em] py-[0.15em] text-[0.6rem] font-bold leading-none text-white">
+              {(calculateTotalProduct())&&<span className="absolute -mt-4 ml-2.5 rounded-full bg-red-500 px-[0.35em] py-[0.15em] text-[0.6rem] font-bold leading-none text-white">
                 {calculateTotalProduct()}
-              </span>
+              </span>}
 
               <a
                 className="mr-3 text-secondary-500 transition duration-200  hover:ease-in-out focus:text-secondary-400 disabled:text-black/30 motion-reduce:transition-none"

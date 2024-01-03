@@ -30,11 +30,11 @@ export const CartProvider = ({ children }) => {
   };
 
   const calculateTotalPrice = () => {
-    return cartItems.reduce((total, item) => total + item.price, 0);
+    return cartItems?.reduce((total, item) => total + item.price, 0);
   };
 
   const calculateTotalProduct = () => {
-    return cartItems.length
+    return cartItems?.length
   };
 
   useEffect(() => {
