@@ -8,7 +8,7 @@ const PaymentForm = () => {
   const handlePaymentClick = () => {
     const requestData = {
       orderCode: Math.floor(Math.random() * 1000000).toString(),
-      amount: 900000,
+      amount: 10000,
       cancelUrl: process.env.NEXT_DOMAIN + "/payment/cancel",
       returnUrl: process.env.NEXT_DOMAIN + "/payment/success",
       description: "jsdh",
