@@ -6,26 +6,27 @@ import React, { createContext, useState, useEffect, useContext } from "react";
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  let uid = JSON.parse(localStorage.getItem('token')).id;
+  let token = localStorage.getItem("token");
+
+  let uid = token ? JSON.parse(token).id : null;
   const [itemInfo, setInfo] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [showItem, setShowItem] = useState(true);
-  const [showCart,setShowCart]=useState('translate-x-[200%]')
+  const [showCart, setShowCart] = useState("translate-x-[200%]");
   const addToCart = (item) => {
     setCartItems([...cartItems, item]);
   };
   useEffect(() => {
-    if(JSON.parse(localStorage.getItem('token')))
-      getCart().then(res => {
+    if (JSON.parse(localStorage.getItem("token")))
+      getCart().then((res) => {
         setCartItems(res.list);
-        getImage(res.list?.map(v=>v.couresId)).then(res=>console.log(res))
-        window.localStorage.setItem('cart', res)
+        getImage(res.list?.map((v) => v.couresId)).then((res) => console.log(res));
+        window.localStorage.setItem("cart", res);
       });
-  },[uid])
-  
+  }, [uid]);
 
   const handleRemoveItem = (i) => {
-    const updatedItems = cartItems.filter((item,index) => index!=i);
+    const updatedItems = cartItems.filter((item, index) => index != i);
     setCartItems(updatedItems);
   };
 
@@ -34,12 +35,12 @@ export const CartProvider = ({ children }) => {
   };
 
   const calculateTotalProduct = () => {
-    return cartItems?.length
+    return cartItems?.length;
   };
 
   useEffect(() => {
     calculateTotalProduct();
-    calculateTotalProduct()
+    calculateTotalProduct();
   }, [cartItems]);
 
   return (
@@ -52,7 +53,8 @@ export const CartProvider = ({ children }) => {
         showItem,
         setShowItem,
         handleRemoveItem,
-        showCart, setShowCart,
+        showCart,
+        setShowCart,
       }}
     >
       {children}

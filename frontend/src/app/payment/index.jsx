@@ -31,9 +31,7 @@ const PaymentForm = () => {
 
   return (
     <div>
-      <button onClick={handlePaymentClick} className="px-2 py-1 bg-blue-600 text-white rounded-lg">
-        Thanh Toán
-      </button>
+      <button onClick={handlePaymentClick}>Thanh Toán</button>
       {paymentResponse && <p>Payment Response: {JSON.stringify(paymentResponse)}</p>}
     </div>
   );

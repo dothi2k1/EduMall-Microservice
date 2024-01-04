@@ -1,29 +1,34 @@
 "use client";
-
 import React from "react";
 import { useSearchParams } from "next/navigation";
-export default function page() {
+
+export default function Page() {
   const searchParams = useSearchParams();
-  const search = searchParams.get("code");
-  const id = searchParams.get("id");
   const orderCode = searchParams.get("orderCode");
   const cancel = searchParams.get("cancel");
   const status = searchParams.get("status");
+
   return (
-    <div className="flex justify-center flex-col items-center">
-      <h4 className="text-2xl text-green-500">Thanh toán thành công. Cảm ơn bạn đã sử dụng !</h4>
+    <div className="flex flex-col items-center justify-center  p-4">
+      <h4 className="text-2xl text-green-500">Thanh toán thành công. Cảm ơn bạn đã sử dụng!</h4>
       <p>
-        Nếu có bất kỳ câu hỏi nào, hãy gửi email tới <a href="mailto:support@payos.vn">support@edutik.vn</a>
+        Nếu có bất kỳ câu hỏi nào, hãy gửi email tới{" "}
+        <a className="text-blue-500 hover:underline" href="mailto:support@payos.vn">
+          support@edutik.vn
+        </a>
       </p>
-      <img src="https://cdn.divineshop.vn/static/4e0db8ffb1e9cac7c7bc91d497753a2c.svg" alt="" />
-      <a href="/" id="return-page-btn">
+      <img src="https://cdn.divineshop.vn/static/4e0db8ffb1e9cac7c7bc91d497753a2c.svg" alt="" className="w-32 h-32" />
+      <a href="/" id="return-page-btn" className="text-blue-500 font-semibold hover:underline">
         Trở về trang Tạo Link thanh toán
       </a>
-      <p>Code: {search}</p>
-      <p>ID: {id}</p>
-      <p>Cancel: {cancel}</p>
-      <p>Status: {status}</p>
-      <p>Order Code: {orderCode}</p>
+      <div className="grid grid-cols-2 gap-2 mt-8">
+        <p className="text-gray-700">Order Code:</p>
+        <p>{orderCode}</p>
+        <p className="text-gray-700">Cancel:</p>
+        <p>{cancel}</p>
+        <p className="text-gray-700">Status:</p>
+        <p>{status}</p>
+      </div>
     </div>
   );
 }
