@@ -33,4 +33,6 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
             "where od.course_id=c.id and o.id=od.order_id " +
             "and o.uid=u.id and c.uid=:uid limit=10 and offset=:page ",nativeQuery = true)
     List<Map<String,Object>> getUserBought(@Param("uid")long uid,@Param("page")int page);
+
+
 }

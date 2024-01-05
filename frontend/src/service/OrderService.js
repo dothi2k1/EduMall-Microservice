@@ -9,3 +9,12 @@ export const getCart = async () => {
     return err;
   }
 };
+
+export const updatecart = async (id,body) => {
+  try {
+    let res = await axiosInstance.post(Api.order.updateInfo+id,body);
+    return res;
+  } catch (err) {
+    return err;
+  }
+};

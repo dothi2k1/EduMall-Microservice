@@ -14,5 +14,5 @@ public interface CourseService {
     ResponseEntity<?> save(Course course);
     ResponseEntity<?> findCourseById(Long id);
     ResponseEntity<?> activeCourse(long id,boolean status);
-    ResponseEntity<?> seeCartImage(List<Long> courseId);
+    ResponseEntity<?> seeCartImage(long[] courseId);
 }

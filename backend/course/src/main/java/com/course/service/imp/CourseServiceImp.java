@@ -23,7 +23,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseServiceImp implements CourseService {
@@ -91,8 +93,8 @@ public class CourseServiceImp implements CourseService {
     }
 
     @Override
-    public ResponseEntity<?> seeCartImage(List<Long> courseId) {
-        return ResponseEntity.ok(dao.seeCartImage(courseId));
+    public ResponseEntity<?> seeCartImage(long[] courseId) {
+        return ResponseEntity.ok(dao.seeCartImage(Arrays.stream(courseId).boxed().collect(Collectors.toList())));
     }
 
 

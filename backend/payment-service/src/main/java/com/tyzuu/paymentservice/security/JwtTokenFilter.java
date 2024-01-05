@@ -1,6 +1,6 @@
-package com.example.orderservice.security;
+package com.tyzuu.paymentservice.security;
 
-import com.example.orderservice.user_principle.UserPrinciple;
+import com.tyzuu.paymentservice.user_principle.UserPrinciple;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,12 +22,14 @@ import java.util.List;
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
     public static final Logger log = LoggerFactory.getLogger(JwtProvider.class);
+    public static String accesstoken;
     @Autowired
     JwtProvider jwtProvider;
 
     private String getJwt(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer")) {
+            accesstoken = authHeader;
             return authHeader.replace("Bearer", "");
         }
         return null;
@@ -39,7 +41,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         final String requestTokenHeader = request.getHeader("Authorization");
         String username = null;
         String jwtToken = null;
-
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = getJwt(request);
             try {
