@@ -1,8 +1,11 @@
 package com.example.orderservice.service;
 
+import com.example.orderservice.dto.CartItem;
 import com.example.orderservice.dto.request.create.OrderCreateRequest;
 import com.example.orderservice.dto.response.OrderResponse;
+import com.example.orderservice.entity.Detail;
 import com.example.orderservice.entity.Order;
+import com.example.orderservice.entity.OrderDetail;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
@@ -21,6 +24,6 @@ public interface OrderService {
     ResponseEntity<?> getCountByStatus(int status);
     ResponseEntity<?> statistic();
     ResponseEntity<?> getOwnOrder(long uid,int page);
-    ResponseEntity<?> updateOrder(Order order);
+    ResponseEntity<?> updateOrder(OrderDetail detail,long id);
     ResponseEntity<?> getPendingOrder(long uid);
 }

@@ -28,8 +28,8 @@ export const getById = async (id) => {
 
 export const getImage = async (body) => {
   try {
-    let res = await axiosInstance.get(Api.course.getImage, body);
-    return res.data
+    let res = await axiosInstance.post(Api.course.getImage, body);
+    return res
   } catch (err)
   {
     return err

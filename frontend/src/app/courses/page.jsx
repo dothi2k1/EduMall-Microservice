@@ -4,22 +4,15 @@ import ProductList from "./ProductList";
 import Pagination from "./Pagination";
 import { getAll } from "@/service/courseService";
 export default function Products() {
-  const [items, setItems] = useState([]);
+  
   const [priceChange, setPriceChange] = useState(149000);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState("all");
-  const [products, setProducts] = useState([1,2,3,4]);
  
-  const handleChangePrice = (e) => {
-    setPriceChange(e.target.value);
-  };
+  
 
-  const handleCategoryChange = (categoryId) => {
-    setCategory(categoryId);
-    setCurrentPage(1);
-  };
 
   const handleSortByChange = (sortOption) => {
     setSortBy(sortOption);
@@ -30,21 +23,6 @@ export default function Products() {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
   let priceArray = [];
-
-  useEffect(() => {
-    setLoading(false);
-    getAll(0, "id").then(res => {
-      console.log(res)
-      if (res.status == 200) {
-        setProducts(res.data);
-        
-      };
-    });
-  }, []);
-
-  items.forEach((item) => priceArray.push(parseInt(item.price)));
-  let minPrice = Math.min(...priceArray);
-  let maxPrice = Math.max(...priceArray);
 
 
   const totalPages = 0;
@@ -106,7 +84,7 @@ export default function Products() {
                       <option value="descending">Price: High to Low</option>
                     </select>
                   </div>
-                  <ProductList products={products} loading={loading} />
+                  <ProductList loading={loading} setLoad={setLoading} />
                   <Pagination totalPages={totalPages} currentPage={currentPage} handlePageChange={handlePageChange} />
                 </div>
               </div>

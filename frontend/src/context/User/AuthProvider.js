@@ -1,6 +1,7 @@
 "use client"
 import React, { createContext, useState, useEffect } from "react";
 import Cookies from 'js-cookie';
+import { useRouter } from "next/navigation";
 
 export const AuthContext = createContext();
 
@@ -15,7 +16,7 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState("");
     const [email, setEmail] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-
+    const routes = useRouter();
     useEffect(() => {
         setErrorMessage("")
         const token = Cookies.get("token");
@@ -30,8 +31,7 @@ const AuthProvider = ({ children }) => {
 
     const handleLogout = () => {
         // Clear the token and user data when logging out
-        console.log(1)
-        setIsLoggedIn(false);
+        routes.refresh()
         window.localStorage.removeItem('token');
         window.localStorage.removeItem('isLoggedIn');
     };

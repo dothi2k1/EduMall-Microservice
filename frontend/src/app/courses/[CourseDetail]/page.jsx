@@ -8,15 +8,16 @@ import ContentText from "./ContentText";
 import ThisCourseInclude from "./ThisCourseInclude";
 import Description from "./Description";
 import AddFeedBack from "./AddFeedBack";
-import { useRouter } from "next/router";
 import { useParams } from "next/navigation";
 import { fetchFeedBack } from "@/service/userService";
 import { getById } from "@/service/courseService";
 import { getListRoute } from "@/service/routeService";
 import Cart from "@/components/Cart/Cart";
+import { string } from "random-js";
 
 const CourseDetail = () => {
   const param = useParams();
+  
   const Course_ID = parseInt(param.CourseDetail);
   const [feedbackData, setFeedbackData] = useState([]);
   const [url, setUrl] = useState(`get-by-course-detail-pageable/${Course_ID}?page=0&direction=1`);
@@ -39,8 +40,10 @@ const CourseDetail = () => {
       setData({ ...data, title: title });
     });
     getListRoute(Course_ID).then(res => setRoute(res.data));
+    
   }, [url]);
 
+  setData
   return (
     <div>
       <NavBar />

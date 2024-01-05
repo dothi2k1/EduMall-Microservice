@@ -1,12 +1,15 @@
 package com.example.orderservice.service.impl;
 
+import com.example.orderservice.dto.CartItem;
 import com.example.orderservice.dto.request.create.OrderCreateRequest;
 
 import com.example.orderservice.dto.response.CustomerInfo;
 import com.example.orderservice.dto.response.OrderResponse;
 import com.example.orderservice.dto.response.Statistic;
+import com.example.orderservice.entity.Detail;
 import com.example.orderservice.entity.Order;
 import com.example.orderservice.entity.OrderDetail;
+import com.example.orderservice.repository.DetailRepo;
 import com.example.orderservice.repository.OrderDetailRepository;
 import com.example.orderservice.repository.OrderRepository;
 import com.example.orderservice.service.OrderService;
@@ -24,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -36,6 +38,8 @@ public class OrderServiceImpl implements OrderService {
     OrderRepository orderRepository;
     @Autowired
     OrderDetailRepository orderDetailRepository;
+    @Autowired
+    DetailRepo repo;
     @Autowired
     JavaMailSender javaMailSender;
     @Override
@@ -244,8 +248,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<?> updateOrder(Order order) {
-        return ResponseEntity.ok(orderRepository.save(order));
+    public ResponseEntity<?> updateOrder(OrderDetail detail,long id) {
+        Order order=orderRepository.findById(id).get();
+        detail.setOrder(order);
+        return ResponseEntity.ok(orderDetailRepository.save(detail));
     }
 
     @Override

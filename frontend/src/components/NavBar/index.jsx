@@ -10,18 +10,6 @@ export default function NavBar() {
 
   const [openNav, setOpenNav] = useState("translate-x-[-100%]");
   const {showCart,setShowCart,calculateTotalProduct } = useContext(CartContext);
-  const [dropDown, setDropDown] = useState(false);
-
-  const handleDropDown = () => {
-    setDropDown(!dropDown);
-  };
-
-  function handleLogoutAndClearCart() {
-    handleLogout();
-    clearCartItems();
-  }
-
-
   const navItem = [
     {
       name: "Course",
@@ -124,7 +112,7 @@ export default function NavBar() {
                   </svg>
                 </span>
               </a>
-              {(calculateTotalProduct())&&<span className="absolute -mt-4 ml-2.5 rounded-full bg-red-500 px-[0.35em] py-[0.15em] text-[0.6rem] font-bold leading-none text-white">
+              {(calculateTotalProduct()!=0)&&<span className="absolute -mt-4 ml-2.5 rounded-full bg-red-500 px-[0.35em] py-[0.15em] text-[0.6rem] font-bold leading-none text-white">
                 {calculateTotalProduct()}
               </span>}
 
@@ -174,7 +162,7 @@ export default function NavBar() {
                       <a
                         id="loginbtn"
                         className="rounded-b bg-gray-100 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
-                        href="#"
+                        onClick={() => { handleLogout()}}
                       >
                         Log out
                       </a>

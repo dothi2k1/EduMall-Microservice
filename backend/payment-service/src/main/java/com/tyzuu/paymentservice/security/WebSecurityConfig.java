@@ -1,4 +1,4 @@
-package com.example.orderservice.security;
+package com.tyzuu.paymentservice.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,10 +33,8 @@ public class WebSecurityConfig {
                 addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                new AntPathRequestMatcher("/api/order/**"),
-                                new AntPathRequestMatcher("/api/order-detail/**")
+                                new AntPathRequestMatcher("/api/payment/**")
                         ).hasAnyAuthority("STUDENT")
-                        .requestMatchers(new AntPathRequestMatcher("/api/sv2/private/**")).hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(form->form.disable())
                 .exceptionHandling(ex->ex.authenticationEntryPoint(jwtEntryPoint))

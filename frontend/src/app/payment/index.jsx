@@ -1,14 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axiosInstance from "@/utils/axios";
+import { CartContext } from "@/context/Products/cartContext";
 
 const PaymentForm = () => {
   const [paymentResponse, setPaymentResponse] = useState(null);
+  const { calculateTotalPrice } = useContext(CartContext);
 
   const handlePaymentClick = () => {
     const requestData = {
       orderCode: Math.floor(Math.random() * 1000000).toString(),
-      amount: 10000,
+      amount: calculateTotalPrice(),
       cancelUrl: process.env.NEXT_DOMAIN + "/payment/cancel",
       returnUrl: process.env.NEXT_DOMAIN + "/payment/success",
       description: "jsdh",

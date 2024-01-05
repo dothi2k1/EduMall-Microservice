@@ -1,15 +1,10 @@
 package com.course.controller;
 
 import com.course.model.Course;
-
 import com.course.service.imp.CourseServiceImp;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
-import java.util.List;
 
 @RestController
 @RequestMapping("api/sv2")
@@ -37,9 +32,9 @@ public class CourseController {
         if (status != 0) stt = true;
         return service.activeCourse(id, stt);
     }
-    @GetMapping("/course/get-image")
-    ResponseEntity<?> seeCartImage(@RequestBody Long[] courseId){
-        return service.seeCartImage(Arrays.asList(courseId));
+    @PostMapping("/course/get-image")
+    ResponseEntity<?> seeCartImage(@RequestBody long[] courseId){
+        return service.seeCartImage(courseId);
     }
     //--end
 

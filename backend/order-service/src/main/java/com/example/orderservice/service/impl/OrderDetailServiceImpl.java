@@ -4,7 +4,9 @@ import com.example.orderservice.dto.request.create.OrderCreateRequest;
 import com.example.orderservice.dto.response.OrderResponse;
 import com.example.orderservice.dto.response.orderdetail.OrderDetailResponse;
 import com.example.orderservice.entity.Order;
+import com.example.orderservice.entity.OrderDetail;
 import com.example.orderservice.repository.OrderDetailRepository;
+import com.example.orderservice.repository.OrderRepository;
 import com.example.orderservice.service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +18,9 @@ import java.util.List;
 public class OrderDetailServiceImpl implements OrderDetailService {
     @Autowired
     public OrderDetailRepository orderDetailRepository;
+    @Autowired
+    OrderRepository repository;
 
-    
     @Override
     public ResponseEntity<?> updateOrderDetail(Long id) {
         return null;

@@ -1,11 +1,16 @@
-import { useEffect, useState } from "react";
+'use-client'
+import { CartContext } from "@/context/Products/cartContext";
+import { useContext, useEffect, useState } from "react";
 
 export default function Banner({course}) {
-
+  const { addToCart } = useContext(CartContext);
   const [expand, setExpand] = useState({ regis: 0, rate: 0 });
   const a = {
     bigTitle: "The Complete Python Bootcamp From Zero to Hero in Python",
     slogan:"Learn Python like a Professional Start from the basics and go all the way to creating your own applications and games"
+  }
+  const handleAdd = () => {
+    addToCart(course.id,course.price)
   }
   
   return (
@@ -45,8 +50,8 @@ export default function Banner({course}) {
               <img src={course?.image} alt="" />
             </div>
             
-            <button className="h-[40px] bg-violet-900 w-full color-white font-bold">BUY</button>
-            <button className="h-[40px] bg-white w-full text-gray-900 font-bold">ADD TO CART</button>
+            <button className="h-[40px] bg-violet-900 w-full color-white font-bold"><a href="/checkout">BUY</a></button>
+            <button className="h-[40px] bg-white w-full text-gray-900 font-bold" onClick={handleAdd}>ADD TO CART</button>
             
           </div>
         </div>

@@ -1,12 +1,18 @@
 package com.example.orderservice.controller;
 
+import com.example.orderservice.dto.CartItem;
 import com.example.orderservice.dto.request.create.OrderCreateRequest;
+import com.example.orderservice.entity.Detail;
+import com.example.orderservice.entity.Order;
+import com.example.orderservice.entity.OrderDetail;
 import com.example.orderservice.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("api/order")
@@ -35,6 +41,10 @@ public class OrderController {
     @PutMapping("/updateOrder")
     ResponseEntity<?> updateOrder(@RequestParam long id,@RequestParam Integer status){
         return ResponseEntity.ok(orderService.updateStatus(id,status));
+    }
+    @PostMapping("/update-cart")
+    ResponseEntity<?> updateCart(@RequestBody OrderDetail detail,@RequestParam long id){
+        return ResponseEntity.ok(orderService.updateOrder(detail,id));
     }
     //sửa
     @DeleteMapping("/delete")
