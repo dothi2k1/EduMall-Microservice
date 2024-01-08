@@ -1,12 +1,9 @@
 package com.example.orderservice.service.impl;
 
-import com.example.orderservice.dto.CartItem;
 import com.example.orderservice.dto.request.create.OrderCreateRequest;
-
 import com.example.orderservice.dto.response.CustomerInfo;
 import com.example.orderservice.dto.response.OrderResponse;
 import com.example.orderservice.dto.response.Statistic;
-import com.example.orderservice.entity.Detail;
 import com.example.orderservice.entity.Order;
 import com.example.orderservice.entity.OrderDetail;
 import com.example.orderservice.repository.DetailRepo;
@@ -30,10 +27,10 @@ import java.util.concurrent.Executors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    private final String thank="Thank you for learning on Edumall! If you need any additional assistance, please contract to phone number (+84) 9999999 or email: aabc@gmail.com ";
-    private final String wait="Your order was sent to teacher! Newest info will be sent to this email.";
-    private final String accept="You are allowed to join class xxx from order xxx";
-    private final String full="All classes of this course are full, please try another!";
+    private final String thank = "Thank you for learning on Edumall! If you need any additional assistance, please contract to phone number (+84) 9999999 or email: aabc@gmail.com ";
+    private final String wait = "Your order was sent to teacher! Newest info will be sent to this email.";
+    private final String accept = "You are allowed to join class xxx from order xxx";
+    private final String full = "All classes of this course are full, please try another!";
     @Autowired
     OrderRepository orderRepository;
     @Autowired
@@ -42,6 +39,7 @@ public class OrderServiceImpl implements OrderService {
     DetailRepo repo;
     @Autowired
     JavaMailSender javaMailSender;
+
     @Override
     @Transactional
     public String createOrder(OrderCreateRequest request) {
@@ -57,25 +55,14 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setList(set);
 
-        ExecutorService service= Executors.newFixedThreadPool(2);
         String[] rs = new String[1];
         Order finalOrder = orderRepository.save(order);
-        service.execute(new Runnable() {
-            @Override
-            public void run() {
-                if (finalOrder.getId() != null) {
-                    rs[0] ="Create success";
-                }
-            }
-        });
-        service.execute(new Runnable() {
-            @Override
-            public void run() {
-                sendMail(thank);
-            }
-        });
-        service.shutdown();
-         return rs[0];
+
+        if (finalOrder.getId() != null) {
+            rs[0] = "Create success";
+        }
+
+        return rs[0];
     }
 
     @Override
@@ -92,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setList(set);
 
-        ExecutorService service= Executors.newFixedThreadPool(2);
+        ExecutorService service = Executors.newFixedThreadPool(2);
         String[] rs = new String[1];
         Order finalOrder = orderRepository.save(order);
 
@@ -106,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
             @Override
             public void run() {
                 if (finalOrder.getId() != null) {
-                    rs[0] ="Create success";
+                    rs[0] = "Create success";
                 }
             }
         });
@@ -117,25 +104,25 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResponseEntity<?> acceptToClass(long id, int status) {
         Optional<Order> order = orderRepository.findById(id);
-        ExecutorService service= Executors.newFixedThreadPool(2);
-        String[] rs=new String[1];
+        ExecutorService service = Executors.newFixedThreadPool(2);
+        String[] rs = new String[1];
         service.execute(new Runnable() {
             @Override
             public void run() {
                 if (!order.isEmpty()) {
                     if (status == 1) {
-                        Order od=order.get();
+                        Order od = order.get();
                         od.setStatus(status);
                         od.setUpdatedDate(new Date());
                         orderRepository.save(od);
-                        rs[0]= "Payment success";
+                        rs[0] = "Payment success";
                     }
-                    if (status==2){
-                        Order od=order.get();
+                    if (status == 2) {
+                        Order od = order.get();
                         od.setStatus(status);
                         od.setUpdatedDate(new Date());
                         orderRepository.save(od);
-                        rs[0]= "Payment fail";
+                        rs[0] = "Payment fail";
                     }
                 }
             }
@@ -144,9 +131,9 @@ public class OrderServiceImpl implements OrderService {
         service.execute(new Runnable() {
             @Override
             public void run() {
-                if (status==1)
-                sendMail(accept);
-                else if (status==2)
+                if (status == 1)
+                    sendMail(accept);
+                else if (status == 2)
                     sendMail(full);
             }
         });
@@ -159,14 +146,14 @@ public class OrderServiceImpl implements OrderService {
         Optional<Order> order = orderRepository.findById(id);
         if (!order.isEmpty()) {
             if (status == 1) {
-                Order od=order.get();
+                Order od = order.get();
                 od.setStatus(status);
                 od.setUpdatedDate(new Date());
                 orderRepository.save(od);
                 return "Payment success";
             }
-            if (status==2){
-                Order od=order.get();
+            if (status == 2) {
+                Order od = order.get();
                 od.setStatus(status);
                 od.setUpdatedDate(new Date());
                 orderRepository.save(od);
@@ -180,8 +167,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ResponseEntity<?> delete(Long id) {
-       Order order = orderRepository.findById(id).get();
-        if (order!=null) {
+        Order order = orderRepository.findById(id).get();
+        if (order != null) {
             order.setDeletedDate(new Date());
             order.setStatus(3);
             orderRepository.save(order);
@@ -235,21 +222,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<?> getOwnOrder(long uid,int page) {
-        ObjectMapper mapper=new ObjectMapper();
-        List<Map<String,Object>> list=orderDetailRepository.getUserBought(uid,page*9);
-        List<CustomerInfo> customerInfos=new ArrayList<>();
-        for (Map m:list){
-            CustomerInfo info=new CustomerInfo();
-            info=mapper.convertValue(m,CustomerInfo.class);
+    public ResponseEntity<?> getOwnOrder(long uid, int page) {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Map<String, Object>> list = orderDetailRepository.getUserBought(uid, page * 9);
+        List<CustomerInfo> customerInfos = new ArrayList<>();
+        for (Map m : list) {
+            CustomerInfo info = new CustomerInfo();
+            info = mapper.convertValue(m, CustomerInfo.class);
             customerInfos.add(info);
         }
         return ResponseEntity.ok(customerInfos);
     }
 
     @Override
-    public ResponseEntity<?> updateOrder(OrderDetail detail,long id) {
-        Order order=orderRepository.findById(id).get();
+    public ResponseEntity<?> updateOrder(OrderDetail detail, long id) {
+        Order order = orderRepository.findById(id).get();
         detail.setOrder(order);
         return ResponseEntity.ok(orderDetailRepository.save(detail));
     }
@@ -258,16 +245,15 @@ public class OrderServiceImpl implements OrderService {
     public ResponseEntity<?> getPendingOrder(long uid) {
 
         try {
-            Order order =orderRepository.findOrderByUserIdAndStatus(uid,0).get(0);
+            Order order = orderRepository.findOrderByUserIdAndStatus(uid, 0).get(0);
             return ResponseEntity.ok(order);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
 
-    void sendMail(String msg){
-        SimpleMailMessage message=new SimpleMailMessage();
+    void sendMail(String msg) {
+        SimpleMailMessage message = new SimpleMailMessage();
         message.setTo("aloalo1981998@gmail.com");
         message.setSubject("Edumall notifications");
         message.setText(msg);

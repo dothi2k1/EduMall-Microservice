@@ -1,5 +1,5 @@
 "use client";
-import { getCart, updatecart } from "@/service/OrderService";
+import { createOrder, getCart, removeItem, updatecart } from "@/service/OrderService";
 import { getImage } from "@/service/courseService";
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { toast } from "react-toastify";
@@ -14,7 +14,21 @@ export const CartProvider = ({ children }) => {
   const [showItem, setShowItem] = useState(true);
   const [showCart, setShowCart] = useState("translate-x-[200%]");
 
+  const newOrder = () => {
+    let orders = {
+      userId:JSON.parse(window.localStorage.getItem("token"))?.id,
+      list:cartItems
+    }
+    createOrder(orders).then((res) => {
+      console.log(res)
+    }).catch((err) => {
+      console.log(err)
+    });
+  }
+  
   const addToCart = (id, price) => {
+    if (cartItems?.length === 0)
+      newOrder()
     let item = {
       id: null,
       courseId: id,
@@ -55,9 +69,11 @@ export const CartProvider = ({ children }) => {
   };
 
   const handleRemoveItem = (i) => {
+    removeItem(cartItems[i].id)
     const updatedItems = cartItems.filter((item, index) => index != i);
     setCartItems(updatedItems);
     setInfo(itemInfo.filter((item, index) => index != i));
+    
   };
 
   const calculateTotalPrice = () => {

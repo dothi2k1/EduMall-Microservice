@@ -18,5 +18,8 @@ public class OrderDetailController {
     ResponseEntity<?> findOrder(@RequestParam(required = false) Integer courseId){
         return ResponseEntity.ok(orderDetailService.findAllOrder(courseId));
     }
-
+    @DeleteMapping("/remove")
+    ResponseEntity<?> deleteItem(@RequestParam long id){
+        return orderDetailService.deleteOrder(id);
+    }
 }

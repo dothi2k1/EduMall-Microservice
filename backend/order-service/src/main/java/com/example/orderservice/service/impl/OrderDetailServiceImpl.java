@@ -27,8 +27,10 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     }
 
     @Override
-    public Order deleteOrder(Long id) {
-        return null;
+    public ResponseEntity<?> deleteOrder(Long id) {
+        OrderDetail detail=orderDetailRepository.findById(id).get();
+        orderDetailRepository.delete(detail);
+        return ResponseEntity.ok("delete success");
     }
 
     @Override

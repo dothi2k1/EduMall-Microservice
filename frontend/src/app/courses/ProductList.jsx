@@ -26,7 +26,7 @@ const ProductList = ({ loading, setLoad }) => {
           className="w-full mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5"
         >
           {products?.map((v, i) => (
-            <div className="w-52 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl" key={i} title={v.title }>
+            <div className="w-52 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl" key={i} title={v.title&&JSON.parse(v.title).bigTitle }>
               <a href={(v.id!==undefined)?`/courses/${v.id}`:'error'}>
                   <img
                   src={v.image}

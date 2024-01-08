@@ -112,7 +112,7 @@ export default function NavBar() {
                   </svg>
                 </span>
               </a>
-              {(calculateTotalProduct()!=0)&&<span className="absolute -mt-4 ml-2.5 rounded-full bg-red-500 px-[0.35em] py-[0.15em] text-[0.6rem] font-bold leading-none text-white">
+              {(calculateTotalProduct()!=0&&calculateTotalProduct()!=undefined)&&<span className="absolute -mt-4 ml-2.5 rounded-full bg-red-500 px-[0.35em] py-[0.15em] text-[0.6rem] font-bold leading-none text-white">
                 {calculateTotalProduct()}
               </span>}
 
