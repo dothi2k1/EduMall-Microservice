@@ -2,13 +2,13 @@
 import { CartContext } from "@/context/Products/cartContext";
 import axiosInstance from "@/utils/axios";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 
 const Checkout = () => {
   const routes = usePathname();
   console.log(routes);
-  const { cartItems, addToCart, handleRemoveItem, calculateTotalPrice, itemInfo } = useContext(CartContext);
+  const { cartItems,createOrder, addToCart, handleRemoveItem, calculateTotalPrice, itemInfo } = useContext(CartContext);
 
   const [paymentResponse, setPaymentResponse] = useState(null);
 
@@ -26,7 +26,6 @@ const Checkout = () => {
       .then((response) => {
         const result = response.data;
         setPaymentResponse(result);
-
         // Check if the payment was successful and has a checkoutUrl
         if (result.code === "00" && result.data && result.data.checkoutUrl) {
           // Redirect to the checkout URL

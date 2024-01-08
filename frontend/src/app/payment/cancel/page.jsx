@@ -1,7 +1,8 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import axiosInstance from "@/utils/axios";
 
 export default function Page() {
   const router = useRouter();
@@ -12,7 +13,9 @@ export default function Page() {
   const orderCode = searchParams.get("orderCode");
   const cancel = searchParams.get("cancel");
   const status = searchParams.get("status");
-
+  useEffect(() => {
+    axiosInstance.put(`/api/payment/paid?id=${orderCode}&status=${0}`)
+  },[])
   // Lấy thông tin từ query params của URL
 
   return (

@@ -22,6 +22,8 @@ const course = {
 const order = {
           getCart: "/api/order/get-cart?uid=",
           getOrderById: "/api/order/find-by-id/?id=",
-          updateInfo:'/api/order/update-cart?id='
+          updateInfo: '/api/order/update-cart?id=',
+          create: '/api/order/createOrder',
+          removeItem:'/api/order/order-detail/remove?id='
 }
 export const Api={auth,media,homepage,category,course,order}

@@ -31,9 +31,10 @@ const AuthProvider = ({ children }) => {
 
     const handleLogout = () => {
         // Clear the token and user data when logging out
-        routes.refresh()
+        
         window.localStorage.removeItem('token');
         window.localStorage.removeItem('isLoggedIn');
+        routes.refresh()
     };
 
     const fetchUserData = async (token) => {

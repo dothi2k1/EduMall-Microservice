@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface OrderDetailService {
     ResponseEntity<?> updateOrderDetail(Long id);
-    Order deleteOrder(Long id);
+    ResponseEntity<?> deleteOrder(Long id);
     ResponseEntity<?> getAll(int page,String sort);
     List<OrderDetailResponse> findAllOrder(Integer courseId);
 }
